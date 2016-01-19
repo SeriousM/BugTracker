@@ -98,7 +98,13 @@
     <Compile Include="Infrastructure\WebBootstrapper.cs" />
     <Compile Include="Infrastructure\DependencyModuleResolver.cs" />
     <Compile Include="Infrastructure\UnityContainerConfig.cs" />
+    <Compile Include="Logging\Abstract\VolatileRollingList.cs" />
+    <Compile Include="Logging\Entities\StaticLogEntry.cs" />
+    <Compile Include="Logging\ExceptionObjectLogger.cs" />
     <Compile Include="Logging\GlobalErrorLogger.cs" />
+    <Compile Include="Logging\LogLevelType.cs" />
+    <Compile Include="Logging\RollingMemoryAppender.cs" />
+    <Compile Include="Logging\StaticLogList.cs" />
     <Compile Include="Maybe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unity\Abstract\IBuildTrackingPolicy.cs" />
