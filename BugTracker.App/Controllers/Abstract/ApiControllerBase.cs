@@ -6,7 +6,7 @@ using BugTracker.Shared.Command.Entities;
 
 namespace BugTracker.App.Controllers.Abstract
 {
-    public abstract class ApiControllerBase
+    public abstract class ApiControllerBase : ApiController
     {
         protected void ValidateCommandResult(CommandResult commandResult)
         {
