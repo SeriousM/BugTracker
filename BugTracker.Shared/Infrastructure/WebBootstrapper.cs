@@ -20,7 +20,7 @@ namespace BugTracker.Shared.Infrastructure
 
         public static WebBootstrapper Instance => WebBootstrapper.instance.Value;
 
-        public void Start()
+        public void Start(HttpConfiguration configuration)
         {
             lock (this)
             {
@@ -40,7 +40,7 @@ namespace BugTracker.Shared.Infrastructure
                 GlobalErrorLogger.RegisterErrorHandlers();
 
                 var unityDependencyResolver = new UnityDependencyResolver(unityContainer);
-                GlobalConfiguration.Configuration.DependencyResolver = unityDependencyResolver;
+                configuration.DependencyResolver = unityDependencyResolver;
 
                 this.initialized = true;
             }
