@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 
-using BugTracker.App.Commands.Repository;
 using BugTracker.App.Models;
 using BugTracker.Data.Entities;
 using BugTracker.Data.Repositories.Abstract;
 using BugTracker.Shared.Command.Abstract;
 using BugTracker.Shared.Command.Entities;
-using BugTracker.Shared.Command.Utils.Abstract;
 using BugTracker.Shared.Extensions;
 
 namespace BugTracker.App.Commands

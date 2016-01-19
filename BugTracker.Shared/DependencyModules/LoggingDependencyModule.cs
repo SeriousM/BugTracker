@@ -1,4 +1,5 @@
-﻿using BugTracker.Shared.Unity;
+﻿using BugTracker.Shared.Infrastructure.Abstract;
+using BugTracker.Shared.Unity;
 
 using log4net;
 
@@ -6,7 +7,7 @@ using Microsoft.Practices.Unity;
 
 namespace BugTracker.Shared.DependencyModules
 {
-    public class LoggingDepencencyModule
+    public class LoggingDependencyModule : IDependencyModule
     {
         public void Register(IUnityContainer unityContainer)
         {

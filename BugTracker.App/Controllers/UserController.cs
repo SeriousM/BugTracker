@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 using BugTracker.App.Commands.Repository;
@@ -26,7 +27,7 @@ namespace BugTracker.App.Controllers
         }
 
         [HttpPost]
-        public async void Register(RegisterUserModel registrationModel)
+        public async Task<User> Register(RegisterUserModel registrationModel)
         {
             HttpCheck.IsNotNull(nameof(registrationModel), registrationModel, HttpStatusCode.BadRequest);
 
@@ -34,6 +35,7 @@ namespace BugTracker.App.Controllers
             var commandResult = await this.commandExecutor.ExecuteAsync(registerNewUserCommand);
 
             this.ValidateCommandResult(commandResult);
+            return commandResult.SuccessData;
         }
 
         [HttpGet]

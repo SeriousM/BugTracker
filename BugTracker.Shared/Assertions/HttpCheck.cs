@@ -47,12 +47,12 @@ namespace BugTracker.Shared.Assertions
             Throw(httpStatusCode, errorMessage);
         }
 
-        [ContractAnnotation("predicate:false => halt")]
+        [ContractAnnotation("predicate:true => halt")]
         public static void IsTrue(bool predicate, HttpStatusCode httpStatusCode, [NotNull] string errorMessage)
         {
             Check.IsNotNull(nameof(errorMessage), errorMessage);
 
-            if (!predicate)
+            if (predicate)
             {
                 Throw(httpStatusCode, errorMessage);
             }
