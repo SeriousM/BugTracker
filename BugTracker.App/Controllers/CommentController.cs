@@ -2,7 +2,7 @@
 
 namespace BugTracker.App.Controllers
 {
-    public class IssueController : ApiControllerBase
+    public class CommentController : ApiControllerBase
     {
     }
 }

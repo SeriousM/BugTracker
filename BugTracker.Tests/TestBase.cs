@@ -67,6 +67,14 @@ namespace BugTracker.Tests
         }
 
         /// <summary>
+        /// Resolves an instance of <typeparamref name="T"/> with the help of the unity container for this test instance.
+        /// </summary>
+        protected T Resolve<T>()
+        {
+            return this.unityContainer.Resolve<T>();
+        }
+
+        /// <summary>
         /// Creates a mock of <typeparamref name="T"/>.
         /// The mock is verified at the end of the test if all expected setups were met.
         /// </summary>

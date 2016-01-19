@@ -111,12 +111,18 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Commands\RegisterNewUserCommand.cs" />
+    <Compile Include="Commands\Repository\CommandRepository.cs" />
+    <Compile Include="Controllers\Abstract\ApiControllerBase.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DependencyModules\CommandDependencyModule.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -130,7 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

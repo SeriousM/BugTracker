@@ -64,6 +64,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Database\Abstract\IMemoryDatabase.cs" />
+    <Compile Include="Database\MemoryDatabase.cs" />
+    <Compile Include="Database\MemoryDataCollectionException.cs" />
+    <Compile Include="DependencyModules\DatabaseDependencyModule.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Repositories\Abstract\IUserAccess.cs" />
+    <Compile Include="Repositories\UserAccess.cs" />
+    <Compile Include="DependencyModules\DataAccessDependencyModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +83,7 @@
       <Name>BugTracker.Shared</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
