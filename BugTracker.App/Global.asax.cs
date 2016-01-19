@@ -8,8 +8,13 @@ namespace BugTracker.App
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
-            WebBootstrapper.Instance.Start();
+            GlobalConfiguration.Configure(this.ConfigurationCallback);
+        }
+
+        private void ConfigurationCallback(HttpConfiguration configuration)
+        {
+            WebApiConfig.Register(configuration);
+            WebBootstrapper.Instance.Start(configuration);
         }
     }
 }
