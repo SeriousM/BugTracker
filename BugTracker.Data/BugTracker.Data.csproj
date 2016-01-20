@@ -68,8 +68,11 @@
     <Compile Include="Database\MemoryDatabase.cs" />
     <Compile Include="Database\MemoryDataCollectionException.cs" />
     <Compile Include="DependencyModules\DatabaseDependencyModule.cs" />
+    <Compile Include="Entities\Issue.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Repositories\Abstract\IIssueAccess.cs" />
     <Compile Include="Repositories\Abstract\IUserAccess.cs" />
+    <Compile Include="Repositories\IssueAccess.cs" />
     <Compile Include="Repositories\UserAccess.cs" />
     <Compile Include="DependencyModules\DataAccessDependencyModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

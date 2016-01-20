@@ -1,11 +1,12 @@
-﻿using BugTracker.App.Models;
+﻿using BugTracker.App.Commands.Repository.Abstract;
+using BugTracker.App.Models;
 using BugTracker.Data.Entities;
 using BugTracker.Shared.Command.Abstract;
 using BugTracker.Shared.Command.Utils.Abstract;
 
 namespace BugTracker.App.Commands.Repository
 {
-    public class CommandRepository
+    public class CommandRepository : ICommandRepository
     {
         private readonly ICommandFactory commandFactory;
 
@@ -16,8 +17,15 @@ namespace BugTracker.App.Commands.Repository
 
         public CommandBase<User> RegisterNewUser(RegisterUserModel registrationModel)
         {
-            RegisterNewUserCommand command = this.commandFactory.CreateCommand<RegisterNewUserCommand, User>();
+            var command = this.commandFactory.CreateCommand<RegisterNewUserCommand, User>();
             command.Initialize(registrationModel);
+            return command;
+        }
+
+        public CommandBase<Issue> CreateNewIssue(IssueModel issueModel)
+        {
+            var command = this.commandFactory.CreateCommand<CreateNewIssueCommand, Issue>();
+            command.Initialize(issueModel);
             return command;
         }
     }

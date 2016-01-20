@@ -18,7 +18,7 @@ namespace BugTracker.Shared.Command.Entities
 
 	    public static readonly CanExecuteCommandResult Success = new CanExecuteCommandResult(true);
 
-	    private CanExecuteCommandResult(bool canExecute, string reason = null)
+	    internal CanExecuteCommandResult(bool canExecute, string reason = null)
 	    {
 	        this.CanExecute = canExecute;
 	        this.Reason = reason;

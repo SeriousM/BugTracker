@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Net.Http;
+using System.Web.Http;
 
+using BugTracker.Shared.Command.Abstract;
+using BugTracker.Shared.Command.Entities;
 using BugTracker.Shared.Command.Utils;
 using BugTracker.Shared.Command.Utils.Abstract;
 using BugTracker.Shared.Logging;
@@ -66,7 +70,18 @@ namespace BugTracker.Tests
         /// </summary>
         protected T Resolve<T>()
         {
-            return this.unityContainer.Resolve<T>();
+            var instance = this.unityContainer.Resolve<T>();
+            return instance;
+        }
+
+        protected T ResolveApiController<T>() where T : ApiController
+        {
+            var controllerInstance = this.unityContainer.Resolve<T>();
+
+            controllerInstance.Request = new HttpRequestMessage();
+            controllerInstance.Configuration = new HttpConfiguration();
+
+            return controllerInstance;
         }
 
         /// <summary>
@@ -99,6 +114,22 @@ namespace BugTracker.Tests
 #if !NCRUNCH
             this.Logger.Debug($"**!!** TEST ENDED: {TestContext.CurrentContext.Test.Name}");
 #endif
+        }
+
+        protected CommandBase<T> CreateCommandMock<T>(CommandResult<T> commandResult)
+        {
+            var commandMock = this.CreateMock<CommandBase<T>>(MockBehavior.Strict);
+            commandMock.Setup(x => x.CanExecuteAsync()).ReturnsAsync(new CanExecuteCommandResult(true));
+            commandMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(commandResult);
+            return commandMock.Object;
+        }
+
+        protected CommandBase CreateCommandMock(CommandResult commandResult)
+        {
+            var commandMock = this.CreateMock<CommandBase>(MockBehavior.Strict);
+            commandMock.Setup(x => x.CanExecuteAsync()).ReturnsAsync(new CanExecuteCommandResult(true));
+            commandMock.Setup(x => x.ExecuteAsync()).ReturnsAsync(commandResult);
+            return commandMock.Object;
         }
 
         private void RegisterInstanceForDI<T>(T instance)

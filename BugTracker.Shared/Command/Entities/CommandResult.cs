@@ -10,7 +10,7 @@ namespace BugTracker.Shared.Command.Entities
     {
         private readonly Dictionary<string, object> errorData = new Dictionary<string, object>();
 
-        protected CommandResult(bool isSuccess)
+        protected internal CommandResult(bool isSuccess)
         {
             this.IsSuccess = isSuccess;
         }
@@ -111,7 +111,7 @@ namespace BugTracker.Shared.Command.Entities
 
     public class CommandResult<T> : CommandResult
     {
-        private CommandResult(bool isSuccess, T successData = default(T))
+        internal CommandResult(bool isSuccess, T successData = default(T))
             : base(isSuccess)
         {
             this.SuccessData = successData;

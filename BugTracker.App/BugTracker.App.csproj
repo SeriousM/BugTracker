@@ -112,16 +112,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Commands\CreateNewIssueCommand.cs" />
     <Compile Include="Commands\RegisterNewUserCommand.cs" />
     <Compile Include="Commands\Repository\CommandRepository.cs" />
+    <Compile Include="Commands\Repository\Abstract\ICommandRepository.cs" />
     <Compile Include="Controllers\Abstract\ApiControllerBase.cs" />
-    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DependencyModules\CommandDependencyModule.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

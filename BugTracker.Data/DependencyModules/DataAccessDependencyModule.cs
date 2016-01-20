@@ -11,6 +11,7 @@ namespace BugTracker.Data.DependencyModules
         public void Register(IUnityContainer unityContainer)
         {
             unityContainer.RegisterType<IUserAccess, UserAccess>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IIssueAccess, IssueAccess>(new ContainerControlledLifetimeManager());
         }
     }
 }

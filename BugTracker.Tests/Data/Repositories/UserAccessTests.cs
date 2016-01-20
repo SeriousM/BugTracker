@@ -55,8 +55,15 @@ namespace BugTracker.Tests.Data.Repositories
         public void TryGetByName_KnownName_ReturnUser()
         {
             // arrange
-            var user = new User { Id = Guid.NewGuid(), Name = "Bob" };
-            var users = new ReadOnlyDictionary<Guid, User>(new Dictionary<Guid, User> { { user.Id, user } });
+            var user = new User
+                       {
+                           Id = Guid.NewGuid(),
+                           Name = "Bob"
+                       };
+            var users = new ReadOnlyDictionary<Guid, User>(new Dictionary<Guid, User>
+                                                           {
+                                                               { user.Id, user }
+                                                           });
             this.databaseMock.Setup(d => d.GetAll<User>()).Returns(users);
 
             var nameToSearch = "Bob";
@@ -73,10 +80,22 @@ namespace BugTracker.Tests.Data.Repositories
         public void TryGetByName_KnownNameExistTwice_Throws()
         {
             // arrange
-            var user1 = new User { Id = Guid.NewGuid(), Name = "Bob" };
-            var user2 = new User { Id = Guid.NewGuid(), Name = "boB" };
+            var user1 = new User
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = "Bob"
+                        };
+            var user2 = new User
+                        {
+                            Id = Guid.NewGuid(),
+                            Name = "boB"
+                        };
             var users = new ReadOnlyDictionary<Guid, User>(
-                new Dictionary<Guid, User> { { user1.Id, user1 }, { user2.Id, user2 } });
+                new Dictionary<Guid, User>
+                {
+                    { user1.Id, user1 },
+                    { user2.Id, user2 }
+                });
             this.databaseMock.Setup(d => d.GetAll<User>()).Returns(users);
 
             var nameToSearch = "Bob";
@@ -96,7 +115,7 @@ namespace BugTracker.Tests.Data.Repositories
         }
 
         [Test]
-        public void Add_NameIsvalid_CanBeReadAfterwards()
+        public void Add_NameIsValid_CanBeReadAfterwards()
         {
             // arrange
             string nameToAdd = "Bob";

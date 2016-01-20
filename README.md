@@ -1,5 +1,21 @@
 # BugTracker
 
+## Implemented Routes
+- Register a new user
+    - Url: POST `http://localhost:16449/api/User/register`
+    - Data: `{ "Username": "Bob" }`
+    - Response: `{ "Id": "e9d41068-dec5-42fa-9089-7b42f3dc50dd", "Name": "Bob" }`
+- Read an user
+    - Url: GET `http://localhost:16449/api/User/get/?id={userid}`
+    - Response: `{ "Id": "e9d41068-dec5-42fa-9089-7b42f3dc50dd", "Name": "Bob" }`
+- Create an issue for an user
+    - Url: POST `http://localhost:16449/api/Issue/create`
+    - Data: `{ "UserId": "e9d41068-dec5-42fa-9089-7b42f3dc50dd", "Title": "the title", "Content": "the content" }`
+    - Response: `{ "Id": "ea73b9b7-233a-4212-8432-5d7a68335cac", "UserId": "e9d41068-dec5-42fa-9089-7b42f3dc50dd", "Title": "the title", "Content": "the content", "ReportDate": "2016-01-20T11:53:02.2886864Z", "IsClosed": false }`
+- Get all issues reported by a user
+    - Url: GET `http://localhost:16449/api/Issue/getallbyuser/?userid={userid}`
+    - Response: `[{ "Id": "ea73b9b7-233a-4212-8432-5d7a68335cac", "UserId": "e9d41068-dec5-42fa-9089-7b42f3dc50dd", "Title": "the title", "Content": "the content", "ReportDate": "2016-01-20T11:53:02.2886864Z", "IsClosed": false }]`
+
 ## Fundamental principles
 
 - Validation of input data (everything that enters the application) must happen right at the application's border (eg: ASP.net, WebAPI, Database, 3rd party services, etc). After that, data is considered as safe to use which means no `data == null`, `userId <= -1` or other plausibility checks are required. Read [Appendix A - Why is <null> evil?](#Appendix_A) for explanation.
@@ -13,10 +29,11 @@
 - Documentation (if any) must contain _why_ something happen, _not how_.
 - Base classes must be postfixed with `Base`.
 - Mutable class properties must be exposed as `Properties`, not as `Fields`.
-- Prefer the use of IList<T> for public api's instead of IEnumerable<T> to signal that the collection is materialized. Otherwise the consumer of your public methods can get confused and call `.ToList()` on your collections.
+- Prefer the use of List<T> for public api's instead of IEnumerable<T> to signal that the collection is materialized. Otherwise the consumer of your public methods can get confused and call `.ToList()` on your collections.
 - Avoid throwing the base exception type `Exception`. Instead, find or create appropiate exception types like `NotSupportedExpection` or `InvalidOperationException`.
 - Avoid **ANY** static properties or methods!
 - Please avoid returning method returns like `return GetSomeobject(...)` or passing method returns as parameters like `collection.AddRange(GetMassiveArray(...))`. Instead, assign the output to a variable and return this one instead. Exceptions to this rule are: `return returnValue.ToTaskResult();` and `return ex.ToExceptionTaskResult();`.
+- Use commands to manipulate data in the database so that it's easily testable and reusable.
 
 ## Name schema
 

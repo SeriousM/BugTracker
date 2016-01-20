@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-using BugTracker.App.Commands.Repository;
+using BugTracker.App.Commands.Repository.Abstract;
 using BugTracker.App.Controllers.Abstract;
 using BugTracker.App.Models;
-using BugTracker.Data.Entities;
 using BugTracker.Data.Repositories.Abstract;
-using BugTracker.Shared.Assertions;
 using BugTracker.Shared.Command.Utils.Abstract;
 
 namespace BugTracker.App.Controllers
 {
     public class UserController : ApiControllerBase
     {
-        private readonly CommandRepository commandRepository;
+        private readonly ICommandRepository commandRepository;
         private readonly ICommandExecutor commandExecutor;
         private readonly IUserAccess userAccess;
 
-        public UserController(CommandRepository commandRepository, ICommandExecutor commandExecutor, IUserAccess userAccess)
+        public UserController(ICommandRepository commandRepository, ICommandExecutor commandExecutor, IUserAccess userAccess)
         {
             this.commandRepository = commandRepository;
             this.commandExecutor = commandExecutor;
@@ -27,27 +26,41 @@ namespace BugTracker.App.Controllers
         }
 
         [HttpPost]
-        public async Task<User> Register(RegisterUserModel registrationModel)
+        public async Task<HttpResponseMessage> Register(RegisterUserModel registrationModel)
         {
-            HttpCheck.IsNotNull(nameof(registrationModel), registrationModel, HttpStatusCode.BadRequest);
+            HttpResponseMessage response;
+            if (registrationModel == null)
+            {
+                response = this.CreateErrorResponse("The registrationModel is not set.", HttpStatusCode.BadRequest);
+                return response;
+            }
 
             var registerNewUserCommand = this.commandRepository.RegisterNewUser(registrationModel);
             var commandResult = await this.commandExecutor.ExecuteAsync(registerNewUserCommand);
 
-            this.ValidateCommandResult(commandResult);
-            return commandResult.SuccessData;
+            response = this.CreateResponseFromCommandResult(commandResult);
+            return response;
         }
 
         [HttpGet]
-        public User Get(Guid id)
+        public HttpResponseMessage Get(Guid id)
         {
-            HttpCheck.IsTrue(id == Guid.Empty, HttpStatusCode.BadRequest, $"The id '{id}' is invalid.");
+            HttpResponseMessage response;
+            if (id == Guid.Empty)
+            {
+                response = this.CreateErrorResponse($"The id '{id}' is invalid.", HttpStatusCode.BadRequest);
+                return response;
+            }
 
             var maybeUser = this.userAccess.TryGetById(id);
 
-            HttpCheck.IsNotNull(maybeUser.Value, HttpStatusCode.NotFound, $"The user with id '{id}' does not exist.");
+            if (maybeUser.HasNoValue)
+            {
+                response = this.CreateErrorResponse($"The user with id '{id}' does not exist.", HttpStatusCode.NotFound);
+                return response;
+            }
 
-            return maybeUser.Value;
+            return this.CreateResponse(maybeUser.Value);
         }
     }
 }

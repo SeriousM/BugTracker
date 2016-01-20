@@ -1,4 +1,5 @@
 ﻿using BugTracker.App.Commands.Repository;
+using BugTracker.App.Commands.Repository.Abstract;
 using BugTracker.Shared.Infrastructure.Abstract;
 
 using Microsoft.Practices.Unity;
@@ -9,7 +10,7 @@ namespace BugTracker.App.DependencyModules
     {
         public void Register(IUnityContainer unityContainer)
         {
-            unityContainer.RegisterType<CommandRepository, CommandRepository>(new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<ICommandRepository, CommandRepository>(new ContainerControlledLifetimeManager());
         }
     }
 }

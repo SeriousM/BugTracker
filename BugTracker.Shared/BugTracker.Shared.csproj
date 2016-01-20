@@ -81,7 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assertions\Check.cs" />
-    <Compile Include="Assertions\HttpCheck.cs" />
     <Compile Include="Command\Abstract\CommandBase.cs" />
     <Compile Include="Command\Abstract\CommandCore.cs" />
     <Compile Include="Command\Entities\CanExecuteCommandResult.cs" />
