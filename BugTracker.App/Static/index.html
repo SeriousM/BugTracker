@@ -16,16 +16,11 @@
     <script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
     <script src="../node_modules/angular2/bundles/router.dev.js"></script>
     <script src="../node_modules/angular2/bundles/http.dev.js"></script>
+    <script src="app/system.js"></script>
     <script type="text/javascript">
-		System.config({
-			packages: {
-				"src": {
-					format: "register",
-					defaultExtension: "js"
-				}
-			}
-		});
-		System.import("src/app/app").catch(console.log.bind(console));
+		System
+            .import("app")
+            .catch(console.log.bind(console));
     </script>
 </head>
 <body>

@@ -2,8 +2,7 @@
 	"name": "BugTracker",
 	"version": "1.0.0",
     "scripts": {
-        "start": "concurrent \"tsc -w\" \"live-server --open=static",
-        "ti": "tsd install immutable.js --save"
+        "start": "tsd rebundle & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
     },
     "dependencies": {
         "jquery": "2.2.0",
@@ -17,6 +16,8 @@
         "zone.js": "0.5.10",
         "redux": "3.0.6",
         "redux-thunk": "1.0.3",
+        "angular2-redux-store": "1.1.0",
+        "redux-logger": "2.4.0",
         "immutable": "3.7.6",
         "reselect": "2.0.2"
     },
@@ -24,7 +25,9 @@
         "concurrently": "^1.0.0",
         "live-server": "^0.9.1",
         "typescript": "^1.7.5",
-        "tsd": "^0.6.5"
+        "tsd": "^0.6.5",
+        "expect": "^1.13.4",
+        "deep-freeze": "^0.0.1"
     },
     "-vs-binding": { "ProjectOpened": [ "start" ] }
 }
