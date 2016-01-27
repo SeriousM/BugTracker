@@ -1,8 +1,15 @@
 {
 	"name": "BugTracker",
+    "description": "A test application that demonstrates how to work",
+    "license": "UNLICENSED",
+    "readme": "README.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/seriousm/bugtracker" 
+    },
 	"version": "1.0.0",
     "scripts": {
-        "start": "tsd rebundle & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
+        "start": "tsd reinstall & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
     },
     "dependencies": {
         "jquery": "2.2.0",
@@ -22,12 +29,11 @@
         "reselect": "2.0.2"
     },
     "devDependencies": {
-        "concurrently": "^1.0.0",
-        "live-server": "^0.9.1",
-        "typescript": "^1.7.5",
-        "tsd": "^0.6.5",
-        "expect": "^1.13.4",
-        "deep-freeze": "^0.0.1"
-    },
-    "-vs-binding": { "ProjectOpened": [ "start" ] }
+        "typescript": "1.7.5",
+        "concurrently": "1.0.0",
+        "live-server": "0.9.1",
+        "tsd": "0.6.5",
+        "expect": "1.13.4",
+        "deep-freeze": "0.0.1"
+    }
 }
