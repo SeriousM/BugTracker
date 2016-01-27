@@ -1,8 +1,7 @@
-///<reference path='../../../node_modules/immutable/dist/immutable.d.ts'/>
 import { createStore } from "redux";
 import { Injectable } from "angular2/core";
 import { Record } from "immutable";
-import { ReduxStore } from "angular2-redux-store/lib";
+import { ReduxStore } from "angular2-redux-store";
 import { Actions } from "./userActions";
 
 export const userStoreReducer = (state:any = {}, action:any) => {

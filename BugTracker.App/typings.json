@@ -3,6 +3,7 @@
     "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#7b3d5a6ea5acda4a81f71309f1cc62354e63b681",
     "expect": "github:DefinitelyTyped/DefinitelyTyped/expect/expect.d.ts#46719185c564694c5583c4b7ad94dbb786ecad46",
     "deep-freeze": "github:DefinitelyTyped/DefinitelyTyped/deep-freeze/deep-freeze.d.ts#46719185c564694c5583c4b7ad94dbb786ecad46",
-    "systemjs": "github:DefinitelyTyped/DefinitelyTyped/systemjs/systemjs.d.ts#d6c51c607bd90c8bf0e065fabc41bc3f937425df"
+    "systemjs": "github:DefinitelyTyped/DefinitelyTyped/systemjs/systemjs.d.ts#d6c51c607bd90c8bf0e065fabc41bc3f937425df",
+    "immutable": "file:node_modules/immutable/dist/immutable.d.ts"
   }
 }
