@@ -1,11 +1,8 @@
 ///<reference path='../../typings/deep-freeze/deep-freeze.d.ts'/>
 import { default as expect } from "expect";
+import deepFreeze = require("deep-freeze");
 
 import { userStoreReducer } from "./stores/userStore";
-
-// well, the import works even it complains... 
-// Has to be the last import because following imports wont get rendered (whatever the reason is).
-import { default as deepFreeze } from "deep-freeze";
 
 class Test{
     public run(){
