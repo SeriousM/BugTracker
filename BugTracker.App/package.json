@@ -9,7 +9,7 @@
     },
 	"version": "1.0.0",
     "scripts": {
-        "start": "tsd reinstall & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
+        "start": "typings install & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
     },
     "dependencies": {
         "jquery": "2.2.0",
@@ -32,8 +32,8 @@
         "typescript": "1.7.5",
         "concurrently": "1.0.0",
         "live-server": "0.9.1",
-        "tsd": "0.6.5",
         "expect": "1.13.4",
-        "deep-freeze": "0.0.1"
+        "deep-freeze": "0.0.1",
+        "typings": "0.6.2"
     }
 }
