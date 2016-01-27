@@ -13,6 +13,9 @@
     },
     "deep-freeze/deep-freeze.d.ts": {
       "commit": "46719185c564694c5583c4b7ad94dbb786ecad46"
+    },
+    "systemjs/systemjs.d.ts": {
+      "commit": "d6c51c607bd90c8bf0e065fabc41bc3f937425df"
     }
   }
 }

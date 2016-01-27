@@ -12,17 +12,8 @@
     <script src="../node_modules/angular2/bundles/router.dev.js"></script>
     <script src="../node_modules/angular2/bundles/http.dev.js"></script>
     <script src="app/system.js"></script>
+    <script src="app/system.test.js"></script>
     <script type="text/javascript">
-        System.config({
-            map: {
-                "deep-freeze": "../../node_modules/deep-freeze/index.js",
-                "expect": "../../node_modules/expect/umd/expect.js"
-            }
-        });
-        System.meta["deep-freeze"] = {
-            format: "global"
-        };
-            
 		System.import("deep-freeze").then(function(deepFreeze){
             System.import("app/test")
                 .then(function() { 
