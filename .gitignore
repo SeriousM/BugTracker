@@ -284,3 +284,4 @@ $RECYCLE.BIN/
 
 /BugTracker.App/Static/**/*.js
 /BugTracker.App/Static/**/*.js.map
+/BugTracker.App/typings/**
