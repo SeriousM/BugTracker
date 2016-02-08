@@ -12,6 +12,11 @@ namespace BugTracker.App
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}"
             );
+
+            config.Routes.IgnoreRoute(
+                routeName: "Static",
+                routeTemplate: "static/*"
+            );
         }
     }
 }

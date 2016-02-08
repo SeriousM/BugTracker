@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BugTracker</title>
+
+    <!-- Angular2 stuff -->
+    <script src="../node_modules/systemjs/dist/system.src.js"></script>
+    <script src="../node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="../node_modules/rxjs/bundles/Rx.js"></script>
+    <script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
+    <script src="../node_modules/angular2/bundles/router.dev.js"></script>
+    <script src="../node_modules/angular2/bundles/http.dev.js"></script>
+    <script src="app/system.js"></script>
+    <script src="app/system.test.js"></script>
+    <script type="text/javascript">
+		System.import("deep-freeze").then(function(deepFreeze){
+            System.import("app/test")
+                .then(function() { 
+                    document.body.innerText = "All tests passed."
+                })
+                .catch(function(error) { 
+                    document.body.innerText = `An error occurred:\n\n${error.message}\n\nPlease check the console for further details.`
+                    console.error(error);
+                })
+        }).catch(console.log.bind(console));
+    </script>
+</head>
+<body>
+    <p>loading...</p>
+</body>
+</html>

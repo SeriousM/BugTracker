@@ -1,0 +1,39 @@
+{
+	"name": "BugTracker",
+    "description": "A test application that demonstrates how to work",
+    "license": "UNLICENSED",
+    "readme": "README.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/seriousm/bugtracker" 
+    },
+	"version": "1.0.0",
+    "scripts": {
+        "start": "typings install & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
+    },
+    "dependencies": {
+        "jquery": "2.2.0",
+        "bootstrap": "3.3.6",
+        "angular2": "2.0.0-beta.1",
+        "systemjs": "0.19.17",
+        "es6-promise": "3.0.2",
+        "es6-shim": "^0.33.3",
+        "reflect-metadata": "0.1.2",
+        "rxjs": "5.0.0-beta.0",
+        "zone.js": "0.5.10",
+        "redux": "3.0.6",
+        "redux-thunk": "1.0.3",
+        "angular2-redux-store": "1.1.0",
+        "redux-logger": "2.4.0",
+        "immutable": "3.7.6",
+        "reselect": "2.0.2"
+    },
+    "devDependencies": {
+        "typescript": "1.7.5",
+        "concurrently": "1.0.0",
+        "live-server": "0.9.1",
+        "expect": "1.13.4",
+        "deep-freeze": "0.0.1",
+        "typings": "0.6.2"
+    }
+}
