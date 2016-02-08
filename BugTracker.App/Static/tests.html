@@ -33,7 +33,10 @@
     <script type="text/javascript">
 		System.import("deep-freeze").then(function(deepFreeze){
             System.import("app/tests")
-                .then(function() { 
+                .then(function(testModule){
+                    var testRunner = new testModule.TestRunner();
+                    testRunner.execute();
+                    
                     document.body.innerText = "All tests passed!";
                     document.body.classList.add('success');
                 })
