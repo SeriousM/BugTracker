@@ -1,6 +1,5 @@
-///<reference path='../../typings/deep-freeze/deep-freeze.d.ts'/>
 import { default as expect } from "expect";
-import deepFreeze = require("deep-freeze");
+import { default as deepFreeze } from "deep-freeze";
 
 import { userStoreReducer } from "./stores/userStore";
 
