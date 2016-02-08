@@ -2,18 +2,19 @@ import { default as expect } from "expect";
 import { default as deepFreeze } from "deep-freeze";
 
 import { userStoreReducer } from "./stores/userStore";
+import { Actions } from "./stores/userActions";
 
 class Test{
     public run(){
         var beforeState:any = {
-            a: 1
+            users: []
         }
         var afterState:any = {
-            a: 2
+            users: [{name: "Bob"}]
         }
         var action:any = {
-            type: "INCREMENT",
-            a: 2
+            type: Actions.ADD_USER,
+            newUser: {name:"Bob"}
         }
         
         deepFreeze(beforeState);

@@ -7,9 +7,15 @@ import { Actions } from "./userActions";
 export const userStoreReducer = (state:any = {}, action:any) => {
     switch (action.type) {
         case Actions.ADD_USER:
-            return state;
+            var newState = { 
+                users: state.users.concat({name: action.newUser.name})
+            };
+            return newState;
         case Actions.REMOVE_USER:
-            return state;
+            var newState = { 
+                users: state.users.slice(0, action.userToRemoveIndex).concat(state.users.slice(action.userToRemoveIndex + 2))
+            };
+            return newState;
         default:
             return state;
     }
