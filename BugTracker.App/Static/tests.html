@@ -29,10 +29,10 @@
     <script src="../node_modules/angular2/bundles/router.dev.js"></script>
     <script src="../node_modules/angular2/bundles/http.dev.js"></script>
     <script src="app/system.js"></script>
-    <script src="app/system.test.js"></script>
+    <script src="app/system.tests.js"></script>
     <script type="text/javascript">
 		System.import("deep-freeze").then(function(deepFreeze){
-            System.import("app/test")
+            System.import("app/tests")
                 .then(function() { 
                     document.body.innerText = "All tests passed!";
                     document.body.classList.add('success');
