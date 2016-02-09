@@ -2,12 +2,12 @@ import { IAction, AppState, UserModel } from "../../store/appStore.base";
 import { UserStoreActionTypes, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
 const addUser = (state:AppState, action:IAddUserAction) : AppState => {
-    var newState:AppState = new AppState();
+    var newState = new AppState();
     newState.users = state.users.concat(new UserModel(action.userName))
     return newState;
 }
 const removeUser = (state:AppState, action:IRemoveUserAction) : AppState => {
-    var newState:AppState = new AppState();
+    var newState = new AppState();
     newState.users = state.users.slice(0, action.indexOfUserToRemove).concat(state.users.slice(action.indexOfUserToRemove + 1));
     return newState;
 }

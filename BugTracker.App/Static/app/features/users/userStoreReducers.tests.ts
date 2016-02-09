@@ -6,8 +6,8 @@ import { UserStoreActionTypes, UserStoreActions, IAddUserAction, IRemoveUserActi
 
 export class UserStoreReducersTest extends TestRunnerBase{
     addNewUser_works(){
-        var beforeState:AppState = new AppState();
-        var afterState:AppState = new AppState();
+        var beforeState = new AppState();
+        var afterState = new AppState();
         afterState.users.push(new UserModel("Bob"));
         
         var action = UserStoreActions.AddUser("Bob");
@@ -18,11 +18,11 @@ export class UserStoreReducersTest extends TestRunnerBase{
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
     removeUser_works(){
-        var beforeState:AppState = new AppState();
+        var beforeState = new AppState();
         beforeState.users.push(new UserModel("A"));
         beforeState.users.push(new UserModel("B"));
         beforeState.users.push(new UserModel("C"));
-        var afterState:AppState = new AppState();
+        var afterState = new AppState();
         afterState.users.push(new UserModel("A"));
         afterState.users.push(new UserModel("C"));
         
@@ -34,8 +34,8 @@ export class UserStoreReducersTest extends TestRunnerBase{
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
     removeUnknownUser_works(){
-        var beforeState:AppState = new AppState();
-        var afterState:AppState = new AppState();
+        var beforeState = new AppState();
+        var afterState = new AppState();
         
         var action = UserStoreActions.RemoveUser(1 /* unknown User */);
         
