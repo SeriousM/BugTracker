@@ -8,5 +8,5 @@
         "**/Static/**/*.js": { "when": "$(basename).ts" },
         "**/Static/**/*.map": true
     },
-    "window.zoomLevel": 0.5
+    "editor.fontSize": 16
 }
