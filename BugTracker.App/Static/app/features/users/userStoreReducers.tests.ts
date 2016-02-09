@@ -44,9 +44,4 @@ export class UserStoreReducersTest extends TestRunnerBase{
         
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    public execute(){
-        this.addNewUser_works();
-        this.removeUser_works();
-        this.removeUnknownUser_works();
-    }
 }

@@ -41,7 +41,7 @@
                     document.body.classList.add('success');
                 })
                 .catch(function(error) { 
-                    document.body.innerText = `An error occurred:\n\n${error.message}\n\nPlease check the console for further details.`;
+                    document.body.innerText = `Error(s) occurred:\n\n${error.message}\n\nPlease check the console for further details.`;
                     document.body.classList.add('error');
                     console.error(error);
                 })

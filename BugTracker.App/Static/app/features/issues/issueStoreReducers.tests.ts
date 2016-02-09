@@ -17,7 +17,4 @@ export class IssueStoreReducersTest extends TestRunnerBase{
         
         expect(issueStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    public execute(){
-        this.addNewIssue_works();
-    }
 }
