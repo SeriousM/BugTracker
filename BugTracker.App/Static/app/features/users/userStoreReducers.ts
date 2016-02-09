@@ -1,17 +1,23 @@
-import { UserStoreActions } from "./userStoreActions";
+import { IAction, AppState, UserModel } from "../../store/appStore.base";
+import { UserStoreActionTypes, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
-export const userStoreReducer = (state:any = {}, action:any) => {
+const addUser = (state:AppState, action:IAddUserAction) : AppState => {
+    var newState:AppState = new AppState();
+    newState.users = state.users.concat(new UserModel(action.userName))
+    return newState;
+}
+const removeUser = (state:AppState, action:IRemoveUserAction) : AppState => {
+    var newState:AppState = new AppState();
+    newState.users = state.users.slice(0, action.indexOfUserToRemove).concat(state.users.slice(action.indexOfUserToRemove + 1));
+    return newState;
+}
+
+export const userStoreReducer = (state:AppState = new AppState(), action:IAction<UserStoreActionTypes>) : AppState => {
     switch (action.type) {
-        case UserStoreActions.ADD_USER:
-            var newState = { 
-                users: state.users.concat({name: action.newUser.name})
-            };
-            return newState;
-        case UserStoreActions.REMOVE_USER:
-            var newState = { 
-                users: state.users.slice(0, action.userToRemoveIndex).concat(state.users.slice(action.userToRemoveIndex + 1))
-            };
-            return newState;
+        case UserStoreActionTypes.ADD_USER:
+            return addUser(state, <IAddUserAction>action);
+        case UserStoreActionTypes.REMOVE_USER:
+            return removeUser(state, <IRemoveUserAction>action);
         default:
             return state;
     }

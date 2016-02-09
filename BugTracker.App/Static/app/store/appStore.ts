@@ -4,11 +4,17 @@ import { Record } from "immutable";
 import { ReduxStore } from "angular2-redux-store";
 import { userStoreReducer } from "../features/users/userStoreReducers";
 
-var userStore = createStore(userStoreReducer, {users: []});
+import { AppState, UserModel } from "./appStore.base";
+
+var initialState:AppState = new AppState();
+var appStore = createStore(userStoreReducer, initialState);
 
 @Injectable()
 export class AppStore extends ReduxStore {
     constructor(){
-        super(userStore);
+        super(appStore);
+    }
+    public getState():AppState{
+        return super.getState();
     }
 }
