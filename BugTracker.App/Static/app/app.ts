@@ -1,7 +1,7 @@
 ﻿import { Component } from "angular2/core";
 import { bootstrap } from "angular2/platform/browser";
 import { WebService } from "./webservice/webservice";
-import { UserStore } from "./stores/userStore";
+import { AppStore } from "./store/appStore";
 
 @Component({
     selector: "bug-tracker",
@@ -10,4 +10,4 @@ import { UserStore } from "./stores/userStore";
 
 export class App { }
 
-bootstrap(App, [WebService, UserStore]);
+bootstrap(App, [WebService, AppStore]);

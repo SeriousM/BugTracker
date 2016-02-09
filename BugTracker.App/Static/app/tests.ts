@@ -1,5 +1,5 @@
 import { TestRunnerBase } from "./tests.base";
-import { UserStoreReducersTest } from "./stores/userStoreReducers.tests";
+import { UserStoreReducersTest } from "./features/users/userStoreReducers.tests";
 
 export class TestRunner extends TestRunnerBase{
     public execute(){

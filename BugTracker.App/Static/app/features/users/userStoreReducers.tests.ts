@@ -1,7 +1,7 @@
-import { expect, deepFreeze, TestRunnerBase } from "../tests.base";
+import { expect, deepFreeze, TestRunnerBase } from "../../tests.base";
 
 import { userStoreReducer } from "./userStoreReducers";
-import { UserActions } from "./userActions";
+import { UserStoreActions } from "./userStoreActions";
 
 export class UserStoreReducersTest extends TestRunnerBase{
     addNewUser_works(){
@@ -12,7 +12,7 @@ export class UserStoreReducersTest extends TestRunnerBase{
             users: [{name: "Bob"}]
         }
         var action:any = {
-            type: UserActions.ADD_USER,
+            type: UserStoreActions.ADD_USER,
             newUser: {name:"Bob"}
         }
         
@@ -29,7 +29,7 @@ export class UserStoreReducersTest extends TestRunnerBase{
             users: [{name:"A"},{name:"C"}]
         }
         var action:any = {
-            type: UserActions.REMOVE_USER,
+            type: UserStoreActions.REMOVE_USER,
             userToRemoveIndex: 1 // user "B"
         }
         
@@ -46,7 +46,7 @@ export class UserStoreReducersTest extends TestRunnerBase{
             users: []
         }
         var action:any = {
-            type: UserActions.REMOVE_USER,
+            type: UserStoreActions.REMOVE_USER,
             userToRemoveIndex: 1 // unknown User
         }
         
