@@ -1,7 +1,5 @@
-import { default as expect } from "expect";
-import { default as deepFreeze } from "deep-freeze";
+import { expect, deepFreeze, TestRunnerBase } from "../tests.base";
 
-import { TestRunnerBase } from "../tests.base";
 import { userStoreReducer } from "./userStoreReducers";
 import { UserActions } from "./userActions";
 
