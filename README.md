@@ -1,5 +1,16 @@
 # BugTracker
 
+## Getting started
+
+```
+cd BugTracker.App
+npm install
+npm start
+```
+
+- App: [http://localhost:8080/static](http://localhost:8080/static)
+- Tests: [http://localhost:8080/static/tests.html](http://localhost:8080/static/tests.html)
+
 ## Implemented Routes
 - Register a new user
     - Url: POST `http://localhost:16449/api/User/register`
