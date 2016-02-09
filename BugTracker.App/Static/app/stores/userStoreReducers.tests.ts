@@ -58,5 +58,6 @@ export class UserStoreReducersTest extends TestRunnerBase{
     public execute(){
         this.addNewUser_works();
         this.removeUser_works();
+        this.removeUnknownUser_works();
     }
 }
