@@ -1,13 +1,20 @@
 ﻿import { Component } from "angular2/core";
 import { bootstrap } from "angular2/platform/browser";
 import { WebService } from "./webservice/webservice";
-import { UserStore } from "./stores/userStore";
+import { AppStore } from "./store/appStore";
+
+import { UserStoreActionTypes, UserStoreActions } from "./features/users/userStoreActions";
 
 @Component({
     selector: "bug-tracker",
     template: "<p>hello world</p>"
 })
 
-export class App { }
+export class App {
+    constructor(appStore:AppStore){
+        appStore.dispatch(UserStoreActions.AddUser("Martin"));
+        console.dir(appStore.getState().users);
+    }
+}
 
-bootstrap(App, [WebService, UserStore]);
+bootstrap(App, [WebService, AppStore]);

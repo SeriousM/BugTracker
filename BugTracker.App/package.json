@@ -1,5 +1,5 @@
 {
-	"name": "BugTracker",
+	"name": "bugtracker",
     "description": "A test application that demonstrates how to work",
     "license": "UNLICENSED",
     "readme": "README.md",
@@ -23,7 +23,7 @@
         "zone.js": "0.5.10",
         "redux": "3.0.6",
         "redux-thunk": "1.0.3",
-        "angular2-redux-store": "1.1.0",
+        "angular2-redux-store": "1.2.0",
         "redux-logger": "2.4.0",
         "immutable": "3.7.6",
         "reselect": "2.0.2"
