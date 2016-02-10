@@ -43,47 +43,53 @@
     <script src="app/systemConfig.js"></script>
     <script src="app/systemConfig.test.js"></script>
     <script type="text/javascript">
+        function getTestResultRepresentation(testResult){
+            var template = '<div>';
+            
+            if (testResult.successful){
+                template += '<p class="success"><strong>&#10004;</strong> ';
+            }
+            else{
+                template += '<p class="error"><strong>&#10006;</strong> ';
+            }
+            template += testResult.testFixture+' - '+testResult.testMethod;
+            if (!testResult.successful){
+                template += '<br>'+testResult.errorMessage;
+            }
+            template += '</p></div>';
+            return $(template);
+        }
+        function renderTestResults(testModule){
+            var testRunner = new testModule.TestRunner();
+            var testResults = testRunner.execute();
+            
+            document.body.innerText = '';
+            var $body = $(document.body);
+            
+            var $root = $('<div class="testResults">');
+            
+            var totalTestCount = testResults.success.length + testResults.failed.length;
+            $root.append('<h1 class="header">Result: <strong>'+testResults.success.length+' / '+totalTestCount+'</strong> Tests passed.</h1>');
+            
+            if (testResults.failed.length > 0){
+                $root.append('<sub class="errorInfo">Check the console output for more information</sub>');
+            }
+            
+            testResults.failed.forEach(function(testResult){
+                var $item = getTestResultRepresentation(testResult);
+                $root.append($item);
+                console.error(testResult.errorMessage);
+            });
+            testResults.success.forEach(function(testResult){
+                var $item = getTestResultRepresentation(testResult);
+                $root.append($item);
+            });
+            $body.append($root);
+        }
+    
 		System.import("deep-freeze").then(function(deepFreeze){
             System.import("app/tests")
-                .then(function(testModule){
-                    var testRunner = new testModule.TestRunner();
-                    var testResults = testRunner.execute();
-                    
-                    document.body.innerText = '';
-                    var $body = $(document.body);
-                    
-                    var $root = $('<div class="testResults">');
-                    
-                    $root.append('<h1 class="header">Result: <strong>'+testResults.success.length+' / '+(testResults.success.length + testResults.failed.length)+'</strong> Tests passed.</h1>');
-                    
-                    if (testResults.failed.length > 0){
-                        $root.append('<sub class="errorInfo">Check the console output for more information</sub>');
-                    }
-                    
-                    testResults.failed.forEach(function(testResult){
-                        var $item = $('<div>');
-                        $item.append('<p class="error"><strong>&#10006;</strong> '+testResult.testFixture+' - '+testResult.testMethod+'<br>'+testResult.errorMessage+'</p>');
-                        $root.append($item);
-                        console.error(testResult.errorMessage);
-                    });
-                    testResults.success.forEach(function(testResult){
-                        var $item = $('<div>');
-                        $item.append('<p class="success"><strong>&#10004;</strong> '+testResult.testFixture+' - '+testResult.testMethod+'</p>');
-                        $root.append($item);
-                    });
-                    $body.append($root);
-                    
-                    return;
-                    if (testResults.failed.length > 0){
-                        document.body.innerText = `Error(s) occurred:\n\n${error.message}\n\nPlease check the console for further details.`;
-                        document.body.classList.add('error');
-                        console.error(testResults.failed);
-                    }
-                    else{
-                        document.body.innerText = "All tests passed!";
-                        document.body.classList.add('success');
-                    }
-                })
+                .then(renderTestResults)
                 .catch(function(error) { 
                     document.body.innerText = `Error(s) occurred:\n\n${error.message}\n\nPlease check the console for further details.`;
                     document.body.classList.add('error');
