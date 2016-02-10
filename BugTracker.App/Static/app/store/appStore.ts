@@ -1,20 +1,37 @@
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import { default as createLogger } from 'redux-logger';
 import { Injectable } from "angular2/core";
 import { Record } from "immutable";
 import { ReduxStore } from "angular2-redux-store";
 
 import { userStoreReducer } from "../features/users/userStoreReducers";
 import { issueStoreReducer } from "../features/issues/issueStoreReducers";
+import { currentUserStoreReducer } from "../features/currentUser/currentuserStoreReducers";
 
-import { AppState, UserModel } from "./appStore.base";
+import { IReducerAppState, AppState, UserModel } from "./appStore.base";
 
-var finalReducer = combineReducers({
-    users: userStoreReducer, 
-    issues: issueStoreReducer
+const logger = createLogger({
+    // this transforms the state into a representable object. important to convert immutables with "object.toJS()".
+    stateTransformer: (state:AppState) => {
+        return {
+            currentUser: state.currentUser,
+            users: state.users,
+            issues: state.issues
+        }
+    }
 });
 
+const createStoreWithMiddleware = applyMiddleware(logger)(createStore);
+
+var reducerAppState : IReducerAppState = {
+    currentUser: currentUserStoreReducer,
+    users: userStoreReducer,
+    issues: issueStoreReducer
+}
+var finalReducer = combineReducers(reducerAppState);
+
 var initialState = <AppState>{};
-var appStore = createStore(finalReducer, initialState);
+var appStore = createStoreWithMiddleware(finalReducer, initialState);
 
 @Injectable()
 export class AppStore extends ReduxStore {

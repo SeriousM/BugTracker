@@ -1,8 +1,9 @@
 import { IAction } from "../../store/appStore.base";
 
-export enum UserStoreActionTypes {
-    ADD_USER,
-    REMOVE_USER
+const actionPrefix = "USERS.";
+export class UserStoreActionTypes {
+    public static ADD_USER = actionPrefix + "ADD_USER";
+    public static REMOVE_USER = actionPrefix + "REMOVE_USER";
 }
 export class UserStoreActions {
     public static AddUser = (name:string) : IAddUserAction => {

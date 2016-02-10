@@ -1,13 +1,13 @@
 import { expect, deepFreeze, TestRunnerBase } from "../../tests.base";
-import { IAction, AppState, UserModel } from "../../store/appStore.base";
+import { IAction, AppState, UserModel, CurrentUserState } from "../../store/appStore.base";
 
 import { currentUserStoreReducer } from "./currentUserStoreReducers";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction } from "./currentUserStoreActions";
 
 export class CurrentUserStoreReducersTest extends TestRunnerBase{
     initialSetCurrentUser_works(){
-        var beforeState = <UserModel>null;
-        var afterState = new UserModel("Bob");
+        var beforeState = new CurrentUserState();
+        var afterState = new CurrentUserState(new UserModel("Bob"));
         
         var action = CurrentUserStoreActions.SetCurrentUser(new UserModel("Bob"));
         
@@ -16,8 +16,8 @@ export class CurrentUserStoreReducersTest extends TestRunnerBase{
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
     }
     replaceCurrentUser_works(){
-        var beforeState = new UserModel("Bob");
-        var afterState = new UserModel("Sally");
+        var beforeState = new CurrentUserState(new UserModel("Bob"));
+        var afterState = new CurrentUserState(new UserModel("Sally"));
         
         var action = CurrentUserStoreActions.SetCurrentUser(new UserModel("Sally"));
         
@@ -27,10 +27,10 @@ export class CurrentUserStoreReducersTest extends TestRunnerBase{
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
     }
     removeCurrentUser_works(){
-        var beforeState = new UserModel("Bob");
-        var afterState = <UserModel>null;
+        var beforeState = new CurrentUserState(new UserModel("Bob"));
+        var afterState = new CurrentUserState();
         
-        var action = CurrentUserStoreActions.SetCurrentUser(null);
+        var action = CurrentUserStoreActions.RemoveCurrentUser();
         
         deepFreeze(beforeState);
         deepFreeze(action);

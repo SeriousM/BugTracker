@@ -1,7 +1,8 @@
 import { IAction } from "../../store/appStore.base";
 
-export enum IssueStoreActionTypes {
-    ADD_ISSUE
+const actionPrefix = "ISSUES.";
+export class IssueStoreActionTypes {
+    public static ADD_ISSUE = actionPrefix + "ADD_ISSUE";
 }
 export class IssueStoreActions {
     public static AddIssue = (title:string) : IAddIssueAction => {

@@ -4,6 +4,7 @@
         "expect": "github:DefinitelyTyped/DefinitelyTyped/expect/expect.d.ts#46719185c564694c5583c4b7ad94dbb786ecad46",
         "immutable": "github:facebook/immutable-js/dist/immutable.d.ts#95335c36f2c4a3635b2ee139d906647c1d997279",
         "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#7b3d5a6ea5acda4a81f71309f1cc62354e63b681",
+        "redux-logger": "file:typings_custom/redux-logger.d.ts",
         "systemjs": "github:DefinitelyTyped/DefinitelyTyped/systemjs/systemjs.d.ts#d6c51c607bd90c8bf0e065fabc41bc3f937425df"
     },
     "dependencies": {
