@@ -1,4 +1,4 @@
-import { TestRunnerBase } from "./tests.base";
+import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
 import { UserStoreReducersTest } from "./features/users/userStoreReducers.tests";
 import { IssueStoreReducersTest } from "./features/issues/issueStoreReducers.tests";
 
@@ -8,16 +8,26 @@ export class TestRunner extends TestRunnerBase{
         return name != "constructor" && typeof object[name] == "function";
     }
     
-    public execute(){
-        var testFixtures : Array<TestRunnerBase> = [
+    private getFailedTestResults(testResult:TestResult){
+        return !testResult.successful;
+    }
+    private getSuccessTestResults(testResult:TestResult){
+        return testResult.successful;
+    }
+    
+    private getTestFixtures() : Array<TestRunnerBase>{
+        return <Array<TestRunnerBase>>[
             new UserStoreReducersTest(),
             new IssueStoreReducersTest()
         ];
+    }
+    
+    public execute() : ITestResults{
+        var testFixtures = this.getTestFixtures();
         
-        var occurredErrors : Array<string> = testFixtures.map((testRunner: TestRunner) => {
+        var allTestResults : Array<TestResult> = testFixtures.map((testRunner: TestRunner) => {
             
-            // cast to any to bypass the typechecking
-            var testFixtureName : string = (<any>testRunner).constructor.toString().match(/\w+/g)[1];
+            var testFixtureName : string = testRunner.constructor.toString().match(/\w+/g)[1];
             
             var testMethods:Array<string> = [];
             for (var property in testRunner){
@@ -26,21 +36,23 @@ export class TestRunner extends TestRunnerBase{
                 }
             }
             
-            var errors : Array<string> = testMethods.map(testMethod => {
+            var testResults : Array<TestResult> = testMethods.map(testMethod => {
                 try {
                     // cast to any to bypass the typechecking
                     var method = <Function>(<any>testRunner)[testMethod];
                     method.call(testRunner);
+                    
+                    return new TestResult(testFixtureName, testMethod);
                 } catch (error) {
-                    return `${testFixtureName} - ${testMethod}: ${error}`;
+                    return new TestResult(testFixtureName, testMethod, error);
                 }
-            }).filter(error => error != null);
+            });
             
-            return errors;
-        }).reduce((accumulatedErrors, errors) => { return accumulatedErrors.concat(errors); });
+            return testResults;
+        }).reduce((accumulatedTestResults, currentTestResults) => { return accumulatedTestResults.concat(currentTestResults); });
         
-        if (occurredErrors.length > 0){
-            throw new Error(occurredErrors.join("\n"));
-        }
+        var testResults = {success:allTestResults.filter(this.getSuccessTestResults), failed:allTestResults.filter(this.getFailedTestResults)};
+        
+        return testResults;
     }
 }
