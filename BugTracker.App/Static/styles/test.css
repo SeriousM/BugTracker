@@ -1,0 +1,26 @@
+body {
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #eee;
+    color: #000;
+}
+.error {
+    background-color: orangered;
+}
+.success {
+    background-color: limegreen;
+}
+.error, .success {
+    color: #fff;
+}
+.testResults h1 {
+    font-size: 24px;
+    font-weight: normal;
+}
+.testResults p{
+    border-radius: 10px 0px 10px 0px;
+    padding: 2px 7px;
+}
+.errorInfo{
+    color: red;
+}
