@@ -13,7 +13,6 @@ import { UserStoreActionTypes, UserStoreActions } from "./features/users/userSto
 export class App {
     constructor(appStore:AppStore){
         appStore.dispatch(UserStoreActions.AddUser("Martin"));
-        console.dir(appStore.getState().users);
     }
 }
 
