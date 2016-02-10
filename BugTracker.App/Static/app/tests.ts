@@ -1,6 +1,7 @@
 import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
 import { UserStoreReducersTest } from "./features/users/userStoreReducers.tests";
 import { IssueStoreReducersTest } from "./features/issues/issueStoreReducers.tests";
+import { CurrentUserStoreReducersTest } from "./features/currentUser/currentUserStoreReducers.tests";
 
 export class TestRunner extends TestRunnerBase{
     
@@ -18,7 +19,8 @@ export class TestRunner extends TestRunnerBase{
     private getTestFixtures() : Array<TestRunnerBase>{
         return <Array<TestRunnerBase>>[
             new UserStoreReducersTest(),
-            new IssueStoreReducersTest()
+            new IssueStoreReducersTest(),
+            new CurrentUserStoreReducersTest()
         ];
     }
     
