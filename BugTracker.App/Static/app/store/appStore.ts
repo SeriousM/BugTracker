@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { default as createLogger } from 'redux-logger';
 import { Injectable } from "angular2/core";
 import { Record } from "immutable";
@@ -31,7 +31,14 @@ var reducerAppState : IReducerAppState = {
 var finalReducer = combineReducers(reducerAppState);
 
 var initialState = <AppState>{};
-var appStore = createStoreWithMiddleware(finalReducer, initialState);
+
+var reduxDevTools:any = (<any>window).devToolsExtension;
+var appStore = createStore(
+    finalReducer, 
+    initialState, 
+    <() => any>compose(
+        applyMiddleware(logger), 
+        reduxDevTools != null ? reduxDevTools() : (f:any) => f()));
 
 @Injectable()
 export class AppStore extends ReduxStore {
