@@ -14,26 +14,26 @@
     "dependencies": {
         "jquery": "2.2.0",
         "bootstrap": "3.3.6",
-        "angular2": "2.0.0-beta.1",
-        "systemjs": "0.19.17",
+        "angular2": "2.0.0-beta.5",
+        "systemjs": "0.19.20",
         "es6-promise": "3.0.2",
-        "es6-shim": "^0.33.3",
+        "es6-shim": "0.33.3",
         "reflect-metadata": "0.1.2",
-        "rxjs": "5.0.0-beta.0",
-        "zone.js": "0.5.10",
-        "redux": "3.0.6",
+        "rxjs": "5.0.0-beta.2",
+        "zone.js": "0.5.14",
+        "redux": "3.3.1",
         "redux-thunk": "1.0.3",
         "angular2-redux-store": "1.2.0",
-        "redux-logger": "2.4.0",
+        "redux-logger": "2.5.2",
         "immutable": "3.7.6",
-        "reselect": "2.0.2"
+        "reselect": "2.0.3"
     },
     "devDependencies": {
         "typescript": "1.7.5",
         "concurrently": "1.0.0",
         "live-server": "0.9.1",
-        "expect": "1.13.4",
+        "expect": "1.14.0",
         "deep-freeze": "0.0.1",
-        "typings": "0.6.2"
+        "typings": "0.6.8"
     }
 }

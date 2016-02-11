@@ -1,6 +1,8 @@
 {
     "ambientDependencies": {
         "deep-freeze": "file:typings_custom/deep-freeze.d.ts",
+        "es6-collections": "github:DefinitelyTyped/DefinitelyTyped/es6-collections/es6-collections.d.ts#9f97e2a2bc1f502550c9b4fcaad1c48df5521d37",
+        "es6-promise": "github:DefinitelyTyped/DefinitelyTyped/es6-promise/es6-promise.d.ts#830e8ebd9ef137d039d5c7ede24a421f08595f83",
         "expect": "github:DefinitelyTyped/DefinitelyTyped/expect/expect.d.ts#46719185c564694c5583c4b7ad94dbb786ecad46",
         "immutable": "github:facebook/immutable-js/dist/immutable.d.ts#95335c36f2c4a3635b2ee139d906647c1d997279",
         "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#7b3d5a6ea5acda4a81f71309f1cc62354e63b681",
