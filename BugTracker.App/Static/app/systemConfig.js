@@ -6,9 +6,12 @@ System.config({
             main: "app" // app.js
         }
     },
+    paths: {
+        "npm:*": "/node_modules/*"
+    },
     map: {
-        "redux": "/node_modules/redux/dist/redux.js",
-        "redux-logger": "/node_modules/redux-logger/dist/index.js",
-        "angular2-redux-store": "/node_modules/angular2-redux-store/lib/ReduxStore.js",
+        "redux": "npm:redux/dist/redux.js",
+        "redux-logger": "npm:redux-logger/dist/index.js",
+        "angular2-redux-store": "npm:angular2-redux-store/lib/ReduxStore.js",
     }
 });
