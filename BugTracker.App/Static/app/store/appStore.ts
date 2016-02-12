@@ -4,9 +4,9 @@ import { Injectable } from "angular2/core";
 import { Record } from "immutable";
 import { ReduxStore } from "angular2-redux-store";
 
-import { userStoreReducer } from "../features/users/userStoreReducers";
-import { issueStoreReducer } from "../features/issues/issueStoreReducers";
-import { currentUserStoreReducer } from "../features/currentUser/currentuserStoreReducers";
+import { userStoreReducer } from "../features/users/store/userStoreReducers";
+import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
+import { currentUserStoreReducer } from "../features/currentUser/store/currentuserStoreReducers";
 
 import { IReducerAppState, AppState, UserModel } from "./appStore.base";
 

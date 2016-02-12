@@ -1,4 +1,4 @@
-import { IAction } from "../../store/appStore.base";
+import { IAction } from "../../../store/appStore.base";
 
 const actionPrefix = "USERS.";
 export class UserStoreActionTypes {

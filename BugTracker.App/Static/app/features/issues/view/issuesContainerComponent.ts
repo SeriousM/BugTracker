@@ -1,5 +1,5 @@
 import { Component } from "angular2/core";
-import { AppStore } from "../../store/appStore";
+import { AppStore } from "../../../store/appStore";
 
 import { IssuesList } from "./issuesListComponent";
 import { AddNewIssue } from "./addNewissueComponent";

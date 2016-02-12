@@ -1,4 +1,4 @@
-import { IAction, AppState, UserModel } from "../../store/appStore.base";
+import { IAction, AppState, UserModel } from "../../../store/appStore.base";
 import { UserStoreActionTypes, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
 const addUser = (state:Array<UserModel>, action:IAddUserAction) : Array<UserModel> => {

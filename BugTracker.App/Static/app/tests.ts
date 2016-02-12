@@ -1,7 +1,7 @@
 import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
-import { UserStoreReducersTest } from "./features/users/userStoreReducers.tests";
-import { IssueStoreReducersTest } from "./features/issues/issueStoreReducers.tests";
-import { CurrentUserStoreReducersTest } from "./features/currentUser/currentUserStoreReducers.tests";
+import { UserStoreReducersTest } from "./features/users/store/userStoreReducers.tests";
+import { IssueStoreReducersTest } from "./features/issues/store/issueStoreReducers.tests";
+import { CurrentUserStoreReducersTest } from "./features/currentUser/store/currentUserStoreReducers.tests";
 
 export class TestRunner extends TestRunnerBase{
     

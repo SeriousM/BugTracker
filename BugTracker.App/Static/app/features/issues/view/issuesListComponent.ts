@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from "angular2/core";
-import { AppStore } from "../../store/appStore";
-import { IssueModel } from "../../store/appStore.base";
+import { AppStore } from "../../../store/appStore";
+import { IssueModel } from "../../../store/appStore.base";
 
 import { Issue } from "./IssueComponent";
 

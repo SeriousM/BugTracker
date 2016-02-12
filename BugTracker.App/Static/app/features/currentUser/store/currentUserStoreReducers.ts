@@ -1,4 +1,4 @@
-import { IAction, AppState, UserModel, CurrentUserState } from "../../store/appStore.base";
+import { IAction, AppState, UserModel, CurrentUserState } from "../../../store/appStore.base";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction, IRemoveCurrentUserAction } from "./currentUserStoreActions";
 
 const setCurrentUser = (state:CurrentUserState, action:ISetCurrentUserAction) : CurrentUserState => {

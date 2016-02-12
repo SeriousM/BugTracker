@@ -5,9 +5,9 @@ import { AppStore } from "./store/appStore";
 
 import { CurrentUserState } from "./store/appStore.base";
 
-import { UserLogin } from "./features/currentUser/userLoginComponent";
-import { UserAvatar } from "./features/currentUser/userAvatarComponent";
-import { IssuesContainer } from "./features/issues/issuesContainerComponent";
+import { UserLogin } from "./features/currentUser/view/userLoginComponent";
+import { UserAvatar } from "./features/currentUser/view/userAvatarComponent";
+import { IssuesContainer } from "./features/issues/view/issuesContainerComponent";
 
 @Component({
     selector: "bug-tracker",

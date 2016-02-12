@@ -1,8 +1,8 @@
 import { Component } from "angular2/core";
-import { AppStore } from "../../store/appStore";
-import { UserModel } from "../../store/appStore.base";
+import { AppStore } from "../../../store/appStore";
+import { UserModel } from "../../../store/appStore.base";
 
-import { CurrentUserStoreActions } from "../currentUser/currentUserStoreActions";
+import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 
 @Component({
     selector: "user-login",

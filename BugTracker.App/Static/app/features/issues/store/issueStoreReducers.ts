@@ -1,4 +1,4 @@
-import { IAction, AppState, IssueModel } from "../../store/appStore.base";
+import { IAction, AppState, IssueModel } from "../../../store/appStore.base";
 import { IssueStoreActionTypes, IAddIssueAction } from "./issueStoreActions";
 
 const addIssue = (state:Array<IssueModel>, action:IAddIssueAction) : Array<IssueModel> => {

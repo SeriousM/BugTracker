@@ -1,7 +1,7 @@
 import { Component } from "angular2/core";
-import { AppStore } from "../../store/appStore";
+import { AppStore } from "../../../store/appStore";
 
-import { CurrentUserStoreActions } from "../currentUser/currentUserStoreActions";
+import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 
 @Component({
     selector: "user-avatar",

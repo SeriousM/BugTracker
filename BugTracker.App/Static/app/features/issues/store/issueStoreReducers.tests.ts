@@ -1,5 +1,5 @@
-import { expect, deepFreeze, TestRunnerBase } from "../../tests.base";
-import { IAction, AppState, IssueModel } from "../../store/appStore.base";
+import { expect, deepFreeze, TestRunnerBase } from "../../../tests.base";
+import { IAction, AppState, IssueModel } from "../../../store/appStore.base";
 
 import { issueStoreReducer } from "./issueStoreReducers";
 import { IssueStoreActionTypes, IssueStoreActions, IAddIssueAction } from "./issueStoreActions";
