@@ -8,7 +8,11 @@ import { Issue } from "./IssueComponent";
     selector: "issue-list",
     directives: [Issue],
     template: `
-        <issue *ngFor="#issue of issues" [issue]="issue"></issue>
+        <ul>
+            <li *ngFor="#issue of issues">
+                <issue [issue]="issue"></issue>
+            </li>
+        </ul>
     `
 })
 
