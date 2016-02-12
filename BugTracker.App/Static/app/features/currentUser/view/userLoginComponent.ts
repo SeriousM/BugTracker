@@ -1,6 +1,6 @@
 import { Component } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
-import { UserModel } from "../../../store/appStore.base";
+import { UserModel } from "../../../store/storeModels";
 
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 

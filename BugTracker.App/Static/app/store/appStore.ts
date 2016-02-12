@@ -8,7 +8,7 @@ import { userStoreReducer } from "../features/users/store/userStoreReducers";
 import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
 import { currentUserStoreReducer } from "../features/currentUser/store/currentuserStoreReducers";
 
-import { IReducerAppState, AppState, UserModel } from "./appStore.base";
+import { IReducerAppState, AppState } from "./appStore.base";
 
 const logger = createLogger({
     // this transforms the state into a representable object. important to convert immutables with "object.toJS()".

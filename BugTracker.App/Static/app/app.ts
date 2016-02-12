@@ -3,7 +3,7 @@ import { bootstrap } from "angular2/platform/browser";
 import { WebService } from "./webservice/webservice";
 import { AppStore } from "./store/appStore";
 
-import { CurrentUserState } from "./store/appStore.base";
+import { CurrentUserState } from "./store/storeModels";
 
 import { UserLogin } from "./features/currentUser/view/userLoginComponent";
 import { UserAvatar } from "./features/currentUser/view/userAvatarComponent";

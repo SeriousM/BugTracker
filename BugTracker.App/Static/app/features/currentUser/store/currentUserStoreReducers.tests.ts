@@ -1,5 +1,6 @@
 import { expect, deepFreeze, TestRunnerBase } from "../../../tests.base";
-import { IAction, AppState, UserModel, CurrentUserState } from "../../../store/appStore.base";
+import { IAction, AppState } from "../../../store/appStore.base";
+import { UserModel, CurrentUserState } from "../../../store/storeModels";
 
 import { currentUserStoreReducer } from "./currentUserStoreReducers";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction } from "./currentUserStoreActions";

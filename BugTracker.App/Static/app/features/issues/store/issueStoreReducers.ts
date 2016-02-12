@@ -1,6 +1,7 @@
 import { List } from 'immutable';
 
-import { IAction, AppState, IssueModel } from "../../../store/appStore.base";
+import { IAction, AppState } from "../../../store/appStore.base";
+import { IssueModel } from "../../../store/storeModels";
 import { IssueStoreActionTypes, IAddIssueAction } from "./issueStoreActions";
 
 const addIssue = (state: List<IssueModel>, action: IAddIssueAction): List<IssueModel> => {
