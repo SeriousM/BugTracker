@@ -33,12 +33,13 @@ var finalReducer = combineReducers(reducerAppState);
 var initialState = <AppState>{};
 
 var reduxDevTools:any = (<any>window).devToolsExtension;
-var appStore = createStore(
-    finalReducer, 
-    initialState, 
-    <() => any>compose(
-        applyMiddleware(logger), 
-        reduxDevTools != null ? reduxDevTools() : (f:any) => f()));
+
+var finalCreateStore = compose(
+    applyMiddleware(logger),
+    reduxDevTools != null ? reduxDevTools() : (f:any) => f()
+)(createStore);
+
+var appStore = finalCreateStore(finalReducer, initialState);
 
 @Injectable()
 export class AppStore extends ReduxStore {
