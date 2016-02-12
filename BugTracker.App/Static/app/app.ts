@@ -5,8 +5,8 @@ import { AppStore } from "./store/appStore";
 
 import { CurrentUserState } from "./store/appStore.base";
 
-import { UserLogin } from "./features/users/userLoginComponent";
-import { UserAvatar } from "./features/users/userAvatarComponent";
+import { UserLogin } from "./features/currentUser/userLoginComponent";
+import { UserAvatar } from "./features/currentUser/userAvatarComponent";
 import { IssuesContainer } from "./features/issues/issuesContainerComponent";
 
 @Component({
