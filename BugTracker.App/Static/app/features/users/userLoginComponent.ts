@@ -27,5 +27,6 @@ export class UserLogin {
         }
         
         this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(new UserModel(username)));
+        input.value = '';
     }
 }

@@ -1,0 +1,28 @@
+import { Component, OnDestroy } from "angular2/core";
+import { AppStore } from "../../store/appStore";
+import { IssueModel } from "../../store/appStore.base";
+
+import { Issue } from "./IssueComponent";
+
+@Component({
+    selector: "issue-list",
+    directives: [Issue],
+    template: `
+        <issue *ngFor="#issue of issues" [issue]="issue"></issue>
+    `
+})
+
+export class IssuesList implements OnDestroy {
+    private appStoreUnsubscribe:Function;
+    private issues:Array<IssueModel>;
+    constructor(private appStore:AppStore){
+        this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
+        this.onAppStoreUpdate();
+    }
+    onAppStoreUpdate(){
+        this.issues = this.appStore.getState().issues;
+    }
+    ngOnDestroy(){
+        this.appStoreUnsubscribe();
+    }
+}

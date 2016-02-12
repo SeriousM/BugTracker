@@ -7,14 +7,16 @@ import { CurrentUserState } from "./store/appStore.base";
 
 import { UserLogin } from "./features/users/userLoginComponent";
 import { UserAvatar } from "./features/users/userAvatarComponent";
+import { IssuesContainer } from "./features/issues/issuesContainerComponent";
 
 @Component({
     selector: "bug-tracker",
-    directives: [UserLogin, UserAvatar],
+    directives: [UserLogin, UserAvatar, IssuesContainer],
     template: `
         <div>
             <user-login *ngIf="!currentUser.isSet"></user-login>
             <user-avatar *ngIf="currentUser.isSet"></user-avatar>
+            <issues-container *ngIf="currentUser.isSet"></issues-container>
         </div>
     `
 })
