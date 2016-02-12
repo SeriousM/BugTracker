@@ -1,17 +1,36 @@
-import { List } from 'immutable';
+import { Record, List } from 'immutable';
 
-export class UserModel {
-    constructor(public name: string) { }
+// http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
+
+const UserModelRecord = Record({
+    name: <string>null
+});
+export class UserModel extends UserModelRecord {
+    constructor(public name: string) {
+        super({ name });
+    }
 }
 
-export class IssueModel {
-    constructor(public title: string) { }
+const IssueModelRecord = Record({
+    title: <string>null
+});
+export class IssueModel extends IssueModelRecord {
+    constructor(public title: string) {
+        super({ title });
+    }
 }
 
-export class CurrentUserState {
+const CurrentUserStateRecord = Record({
+    isSet: <boolean>null,
+    user: <UserModel>null
+});
+export class CurrentUserState extends CurrentUserStateRecord {
     public isSet: boolean;
-    
+
     constructor(public user?: UserModel) {
-        this.isSet = user != null;
+        super({
+            user,
+            isSet: user != null
+        });
     }
 }
