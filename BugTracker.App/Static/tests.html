@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>BugTracker Tests</title>
+    <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css" />
     <link rel="stylesheet" href="styles/test.css" />
 
     <!-- Angular2 stuff -->
@@ -17,8 +18,18 @@
     <script src="app/systemConfig.js"></script>
     <script src="app/systemConfig.test.js"></script>
     <script type="text/javascript">
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results || !results[2]) return null;
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
         function getTestResultRepresentation(testResult){
-            var template = '<div>';
+            var template = '<div>',
+                fixture = testResult.testFixture,
+                method = testResult.testMethod;
             
             if (testResult.successful){
                 template += '<p class="success"><strong>✔</strong> ';
@@ -26,7 +37,10 @@
             else{
                 template += '<p class="error"><strong>✖</strong> ';
             }
-            template += testResult.testFixture+' - '+testResult.testMethod;
+            template += '<a href="?fixture='+fixture+'">'+fixture+'</a>';
+            template += ' - ';
+            template += '<a href="?fixture='+fixture+'&method='+method+'">'+method+'</a>';
+            template += ' <small>('+testResult.executionTimeMs+'ms)</small>';
             if (!testResult.successful){
                 template += '<br>'+testResult.errorMessage;
             }
@@ -44,16 +58,26 @@
             
         }
         function renderTestResults(testModule){
-            var testRunner = new testModule.TestRunner();
-            var testResults = testRunner.execute();
+            var testRunner = new testModule.TestRunner(),
+                fixtureFilter = getParameterByName("fixture"),
+                methodFilter = getParameterByName("method"),
+                testResults = testRunner.execute(fixtureFilter, methodFilter),
+                allTestResults = testResults.success.concat(testResults.failed);
             
             document.body.innerText = '';
-            var $body = $(document.body);
+            var $body = $(document.body),
+                $root = $('<div class="testResults">'),
+                totalTestCount = testResults.success.length + testResults.failed.length,
+                showAllTestsLink = '';
             
-            var $root = $('<div class="testResults">');
+            var executionHeader = ' Total time: <strong>'+(allTestResults.reduce(function(sum, testResult){return sum += testResult.executionTimeMs}, 0))+'ms.</strong>';
+            var resultHeader = '<h1 class="header">Result: <strong>'+testResults.success.length+' / '+totalTestCount+'</strong> tests passed.'+executionHeader+'</h1>';
             
-            var totalTestCount = testResults.success.length + testResults.failed.length;
-            $root.append('<h1 class="header">Result: <strong>'+testResults.success.length+' / '+totalTestCount+'</strong> Tests passed.</h1>');
+            if (fixtureFilter || methodFilter){
+                showAllTestsLink = '<a href="?">&lt;&lt; Show all tests</a>';
+            }
+            
+            $root.append(resultHeader+showAllTestsLink);
             
             if (testResults.failed.length != 0){
                 $root.append('<sub class="errorInfo">Check the console output for more information</sub>');

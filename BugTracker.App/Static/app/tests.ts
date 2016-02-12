@@ -24,30 +24,50 @@ export class TestRunner extends TestRunnerBase {
         ];
     }
 
-    public execute(): ITestResults {
+    public execute(fixtureFilter: string, methodFilter: string): ITestResults {
         var testFixtures = this.getTestFixtures();
 
         var allTestResults: Array<TestResult> = testFixtures.map((testRunner: TestRunner) => {
 
             var testFixtureName: string = testRunner.constructor.toString().match(/\w+/g)[1];
 
+            if (fixtureFilter != null && testFixtureName != fixtureFilter) {
+                return [];
+            }
+
             var testMethods: Array<string> = [];
             for (var property in testRunner) {
-                if (this.isTestMethod(testRunner, property)) {
+                if (!this.isTestMethod(testRunner, property)) {
+                    continue;
+                }
+                if (methodFilter == null || property == methodFilter) {
                     testMethods.push(property);
                 }
             }
 
             var testResults: Array<TestResult> = testMethods.map(testMethod => {
-                try {
-                    // cast to any to bypass the typechecking
-                    var method = <Function>(<any>testRunner)[testMethod];
-                    method.call(testRunner);
+                // cast to any to bypass the typechecking
+                var method = <Function>(<any>testRunner)[testMethod];
 
-                    return new TestResult(testFixtureName, testMethod);
+                var occurredError:any = null;
+                var start = new Date().getMilliseconds();
+                try {
+                    method.call(testRunner);
                 } catch (error) {
-                    return new TestResult(testFixtureName, testMethod, error);
+                    occurredError = error;
                 }
+                var end = new Date().getMilliseconds();
+                var executionTimeMs = end - start;
+                var testResult:TestResult;
+
+                if (occurredError == null){
+                    testResult = new TestResult(testFixtureName, testMethod, executionTimeMs);
+                }
+                else{
+                    testResult = new TestResult(testFixtureName, testMethod, executionTimeMs, occurredError);
+                }
+                
+                return testResult;
             });
 
             return testResults;

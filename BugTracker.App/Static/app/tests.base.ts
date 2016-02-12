@@ -5,7 +5,14 @@ export abstract class TestRunnerBase {
 }
 export class TestResult {
     public successful: boolean;
-    constructor(public testFixture: string, public testMethod: string, public errorMessage: string = null) {
+    constructor(
+        public testFixture: string,
+        public testMethod: string,
+        public executionTimeMs: number,
+        public errorMessage?: string) {
+        if (executionTimeMs < 0){
+            this.executionTimeMs = 0;
+        }
         this.successful = errorMessage == null;
     }
 }
