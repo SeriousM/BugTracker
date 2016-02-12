@@ -1,7 +1,6 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import { default as createLogger } from 'redux-logger';
 import { Injectable } from "angular2/core";
-import { Record } from "immutable";
 import { ReduxStore } from "angular2-redux-store";
 
 import { userStoreReducer } from "../features/users/store/userStoreReducers";
@@ -14,9 +13,9 @@ const logger = createLogger({
     // this transforms the state into a representable object. important to convert immutables with "object.toJS()".
     stateTransformer: (state: AppState) => {
         return {
-            currentUser: state.currentUser,
-            users: state.users,
-            issues: state.issues
+            currentUser: state.currentUser.toJS(),
+            users: state.users.toJS(),
+            issues: state.issues.toJS()
         }
     }
 });

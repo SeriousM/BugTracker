@@ -1,5 +1,7 @@
 import { List } from 'immutable';
 
+import { UserModel, IssueModel, CurrentUserState } from './storeModels';
+
 export interface IAction<T> {
     type: T;
 }
