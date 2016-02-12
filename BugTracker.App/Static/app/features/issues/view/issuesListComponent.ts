@@ -19,16 +19,16 @@ import { Issue } from "./IssueComponent";
 })
 
 export class IssuesList implements OnDestroy {
-    private appStoreUnsubscribe:Function;
-    private issues:List<IssueModel>;
-    constructor(private appStore:AppStore){
+    private appStoreUnsubscribe: Function;
+    private issues: List<IssueModel>;
+    constructor(private appStore: AppStore) {
         this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         this.onAppStoreUpdate();
     }
-    onAppStoreUpdate(){
+    onAppStoreUpdate() {
         this.issues = this.appStore.getState().issues;
     }
-    ngOnDestroy(){
+    ngOnDestroy() {
         this.appStoreUnsubscribe();
     }
 }

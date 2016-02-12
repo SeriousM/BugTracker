@@ -13,10 +13,10 @@ import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStor
 })
 
 export class UserAvatar {
-    constructor(private appStore:AppStore){
-        
+    constructor(private appStore: AppStore) {
+
     }
-    logout(){
+    logout() {
         this.appStore.dispatch(CurrentUserStoreActions.RemoveCurrentUser());
     }
 }

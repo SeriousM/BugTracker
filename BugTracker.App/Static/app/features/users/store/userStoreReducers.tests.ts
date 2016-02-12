@@ -6,20 +6,20 @@ import { IAction, AppState, UserModel } from "../../../store/appStore.base";
 import { userStoreReducer } from "./userStoreReducers";
 import { UserStoreActionTypes, UserStoreActions, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
-export class UserStoreReducersTest extends TestRunnerBase{
-    addNewUser_works(){
+export class UserStoreReducersTest extends TestRunnerBase {
+    addNewUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>()
             .push(new UserModel("Bob"));
-        
+
         var action = UserStoreActions.AddUser("Bob");
-        
+
         deepFreeze(beforeState);
         deepFreeze(action);
-        
+
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    removeUser_works(){
+    removeUser_works() {
         var beforeState = List<UserModel>()
             .push(new UserModel("A"))
             .push(new UserModel("B"))
@@ -27,23 +27,23 @@ export class UserStoreReducersTest extends TestRunnerBase{
         var afterState = List<UserModel>()
             .push(new UserModel("A"))
             .push(new UserModel("C"));
-        
+
         var action = UserStoreActions.RemoveUser(1 /* user "B" */);
-        
+
         deepFreeze(beforeState);
         deepFreeze(action);
-        
+
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    removeUnknownUser_works(){
+    removeUnknownUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>();
-        
+
         var action = UserStoreActions.RemoveUser(1 /* unknown User */);
-        
+
         deepFreeze(beforeState);
         deepFreeze(action);
-        
+
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
 }

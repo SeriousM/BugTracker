@@ -17,16 +17,16 @@ import { Issue } from "./IssueComponent";
 })
 
 export class AddNewIssue {
-    private appStoreUnsubscribe:Function;
-    constructor(private appStore:AppStore){
+    private appStoreUnsubscribe: Function;
+    constructor(private appStore: AppStore) {
     }
-    createNewIssue(input:HTMLInputElement){
+    createNewIssue(input: HTMLInputElement) {
         var title = input.value;
-        
-        if (title == null || !title.length){
+
+        if (title == null || !title.length) {
             return;
         }
-        
+
         this.appStore.dispatch(IssueStoreActions.AddIssue(title));
         input.value = '';
     }

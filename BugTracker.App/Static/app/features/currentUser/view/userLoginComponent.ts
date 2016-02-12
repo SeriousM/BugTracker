@@ -16,16 +16,16 @@ import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStor
 })
 
 export class UserLogin {
-    constructor(private appStore:AppStore){
-        
+    constructor(private appStore: AppStore) {
+
     }
-    login(input:HTMLInputElement){
+    login(input: HTMLInputElement) {
         var username = input.value;
-        
-        if (username == null || !username.length){
+
+        if (username == null || !username.length) {
             return;
         }
-        
+
         this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(new UserModel(username)));
         input.value = '';
     }

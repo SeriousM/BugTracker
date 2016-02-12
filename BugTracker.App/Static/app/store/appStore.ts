@@ -12,7 +12,7 @@ import { IReducerAppState, AppState, UserModel } from "./appStore.base";
 
 const logger = createLogger({
     // this transforms the state into a representable object. important to convert immutables with "object.toJS()".
-    stateTransformer: (state:AppState) => {
+    stateTransformer: (state: AppState) => {
         return {
             currentUser: state.currentUser,
             users: state.users,
@@ -23,7 +23,7 @@ const logger = createLogger({
 
 const createStoreWithMiddleware = applyMiddleware(logger)(createStore);
 
-var reducerAppState : IReducerAppState = {
+var reducerAppState: IReducerAppState = {
     currentUser: currentUserStoreReducer,
     users: userStoreReducer,
     issues: issueStoreReducer
@@ -32,21 +32,21 @@ var finalReducer = combineReducers(reducerAppState);
 
 var initialState = <AppState>{};
 
-var reduxDevTools:any = (<any>window).devToolsExtension;
+var reduxDevTools: any = (<any>window).devToolsExtension;
 
 var finalCreateStore = compose(
     applyMiddleware(logger),
-    reduxDevTools != null ? reduxDevTools() : (f:any) => f()
+    reduxDevTools != null ? reduxDevTools() : (f: any) => f()
 )(createStore);
 
 var appStore = finalCreateStore(finalReducer, initialState);
 
 @Injectable()
 export class AppStore extends ReduxStore {
-    constructor(){
+    constructor() {
         super(appStore);
     }
-    public getState():AppState{
+    public getState(): AppState {
         return super.getState();
     }
 }

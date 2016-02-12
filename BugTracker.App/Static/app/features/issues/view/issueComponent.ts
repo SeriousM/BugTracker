@@ -10,7 +10,7 @@ import { IssueModel } from "../../../store/appStore.base";
 })
 
 export class Issue {
-    @Input() issue:IssueModel;
-    constructor(){
+    @Input() issue: IssueModel;
+    constructor() {
     }
 }

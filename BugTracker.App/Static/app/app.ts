@@ -22,12 +22,12 @@ import { IssuesContainer } from "./features/issues/view/issuesContainerComponent
 })
 
 export class App {
-    public currentUser:CurrentUserState;
-    constructor(private appStore:AppStore){
+    public currentUser: CurrentUserState;
+    constructor(private appStore: AppStore) {
         appStore.subscribe(this.appStoreUpdate.bind(this));
         this.appStoreUpdate();
     }
-    private appStoreUpdate(){
+    private appStoreUpdate() {
         this.currentUser = this.appStore.getState().currentUser;
     }
 }

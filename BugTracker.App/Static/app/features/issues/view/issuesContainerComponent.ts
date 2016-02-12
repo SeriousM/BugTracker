@@ -14,7 +14,7 @@ import { AddNewIssue } from "./addNewissueComponent";
 })
 
 export class IssuesContainer {
-    constructor(private appStore:AppStore){
-        
+    constructor(private appStore: AppStore) {
+
     }
 }
