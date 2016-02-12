@@ -1,7 +1,7 @@
-﻿import { Component } from "angular2/core";
+﻿import { Component, provide } from "angular2/core";
 import { bootstrap } from "angular2/platform/browser";
 import { WebService } from "./webservice/webservice";
-import { AppStore } from "./store/appStore";
+import { AppStore, appStoreFactory } from "./store/appStore";
 
 import { CurrentUserState } from "./store/storeModels";
 
@@ -32,4 +32,7 @@ export class App {
     }
 }
 
-bootstrap(App, [WebService, AppStore]);
+bootstrap(App, [
+    WebService, 
+    provide(AppStore, { useFactory: appStoreFactory })
+]);
