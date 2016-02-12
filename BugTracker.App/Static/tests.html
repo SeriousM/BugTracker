@@ -21,10 +21,10 @@
             var template = '<div>';
             
             if (testResult.successful){
-                template += '<p class="success"><strong>&#10004;</strong> ';
+                template += '<p class="success"><strong>✔</strong> ';
             }
             else{
-                template += '<p class="error"><strong>&#10006;</strong> ';
+                template += '<p class="error"><strong>✖</strong> ';
             }
             template += testResult.testFixture+' - '+testResult.testMethod;
             if (!testResult.successful){
@@ -32,6 +32,16 @@
             }
             template += '</p></div>';
             return $(template);
+        }
+        function getTitleStatus(testResults){
+            if (testResults.failed.length == 0){
+                return "✔✔";
+            }
+            if (testResults.success.length != 0 && testResults.failed.length != 0){
+                return "✔✖";
+            }
+            return "✖✖";
+            
         }
         function renderTestResults(testModule){
             var testRunner = new testModule.TestRunner();
@@ -45,9 +55,10 @@
             var totalTestCount = testResults.success.length + testResults.failed.length;
             $root.append('<h1 class="header">Result: <strong>'+testResults.success.length+' / '+totalTestCount+'</strong> Tests passed.</h1>');
             
-            if (testResults.failed.length > 0){
+            if (testResults.failed.length != 0){
                 $root.append('<sub class="errorInfo">Check the console output for more information</sub>');
             }
+            document.title = getTitleStatus(testResults) + " - " + document.title;
             
             testResults.failed.forEach(function(testResult){
                 var $item = getTestResultRepresentation(testResult);
