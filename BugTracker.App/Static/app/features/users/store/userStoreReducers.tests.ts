@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 import { expect, deepFreeze, TestRunnerBase } from "../../../tests.base";
 import { IAction, AppState, UserModel } from "../../../store/appStore.base";
 
@@ -6,9 +8,9 @@ import { UserStoreActionTypes, UserStoreActions, IAddUserAction, IRemoveUserActi
 
 export class UserStoreReducersTest extends TestRunnerBase{
     addNewUser_works(){
-        var beforeState = <Array<UserModel>>[];
-        var afterState = <Array<UserModel>>[];
-        afterState.push(new UserModel("Bob"));
+        var beforeState = List<UserModel>();
+        var afterState = List<UserModel>()
+            .push(new UserModel("Bob"));
         
         var action = UserStoreActions.AddUser("Bob");
         
@@ -18,13 +20,13 @@ export class UserStoreReducersTest extends TestRunnerBase{
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
     removeUser_works(){
-        var beforeState = <Array<UserModel>>[];
-        beforeState.push(new UserModel("A"));
-        beforeState.push(new UserModel("B"));
-        beforeState.push(new UserModel("C"));
-        var afterState = <Array<UserModel>>[];
-        afterState.push(new UserModel("A"));
-        afterState.push(new UserModel("C"));
+        var beforeState = List<UserModel>()
+            .push(new UserModel("A"))
+            .push(new UserModel("B"))
+            .push(new UserModel("C"));
+        var afterState = List<UserModel>()
+            .push(new UserModel("A"))
+            .push(new UserModel("C"));
         
         var action = UserStoreActions.RemoveUser(1 /* user "B" */);
         
@@ -34,8 +36,8 @@ export class UserStoreReducersTest extends TestRunnerBase{
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
     removeUnknownUser_works(){
-        var beforeState = <Array<UserModel>>[];
-        var afterState = <Array<UserModel>>[];
+        var beforeState = List<UserModel>();
+        var afterState = List<UserModel>();
         
         var action = UserStoreActions.RemoveUser(1 /* unknown User */);
         

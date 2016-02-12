@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 export interface IAction<T>{
     type:T;
 }
@@ -8,8 +10,8 @@ export class IReducerAppState{
 }
 export class AppState{
     public currentUser: CurrentUserState;
-    public users:Array<UserModel> = [];
-    public issues:Array<IssueModel> = [];
+    public users:List<UserModel> = List<UserModel>();
+    public issues:List<IssueModel> = List<IssueModel>();
     constructor(){}
 }
 export class UserModel{

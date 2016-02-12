@@ -1,3 +1,5 @@
+import { List } from 'immutable';
+
 import { expect, deepFreeze, TestRunnerBase } from "../../../tests.base";
 import { IAction, AppState, IssueModel } from "../../../store/appStore.base";
 
@@ -6,9 +8,9 @@ import { IssueStoreActionTypes, IssueStoreActions, IAddIssueAction } from "./iss
 
 export class IssueStoreReducersTest extends TestRunnerBase{
     addNewIssue_works(){
-        var beforeState = <Array<IssueModel>>[];
-        var afterState = <Array<IssueModel>>[];
-        afterState.push(new IssueModel("A Problem"));
+        var beforeState = List<IssueModel>();
+        var afterState = List<IssueModel>()
+            .push(new IssueModel("A Problem"));
         
         var action = IssueStoreActions.AddIssue("A Problem");
         
