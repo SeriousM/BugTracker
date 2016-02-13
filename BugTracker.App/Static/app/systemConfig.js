@@ -3,7 +3,7 @@ System.config({
         "appbuild": {
             defaultExtension: "js",
             format: "register", // system.register
-            main: "app" // app.js
+            main: "app/app" // app/app.js
         }
     },
     paths: {

@@ -1,4 +1,4 @@
-import { expect, deepFreeze, TestRunnerBase } from "../../../tests.base";
+import { expect, deepFreeze, TestRunnerBase } from "../../../../test/tests.base";
 import { IAction, AppState } from "../../../store/appStore.base";
 import { UserModel, CurrentUserState } from "../../../store/storeModels";
 

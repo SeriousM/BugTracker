@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 
-import { expect, deepFreeze, TestRunnerBase } from "../../../tests.base";
+import { expect, deepFreeze, TestRunnerBase } from "../../../../test/tests.base";
 import { IAction, AppState } from "../../../store/appStore.base";
 import { IssueModel } from "../../../store/storeModels";
 
