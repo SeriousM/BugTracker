@@ -37,3 +37,6 @@ a[href]:hover{
 .errorInfo{
     color: red;
 }
+.errorMessage{
+    color: yellow;
+}

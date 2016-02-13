@@ -1,9 +1,10 @@
 import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
-import { UserStoreReducersTest } from "./features/users/store/userStoreReducers.tests";
-import { IssueStoreReducersTest } from "./features/issues/store/issueStoreReducers.tests";
-import { CurrentUserStoreReducersTest } from "./features/currentUser/store/currentUserStoreReducers.tests";
 
 export class TestRunner extends TestRunnerBase {
+
+    constructor(private testFixtures: Array<TestRunnerBase>) {
+        super();
+    }
 
     private isTestMethod(object: any, name: string): boolean {
         return name != "constructor" && typeof object[name] == "function";
@@ -16,18 +17,9 @@ export class TestRunner extends TestRunnerBase {
         return testResult.successful;
     }
 
-    private getTestFixtures(): Array<TestRunnerBase> {
-        return <Array<TestRunnerBase>>[
-            new UserStoreReducersTest(),
-            new IssueStoreReducersTest(),
-            new CurrentUserStoreReducersTest()
-        ];
-    }
 
     public execute(fixtureFilter: string, methodFilter: string): ITestResults {
-        var testFixtures = this.getTestFixtures();
-
-        var allTestResults: Array<TestResult> = testFixtures.map((testRunner: TestRunner) => {
+        var allTestResults: Array<TestResult> = this.testFixtures.map((testRunner: TestRunner) => {
 
             var testFixtureName: string = testRunner.constructor.toString().match(/\w+/g)[1];
 
@@ -49,7 +41,7 @@ export class TestRunner extends TestRunnerBase {
                 // cast to any to bypass the typechecking
                 var method = <Function>(<any>testRunner)[testMethod];
 
-                var occurredError:any = null;
+                var occurredError: any = null;
                 var start = new Date().getMilliseconds();
                 try {
                     method.call(testRunner);
@@ -58,22 +50,26 @@ export class TestRunner extends TestRunnerBase {
                 }
                 var end = new Date().getMilliseconds();
                 var executionTimeMs = end - start;
-                var testResult:TestResult;
+                var testResult: TestResult;
 
-                if (occurredError == null){
+                if (occurredError == null) {
                     testResult = new TestResult(testFixtureName, testMethod, executionTimeMs);
                 }
-                else{
+                else {
                     testResult = new TestResult(testFixtureName, testMethod, executionTimeMs, occurredError);
                 }
-                
+
                 return testResult;
             });
 
             return testResults;
         }).reduce((accumulatedTestResults, currentTestResults) => { return accumulatedTestResults.concat(currentTestResults); });
 
-        var testResults = { success: allTestResults.filter(this.getSuccessTestResults), failed: allTestResults.filter(this.getFailedTestResults) };
+        var testResults: ITestResults = {
+            all: allTestResults,
+            success: allTestResults.filter(this.getSuccessTestResults),
+            failed: allTestResults.filter(this.getFailedTestResults)
+        };
 
         return testResults;
     }

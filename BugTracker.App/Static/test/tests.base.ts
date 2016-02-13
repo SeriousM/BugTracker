@@ -10,13 +10,14 @@ export class TestResult {
         public testMethod: string,
         public executionTimeMs: number,
         public errorMessage?: string) {
-        if (executionTimeMs < 0){
+        if (executionTimeMs < 0) {
             this.executionTimeMs = 0;
         }
         this.successful = errorMessage == null;
     }
 }
 export interface ITestResults {
+    all: Array<TestResult>;
     success: Array<TestResult>;
     failed: Array<TestResult>;
 }
