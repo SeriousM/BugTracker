@@ -5,8 +5,7 @@
         "**/.DS_Store": true,
         "**/node_modules": true,
         "**/typings": true,
-        "**/Static/**/*.js": { "when": "$(basename).ts" },
-        "**/Static/**/*.map": true
+        "**/Static/appbuild/**/*": true
     },
     "editor.fontSize": 16
 }

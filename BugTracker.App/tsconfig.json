@@ -7,7 +7,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "removeComments": false,
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "outDir": "Static/appbuild"
     },
     "exclude": [
         "node_modules",
