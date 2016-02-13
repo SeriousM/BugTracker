@@ -1,6 +1,6 @@
 System.config({
     packages: {
-        "app": {
+        "appbuild": {
             defaultExtension: "js",
             format: "register", // system.register
             main: "app" // app.js

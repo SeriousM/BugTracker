@@ -97,7 +97,7 @@
         }
     
 		System.import("deep-freeze").then(function(deepFreeze){
-            System.import("app/tests")
+            System.import("appbuild/tests")
                 .then(renderTestResults)
                 .catch(function(error) { 
                     document.body.innerText = `Error(s) occurred:\n\n${error.message}\n\nPlease check the console for further details.`;
