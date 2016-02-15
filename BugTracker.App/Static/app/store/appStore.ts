@@ -3,6 +3,8 @@ import { default as createLogger } from 'redux-logger';
 import { Injectable } from "angular2/core";
 import { ReduxStore } from "angular2-redux-store";
 
+import 'reflect-metadata'; // imports "Reflect" object
+
 import { userStoreReducer } from "../features/users/store/userStoreReducers";
 import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
 import { currentUserStoreReducer } from "../features/currentUser/store/currentuserStoreReducers";

@@ -1,4 +1,5 @@
 import { Record, List } from 'immutable';
+import 'reflect-metadata'; // imports "Reflect" object
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
