@@ -282,6 +282,5 @@ $RECYCLE.BIN/
 
 *ncrunch*
 
-/BugTracker.App/Static/**/*.js
-/BugTracker.App/Static/**/*.js.map
+/BugTracker.App/Static/appbuild/*
 /BugTracker.App/typings/**
