@@ -5,35 +5,67 @@ import { Record, List } from 'immutable';
 // Note: the properties have to be defined as normal public properties, not as public parameters for the constructor.
 // Otherwise you will face an "Cannot set on an immutable record." error.
 
-const UserModelRecord = Record({
+var varExtractor = new RegExp("return (?:[_]?this\.)?(.*);");
+function getVariableName<TResult>(name: () => TResult) {
+    var m = varExtractor.exec(name + "");
+    if (m == null) throw new Error("The function does not contain a statement matching 'return variableName;'");
+    return m[1];
+}
+
+interface IUserModel {
+    name: string
+}
+const UserModelRecord = Record(<IUserModel>{
     name: <string>null
 });
-export class UserModel extends UserModelRecord {
+export class UserModel extends UserModelRecord implements IUserModel {
     public name: string;
-    
+
+    public setName(value: string): UserModel {
+        return <UserModel>this.set(getVariableName(() => this.name), value);
+    }
+
     constructor(name: string) {
         super({ name });
     }
 }
 
-const IssueModelRecord = Record({
+interface IIssueModel {
+    title: string
+}
+const IssueModelRecord = Record(<IIssueModel>{
     title: <string>null
 });
-export class IssueModel extends IssueModelRecord {
+export class IssueModel extends IssueModelRecord implements IIssueModel {
     public title: string;
-    
+
+    public setTitle(value: string): IssueModel {
+        return <IssueModel>this.set(getVariableName(() => this.title), value);
+    }
+
     constructor(title: string) {
         super({ title });
     }
 }
 
-const CurrentUserStateRecord = Record({
+interface ICurrentUserState {
+    isSet: boolean,
+    user: UserModel
+}
+const CurrentUserStateRecord = Record(<ICurrentUserState>{
     isSet: <boolean>null,
     user: <UserModel>null
 });
-export class CurrentUserState extends CurrentUserStateRecord {
+export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState {
     public isSet: boolean;
     public user: UserModel;
+
+    public setUser(value: UserModel): CurrentUserState {
+        return <CurrentUserState>this.withMutations(map => {
+            map.set(getVariableName(() => this.user), value);
+            map.set(getVariableName(() => this.isSet), value != null);
+        });
+    }
 
     constructor(user?: UserModel) {
         super({
