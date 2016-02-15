@@ -4,7 +4,7 @@ import { Component, OnDestroy } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../store/storeModels";
 
-import { Issue } from "./IssueComponent";
+import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
 
 @Component({
