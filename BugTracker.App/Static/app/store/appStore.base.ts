@@ -13,7 +13,7 @@ export class IReducerAppState {
 }
 
 export class AppState {
-    public currentUser: CurrentUserState;
+    public currentUser: CurrentUserState = new CurrentUserState();
     public users: List<UserModel> = List<UserModel>();
     public issues: List<IssueModel> = List<IssueModel>();
     
