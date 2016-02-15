@@ -5,6 +5,7 @@ import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../store/storeModels";
 
 import { Issue } from "./IssueComponent";
+import { IssueStoreActions } from "../store/issueStoreActions";
 
 @Component({
     selector: "issue-list",
@@ -12,7 +13,7 @@ import { Issue } from "./IssueComponent";
     template: `
         <ul>
             <li *ngFor="#issue of issues">
-                <issue [issue]="issue"></issue>
+                <issue [issue]="issue" (issueChanged)="issueChanged($event)"></issue>
             </li>
         </ul>
     `
@@ -30,5 +31,8 @@ export class IssuesList implements OnDestroy {
     }
     ngOnDestroy() {
         this.appStoreUnsubscribe();
+    }
+    issueChanged(issueModel: IssueModel) {
+        this.appStore.dispatch(IssueStoreActions.ChangeTitle(issueModel.title));   
     }
 }
