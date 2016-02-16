@@ -33,10 +33,14 @@ export const appStoreFactory = () => {
     var initialState = <AppState>{};
 
     var reduxDevTools: any = (<any>window).devToolsExtension;
+    var dummyStoreEnhancer = (next: Function) => (reducer: any, initialState: any, enhancer: any) => {
+        const store = next(reducer, initialState, enhancer);
+        return store;
+    };
 
     var finalCreateStore = compose(
         applyMiddleware(logger),
-        reduxDevTools != null ? reduxDevTools() : (f: any) => f()
+        reduxDevTools != null ? reduxDevTools() : dummyStoreEnhancer
     )(createStore);
 
     var appStore = finalCreateStore(finalReducer, initialState);
