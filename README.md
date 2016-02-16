@@ -5,7 +5,7 @@
 ```
 cd BugTracker.App
 npm install
-npm start
+npm run start-dev
 ```
 
 - App: [http://localhost:8080/static](http://localhost:8080/static)
