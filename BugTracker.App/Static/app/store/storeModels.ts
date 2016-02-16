@@ -1,5 +1,4 @@
 import { Record, List } from 'immutable';
-import 'reflect-metadata'; // imports "Reflect" object
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
@@ -50,9 +49,23 @@ export function Implements(Class: Function) {
     return (...args: any[]) => getDecorator(
         (constructor: Function): Function | void => {
             // class
-            return constructor;
+            let newConstructor = function (...args:any[]) {
+                constructor.apply(this, args);
+                this.__classImplements__ = Class;
+            };
+        
+            newConstructor.prototype = Object.create(constructor.prototype);
+            newConstructor.prototype.constructor = constructor;
+        
+            return <any> newConstructor;
         }, (target: Object, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>): void => {
             // property
+            
+            if (!target.__propImplements__){
+                target.__propImplements__ = {};
+            }
+            target.__propImplements__[propertyKey] = Class;
+            
             return;
         }, (target: Function, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> | void => {
             // method
@@ -66,7 +79,7 @@ export function Implements(Class: Function) {
 interface IUserModel {
     name: string
 }
-export const UserModelRecord = Record(<IUserModel>{
+const UserModelRecord = Record(<IUserModel>{
     name: <string>null
 });
 @Implements(UserModelRecord)
@@ -85,7 +98,7 @@ export class UserModel extends UserModelRecord implements IUserModel {
 interface IIssueModel {
     title: string
 }
-export const IssueModelRecord = Record(<IIssueModel>{
+const IssueModelRecord = Record(<IIssueModel>{
     title: <string>null
 });
 @Implements(IssueModelRecord)
@@ -105,7 +118,7 @@ interface ICurrentUserState {
     isSet: boolean,
     user: UserModel
 }
-export const CurrentUserStateRecord = Record(<ICurrentUserState>{
+const CurrentUserStateRecord = Record(<ICurrentUserState>{
     isSet: <boolean>null,
     user: <UserModel>null
 });
