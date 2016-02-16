@@ -13,7 +13,7 @@ export class IReducerAppState {
 }
 
 export class AppState {
-    @Implements({ type: CurrentUserState }) public currentUser: CurrentUserState = new CurrentUserState();
+    @Implements(CurrentUserState) public currentUser: CurrentUserState = new CurrentUserState();
     public users: List<UserModel> = List<UserModel>();
     public issues: List<IssueModel> = List<IssueModel>();
 
