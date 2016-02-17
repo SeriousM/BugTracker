@@ -90,11 +90,15 @@ export const appStoreFactory = () => {
         }
     }
 
+    // only try to fix the state if reduxDevTools exist.
+    var stateCorrected = !reduxDevTools;
     var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any, enhancer: any) => {
-
-        // init state area
-
         const store = next(reducer, initialState, enhancer);
+        
+        if (stateCorrected) {
+            return;
+        }
+        stateCorrected = true;
 
         var newStore = Object(store);
         var oldDispatch = store.dispatch;
