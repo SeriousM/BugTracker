@@ -3,13 +3,13 @@ import { List, Record } from 'immutable';
 import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
 
 import { Implements, ImplementsList, ImplementsMethod } from "./storeModels.meta";
-import { correctStoreState } from "./appStore.redux";
+import { manipulateModel } from "./appStore.redux";
 
 export class StoreModelsMetaTests extends TestRunnerBase {
     empty() {
         var localStorageState = {};
         var expectedCorrectedState = {};
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
@@ -17,7 +17,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     propertyValueOnRecordExists() {
         var localStorageState = { model: { name: "Bob" } };
         var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
@@ -25,7 +25,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     modelMethodOnRecordExists() {
         var localStorageState = { model: {} };
         var expectedCorrectedState = { model: LevelOneModelRecord({}) };
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.getName).toExist();
@@ -33,7 +33,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     modelMethodOnRecordReturnsCorrectValue() {
         var localStorageState = { model: { name: "Bob" } };
         var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.getName()).toEqual("Bob");
@@ -41,7 +41,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     emptyListOfModels() {
         var localStorageState = { models: <Array<any>>[] };
         var expectedCorrectedState = { models: List<LevelOneModel>() };
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
@@ -50,7 +50,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     ignoreIterables() {
         var localStorageState = { models: List<LevelOneModel>() };
         var expectedCorrectedState = { models: List<LevelOneModel>() };
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
@@ -63,12 +63,36 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         var expectedCorrectedState = { models: List<LevelOneModel>([
             LevelOneModelRecord({ name: "Bob" }), LevelOneModelRecord({ name: "Sally" })
         ]) };
-        correctStoreState(localStorageState, TestAppState);
+        manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
         expect(modifiedLocalStorageState.models.get(0).name).toEqual("Bob");
         expect(modifiedLocalStorageState.models.get(1).name).toEqual("Sally");
+    }
+    propertyValueOnRecordInRecordExists(){
+        var localStorageState = { model: { model: {name:"Bob"} } };
+        var expectedCorrectedState = { model: LevelOneModelRecord({ model: LevelOneModelRecord({ name: "Bob" }) }) };
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+    }
+    modelMethodOnRecordInRecordExists() {
+        var localStorageState = { model: { model: {name:"Bob"} } };
+        var expectedCorrectedState = { model: LevelOneModelRecord({ model: LevelOneModelRecord({ name: "Bob" }) }) };
+        manipulateModel(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState.model.model.getName).toExist();
+    }
+    modelMethodOnRecordInRecordReturnsCorrectValue() {
+        var localStorageState = { model: { model: {name:"Bob"} } };
+        var expectedCorrectedState = { model: LevelOneModelRecord({ model: LevelOneModelRecord({ name: "Bob" }) }) };
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState.model.model.getName()).toEqual("Bob");
     }
 }
 

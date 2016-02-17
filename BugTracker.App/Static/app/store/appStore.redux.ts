@@ -41,7 +41,7 @@ function createModelRecord(propMeta: IMetaImplementsProperty, currentPropValue: 
     return newPropRecord;
 }
 
-export function correctStoreState(currentObject: IObjectIndex, blueprintConstructor: Function): void {
+export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: Function): void {
 
     var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
 
@@ -84,7 +84,7 @@ const fixReduxDevToolsState = (BlueprintObject: Function) => (next: Function) =>
         
         // the redux init-action on the other hand is not important because it will only send once the configured initial state
         if (action.type == reduxDevToolsInit) {
-            correctStoreState(state, BlueprintObject);
+            manipulateModel(state, BlueprintObject);
         }
 
         return reducer(state, action);
