@@ -42,13 +42,13 @@ export class TestRunner extends TestRunnerBase {
                 var method = <Function>(<any>testRunner)[testMethod];
 
                 var occurredError: any = null;
-                var start = new Date().getMilliseconds();
+                var start:any = new Date();
                 try {
                     method.call(testRunner);
                 } catch (error) {
                     occurredError = error;
                 }
-                var end = new Date().getMilliseconds();
+                var end:any = new Date();
                 var executionTimeMs = end - start;
                 var testResult: TestResult;
 
