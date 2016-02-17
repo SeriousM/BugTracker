@@ -28,13 +28,13 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     return storeEnhancers;
 }
 
-function createModelRecord(currentPropValue: any, propMeta: IMetaImplementsProperty) {
+function createModelRecord(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
     var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
 
     // create for each property on the object a propper model if possible
-    manipulateModel(currentPropValue, propMeta.classConstructor);
+    manipulateModel(propValue, propMeta.classConstructor);
 
-    var newPropRecord = <IObjectIndex>propRecord(currentPropValue);
+    var newPropRecord = <IObjectIndex>propRecord(propValue);
 
     var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
     methodsToApply.forEach(methodName => {
@@ -48,7 +48,7 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
 
     var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
 
-    if (blueprintMeta == null){
+    if (blueprintMeta == null) {
         return;
     }
 
@@ -71,15 +71,22 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
             Iterable.isIterable(currentPropValue)) {
             continue;
         }
-        
-        if (Array.isArray(currentPropValue)) {
+
+        if (Array.isArray(currentPropValue) && !propMeta.isList){
+            throw new Error(`Property '${currentProp}' is an array but shouldn't be one regarding to the blueprint.`);
+        }
+        if (!Array.isArray(currentPropValue) && propMeta.isList){
+            throw new Error(`Property '${currentProp}' isn't an array but should be one regarding to the blueprint.`);
+        }
+
+        if (propMeta.isList) {
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
-                return createModelRecord(currentArrayValue, propMeta);
+                return createModelRecord(currentProp, currentArrayValue, propMeta);
             });
             currentObject[currentProp] = List(newArray);
         }
         else {
-            currentObject[currentProp] = createModelRecord(currentPropValue, propMeta);
+            currentObject[currentProp] = createModelRecord(currentProp, currentPropValue, propMeta);
         }
     }
 }
