@@ -1,27 +1,34 @@
 import { List, Record } from 'immutable';
-import { AppState } from "./appStore.base";
+import { AppState, IAction } from "./appStore.base";
 import { IHasMetaImplements, IMetaImplements, IMetaImplementsProperty } from "./storeModels.meta";
 import { IObjectIndex } from "../utils/reflection";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;
 
-export function wrapMiddlewareWithRedux(...functions: Function[]) {
+export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     if (reduxDevTools) {
-        functions = [
-            fixReduxDevToolsState,
-            ...functions,
+        // order of the store enhancers:
+        // example: [a,b,c]
+        // result: a(b(c(redux-store)))
+        // the last one in the list is responsibe to create the original redux-store.
+        // the first one is the one faced to the consumer of the store.
+        // every enhancer gets the reducer function (or combination of them) from the previous enhancer.
+        // eg. b(reducer=from a):returns store c
+        
+        // fixReduxDevToolsState must be at the top so that it can fix the corrupted 'committed' appState from reduxDevTools just before the app's recucer will receive it
+        // reduxDevTools must be the last so that it can manage its own state to enable timetravel and so on
+        // all other store enhancers come just between
+        storeEnhancers = [
+            fixReduxDevToolsState(AppState),
+            ...storeEnhancers,
             reduxDevTools()
         ]
     }
 
-    return functions;
+    return storeEnhancers;
 }
 
-var assignMissingFunctions = (source: Object, target: Object): void => {
-    // TODO
-}
-
-function createRecord(propMeta: IMetaImplementsProperty, currentPropValue: any) {
+function createModelRecord(propMeta: IMetaImplementsProperty, currentPropValue: any) {
     var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
 
     var newPropRecord = <IObjectIndex>propRecord(currentPropValue);
@@ -34,7 +41,7 @@ function createRecord(propMeta: IMetaImplementsProperty, currentPropValue: any) 
     return newPropRecord;
 }
 
-export const correctStoreState = (currentObject: IObjectIndex, blueprintConstructor: Function): void => {
+export function correctStoreState(currentObject: IObjectIndex, blueprintConstructor: Function): void {
 
     var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
 
@@ -54,123 +61,34 @@ export const correctStoreState = (currentObject: IObjectIndex, blueprintConstruc
 
         if (Array.isArray(currentPropValue)) {
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
-                return createRecord(propMeta, currentArrayValue);
+                return createModelRecord(propMeta, currentArrayValue);
             });
             currentObject[currentProp] = List(newArray);
         }
         else {
-            currentObject[currentProp] = createRecord(propMeta, currentPropValue);
+            currentObject[currentProp] = createModelRecord(propMeta, currentPropValue);
         }
     }
-
-    return;
-    
-    // var blueprint = {};
-    // blueprintFactory.constructor.bind(blueprint)();
-    // var allowedProperties = Object.getOwnPropertyNames(blueprint);
-    
-    // for (var i = 0; i < allowedProperties.length; i++) {
-    //     var prop = allowedProperties[i];
-        
-    //     var currentProp = (<any>current)[prop];
-
-    //     if (currentProp == null) {
-    //         continue;
-    //     }
-
-    //     if (typeof currentProp == "function") {
-    //         // the state shouldn't have functions, but lets assume it... 
-    //         continue;
-    //     }
-
-    //     var propBlueprint = (<any>blueprint)[prop];
-
-    //     if (Iterable.isIterable(propBlueprint)) {
-    //         if (Iterable.isIterable(currentProp)) {
-    //             continue;
-    //         }
-    //         if (List.isList(propBlueprint)) {
-    //             currentProp = List(currentProp);
-    //         }
-    //         else if (Map.isMap(propBlueprint)) {
-    //             currentProp = Map(currentProp);
-    //         }
-    //         else if (Iterable.isIterable(propBlueprint)) {
-    //             currentProp = Iterable(currentProp);
-    //         }
-                
-    //         // todo: other conversions for Stack.isStack, OrderedMap.isOrderedMap, Set.isSet, OrderedSet.isOrderedSet, Iterable.isIterable*
-                
-    //         //assignMissingFunctions(propBlueprint, currentProp);
-
-    //         correctState(currentProp, propBlueprint.constructor.prototype);
-
-    //         (<any>current)[prop] = currentProp;
-    //     }
-    // }
 }
 
+type ReducerFunction = (state: any, action: IAction<any>) => ReducerFunction;
+
 var stateCorrected = false;
-var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any, enhancer: any) => {
-    const store = next(reducer, initialState, enhancer);
+const fixReduxDevToolsState = (BlueprintObject: Function) => (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
 
-    var newStore = Object(store);
-    var oldDispatch = store.dispatch;
-    var oldGetState = store.getState;
+    const reduxInit: string = "@@redux/INIT";
+    const reduxDevToolsInit: string = "@@INIT";
 
-    var newDispatch = (action: any) => {
-        console.info("before action: " + action.type);
-        oldDispatch(action);
-        console.info("after action: " + action.type);
-        return action;
-    }
-
-    var newGetState = () => {
-
-        var state = <AppState>oldGetState();
-
-        if (!stateCorrected) {
-            correctStoreState(state, AppState);
+    var newReducer = (state: any, action: IAction<any>) => {
+        if (!stateCorrected && action.type != reduxInit && action.type != reduxDevToolsInit) {
+            correctStoreState(state, BlueprintObject);
             stateCorrected = true;
         }
 
-        return state;
+        return reducer(state, action);
+    };
 
-        // if (Iterable.isIterable(state.currentUser)) {
-        //     console.log("!!!YAY!!!");
-        // }
-        // else {
-        //     console.log("!!!NOOOO!!!");
-        // }
+    const nextStore = next(newReducer, initialState, enhancer);
 
-        // correctState(state, AppState.prototype);
-
-        // if (Iterable.isIterable(state.currentUser)) {
-        //     console.log("!!!YAY!!!");
-        // }
-        // else {
-        //     console.log("!!!NOOOO!!!");
-        // }
-
-        //             if (!Iterable.isIterable(state.users)) {
-        //                 state.users = List<UserModel>(state.users);
-        //             }
-        // 
-        //             if (!Iterable.isIterable(state.issues)) {
-        //                 state.issues = List<IssueModel>(state.issues);
-        //             }
-        
-        // todo: dispatch "an unknown action" just that redux-devtools is refreshing 
-        // the local storage entry and all subscribers get a fresh version
-        
-        // return state;
-    }
-
-    for (var nextKey in store) {
-        newStore[nextKey] = store[nextKey];
-    }
-    newStore["dispatch"] = newDispatch;
-    newStore["getState"] = newGetState;
-
-    return newStore;
+    return nextStore;
 };
