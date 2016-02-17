@@ -67,7 +67,7 @@ export class CurrentUserState extends CurrentUserStateRecord implements ICurrent
     @Implements(UserModel) public user: UserModel;
 
     @ImplementsMethod()
-    public setUser(value: UserModel): CurrentUserState {
+    public setUser(value?: UserModel): CurrentUserState {
         return <CurrentUserState>this.withMutations(map => {
             map.set(getVariableName(() => this.user), value);
             map.set(getVariableName(() => this.isSet), value != null);
