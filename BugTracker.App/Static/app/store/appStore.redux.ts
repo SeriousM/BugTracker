@@ -34,12 +34,18 @@ function createModelRecord(propName: string, propValue: any, propMeta: IMetaImpl
     // create for each property on the object a propper model if possible
     manipulateModel(propValue, propMeta.classConstructor);
 
-    var newPropRecord = <IObjectIndex>propRecord(propValue);
+    function tempConstructor(...args: any[]) {
+        propRecord.apply(this, args);
+    }
+    tempConstructor.prototype = Object.create(propMeta.classConstructor.prototype);
+    tempConstructor.prototype.constructor = propRecord;
 
-    var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
-    methodsToApply.forEach(methodName => {
-        newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
-    });
+    var newPropRecord = <IObjectIndex>(new tempConstructor(propValue));
+
+    // var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
+    // methodsToApply.forEach(methodName => {
+    //     newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
+    // });
 
     return newPropRecord;
 }
@@ -60,7 +66,7 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
         if (propMeta == null) {
             throw new Error(`Property '${currentProp}' was not found in the blueprint.`);
         }
-        
+
         if (propMeta.isPoco) {
             continue;
         }
@@ -72,10 +78,10 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
             continue;
         }
 
-        if (Array.isArray(currentPropValue) && !propMeta.isList){
+        if (Array.isArray(currentPropValue) && !propMeta.isList) {
             throw new Error(`Property '${currentProp}' is an array but shouldn't be one regarding to the blueprint.`);
         }
-        if (!Array.isArray(currentPropValue) && propMeta.isList){
+        if (!Array.isArray(currentPropValue) && propMeta.isList) {
             throw new Error(`Property '${currentProp}' isn't an array but should be one regarding to the blueprint.`);
         }
 
