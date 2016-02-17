@@ -7,7 +7,7 @@ import { IssueModel } from "../../../store/storeModels";
 import { issueStoreReducer } from "./issueStoreReducers";
 import { IssueStoreActionTypes, IssueStoreActions, IAddIssueAction } from "./issueStoreActions";
 
-export class IssueStoreReducersTest extends TestRunnerBase {
+export class IssueStoreReducersTests extends TestRunnerBase {
     addNewIssue_works() {
         var beforeState = List<IssueModel>();
         var afterState = List<IssueModel>()

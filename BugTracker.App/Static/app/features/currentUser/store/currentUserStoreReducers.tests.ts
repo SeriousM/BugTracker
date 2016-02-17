@@ -5,7 +5,7 @@ import { UserModel, CurrentUserState } from "../../../store/storeModels";
 import { currentUserStoreReducer } from "./currentUserStoreReducers";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction } from "./currentUserStoreActions";
 
-export class CurrentUserStoreReducersTest extends TestRunnerBase {
+export class CurrentUserStoreReducersTests extends TestRunnerBase {
     initialSetCurrentUser_works() {
         var beforeState = new CurrentUserState();
         var afterState = new CurrentUserState(new UserModel("Bob"));
