@@ -21,7 +21,20 @@ var assignMissingFunctions = (source: Object, target: Object): void => {
     // TODO
 }
 
-export const correctStoreState = (currentObject: { [key: string]: any }, blueprintConstructor: Function): void => {
+function createRecord(propMeta: IMetaImplementsProperty, currentPropValue: any) {
+    var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
+
+    var newPropRecord = <IObjectIndex>propRecord(currentPropValue);
+
+    var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
+    methodsToApply.forEach(methodName => {
+        newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
+    });
+
+    return newPropRecord;
+}
+
+export const correctStoreState = (currentObject: IObjectIndex, blueprintConstructor: Function): void => {
 
     var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
 
@@ -39,16 +52,15 @@ export const correctStoreState = (currentObject: { [key: string]: any }, bluepri
             continue;
         }
 
-        var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
-        
-        var newPropRecord = <IObjectIndex>propRecord(currentPropValue);
-        
-        var methodsToApply:Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
-        methodsToApply.forEach(methodName => {
-            newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
-        });
-        
-        currentObject[currentProp] = newPropRecord;
+        if (Array.isArray(currentPropValue)) {
+            var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
+                return createRecord(propMeta, currentArrayValue);
+            });
+            currentObject[currentProp] = List(newArray);
+        }
+        else {
+            currentObject[currentProp] = createRecord(propMeta, currentPropValue);
+        }
     }
 
     return;

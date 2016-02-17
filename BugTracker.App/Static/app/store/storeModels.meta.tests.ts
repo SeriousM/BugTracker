@@ -5,6 +5,55 @@ import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
 import { Implements, ImplementsList, ImplementsMethod } from "./storeModels.meta";
 import { correctStoreState } from "./appStore.redux";
 
+export class StoreModelsMetaTests extends TestRunnerBase {
+    empty() {
+        var localStorageState = {};
+        var expectedCorrectedState = {};
+        correctStoreState(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+    }
+    propertyValueOnRecordExists() {
+        var localStorageState = { model: { name: "Bob" } };
+        var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
+        correctStoreState(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+    }
+    modelMethodOnRecordExists() {
+        var localStorageState = { model: {} };
+        var expectedCorrectedState = { model: LevelOneModelRecord({}) };
+        correctStoreState(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState.model.getName).toExist();
+    }
+    modelMethodOnRecordReturnsCorrectValue() {
+        var localStorageState = { model: { name: "Bob" } };
+        var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
+        correctStoreState(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState.model.getName()).toEqual("Bob");
+    }
+    listOfModels() {
+        var localStorageState = { models: [
+            { name: "Bob" }, { name: "Sally" }
+        ] };
+        var expectedCorrectedState = { models: List<LevelOneModel>([
+            LevelOneModelRecord({ name: "Bob" }), LevelOneModelRecord({ name: "Sally" })
+        ]) };
+        correctStoreState(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+        expect(modifiedLocalStorageState.models.get(0).name).toEqual("Bob");
+        expect(modifiedLocalStorageState.models.get(1).name).toEqual("Sally");
+    }
+}
+
 interface ILevelOneModel {
     name: string
     // model: LevelOneModel;
@@ -33,36 +82,5 @@ class LevelOneModel extends LevelOneModelRecord {
 
 class TestAppState {
     @Implements(LevelOneModel) public model: LevelOneModel;
-    // @ImplementsList(LevelOneModel) public models: List<LevelOneModel>;
-}
-
-export class StoreModelsMetaTests extends TestRunnerBase {
-    empty() {
-        var localStorageState = {};
-        var expectedCorrectedState = {};
-        correctStoreState(localStorageState, TestAppState);
-
-        expect(localStorageState).toEqual(expectedCorrectedState);
-    }
-    propertyValueOnRecordExists() {
-        var localStorageState = <TestAppState>{ model: { name: "Bob" } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
-        correctStoreState(localStorageState, TestAppState);
-
-        expect(localStorageState).toEqual(expectedCorrectedState);
-    }
-    modelMethodOnRecordExists() {
-        var localStorageState = <TestAppState>{ model: {} };
-        var expectedCorrectedState = { model: LevelOneModelRecord({}) };
-        correctStoreState(localStorageState, TestAppState);
-
-        expect(localStorageState.model.getName).toExist();
-    }
-    modelMethodOnRecordReturnsCorrectValue() {
-        var localStorageState = <TestAppState>{ model: { name: "Bob" } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
-        correctStoreState(localStorageState, TestAppState);
-
-        expect(localStorageState.model.getName()).toEqual("Bob");
-    }
+    @ImplementsList(LevelOneModel) public models: List<LevelOneModel>;
 }
