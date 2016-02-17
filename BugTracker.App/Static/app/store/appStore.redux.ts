@@ -1,6 +1,6 @@
 import { Iterable, List, Record } from 'immutable';
 import { AppState, IAction } from "./appStore.base";
-import { IHasMetaImplements, IMetaImplements, IMetaImplementsProperty } from "./storeModels.meta";
+import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty } from "./storeModels.meta";
 import { IObjectIndex } from "../utils/reflection";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;
@@ -29,18 +29,22 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
 }
 
 function createModelRecord(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
-    var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
+    var propClass = <IMetaImplementsClassConstructor>propMeta.classConstructor;
+    var propClassProto = <IHasMetaImplements>propClass.prototype;
+    var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     // create for each property on the object a propper model if possible
     manipulateModel(propValue, propMeta.classConstructor);
 
-    function tempConstructor(...args: any[]) {
+    function FixedRecord(...args: any[]) {
         propRecord.apply(this, args);
     }
-    tempConstructor.prototype = Object.create(propMeta.classConstructor.prototype);
-    tempConstructor.prototype.constructor = propRecord;
+    FixedRecord.prototype = Object.create(propClassProto);
+    FixedRecord.prototype.constructor = propClass;
+    
+    // the FixRecord will call the Record method on itself, will look like a *Model and it's constructor is the Record() method
 
-    var newPropRecord = <IObjectIndex>(new tempConstructor(propValue));
+    var newPropRecord = <IObjectIndex>(new FixedRecord(propValue));
 
     // var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
     // methodsToApply.forEach(methodName => {

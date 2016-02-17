@@ -133,6 +133,12 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         var newModel = modifiedLocalStorageState.user.pet.transform("Puppy");
         expect(newModel.bark()).toEqual("Puppy");
     }
+    test(){
+        var a = { user:{}};
+        var b = { user:new UserModel()};
+        manipulateModel(a, TestAppState);
+        expect(a).toEqual(b);
+    }
 }
 
 interface ILevelOneModel {
