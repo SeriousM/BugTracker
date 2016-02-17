@@ -73,16 +73,18 @@ export function correctStoreState(currentObject: IObjectIndex, blueprintConstruc
 
 type ReducerFunction = (state: any, action: IAction<any>) => ReducerFunction;
 
-var stateCorrected = false;
 const fixReduxDevToolsState = (BlueprintObject: Function) => (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
 
     const reduxInit: string = "@@redux/INIT";
     const reduxDevToolsInit: string = "@@INIT";
 
     var newReducer = (state: any, action: IAction<any>) => {
-        if (!stateCorrected && action.type != reduxInit && action.type != reduxDevToolsInit) {
+        // reduxDevTools will send the init-action multiple times depending on the session setup and during session reset
+        // therefore we need to correct the state as often as needed
+        
+        // the redux init-action on the other hand is not important because it will only send once the configured initial state
+        if (action.type == reduxDevToolsInit) {
             correctStoreState(state, BlueprintObject);
-            stateCorrected = true;
         }
 
         return reducer(state, action);
