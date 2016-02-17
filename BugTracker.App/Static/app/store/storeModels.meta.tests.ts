@@ -38,6 +38,24 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.getName()).toEqual("Bob");
     }
+    emptyListOfModels() {
+        var localStorageState = { models: <Array<any>>[] };
+        var expectedCorrectedState = { models: List<LevelOneModel>() };
+        correctStoreState(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+        expect(modifiedLocalStorageState.models.count()).toEqual(0);
+    }
+    ignoreIterables() {
+        var localStorageState = { models: List<LevelOneModel>() };
+        var expectedCorrectedState = { models: List<LevelOneModel>() };
+        correctStoreState(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+        expect(modifiedLocalStorageState.models.count()).toEqual(0);
+    }
     listOfModels() {
         var localStorageState = { models: [
             { name: "Bob" }, { name: "Sally" }

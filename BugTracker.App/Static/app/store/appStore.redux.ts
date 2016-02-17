@@ -1,4 +1,4 @@
-import { List, Record } from 'immutable';
+import { Iterable, List, Record } from 'immutable';
 import { AppState, IAction } from "./appStore.base";
 import { IHasMetaImplements, IMetaImplements, IMetaImplementsProperty } from "./storeModels.meta";
 import { IObjectIndex } from "../utils/reflection";
@@ -55,7 +55,7 @@ export function correctStoreState(currentObject: IObjectIndex, blueprintConstruc
         }
 
         var currentPropValue = currentObject[currentProp];
-        if (currentPropValue == null) {
+        if (currentPropValue == null || Iterable.isIterable(currentPropValue)) {
             continue;
         }
 
