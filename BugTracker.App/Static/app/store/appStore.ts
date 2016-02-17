@@ -31,7 +31,11 @@ export const appStoreFactory = () => {
     }
     var finalReducer = combineReducers(reducerAppState);
 
-    var initialState = <AppState>{};
+    // the object sent as initial state has to be of type Object, not of type AppStore.
+    // therefore we just execute the constructor of the AppStore on a plain object.
+    var initialAppStore = {};
+    AppState.call(initialAppStore);
+    var initialState = <AppState>initialAppStore;
 
     var finalCreateStore = compose(...wrapMiddlewareWithRedux(
         applyMiddleware(logger)
