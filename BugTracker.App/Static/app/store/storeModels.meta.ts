@@ -15,6 +15,7 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 }
 
 export interface IMetaImplementsProperty {
+    name: string,
     classConstructor: IMetaImplementsClassConstructor,
     isList: boolean,
     isPoco: boolean
@@ -61,12 +62,13 @@ export function ImplementsMethod() {
 export function ImplementsProperty() {
     return (...args: any[]) => getDecorator(
         null,
-        (prototype: Function, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>): void => {
+        (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
             // property
         
             var hasMetaImplements: IHasMetaImplements = prototype;
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
+                name: propertyKey,
                 classConstructor: null,
                 isList: false,
                 isPoco: true
@@ -89,12 +91,13 @@ function InternalImplements(Class: Function, isList: boolean) {
             hasMetaImplements.__metaImplements.classConstructor = Class;
 
             return;
-        }, (prototype: Function, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>): void => {
+        }, (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
             // property
         
             var hasMetaImplements: IHasMetaImplements = prototype;
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
+                name: propertyKey,
                 classConstructor: Class,
                 isList: isList,
                 isPoco: false
