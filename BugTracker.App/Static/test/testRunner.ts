@@ -57,7 +57,7 @@ export class TestRunner extends TestRunnerBase {
                 }
                 else {
                     testResult = new TestResult(testFixtureName, testMethod, executionTimeMs, occurredError);
-                    console.error(occurredError);
+                    console.error(occurredError, {actual: occurredError.actual }, {expected: occurredError.expected });
                 }
 
                 return testResult;
