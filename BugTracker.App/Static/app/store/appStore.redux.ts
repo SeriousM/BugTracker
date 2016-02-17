@@ -69,11 +69,6 @@ var correctState = (current: any, blueprintFactory: any): void => {
 var stateCorrected = false;
 var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any, enhancer: any) => {
     const store = next(reducer, initialState, enhancer);
-    
-    if (stateCorrected) {
-        return;
-    }
-    stateCorrected = true;
 
     var newStore = Object(store);
     var oldDispatch = store.dispatch;
@@ -87,7 +82,15 @@ var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any
     }
 
     var newGetState = () => {
+        
         var state = <AppState>oldGetState();
+
+        if (!stateCorrected) {
+            correctState(state, AppState.prototype);
+            stateCorrected = true;
+        }
+        
+        return state;
 
         // if (Iterable.isIterable(state.currentUser)) {
         //     console.log("!!!YAY!!!");
@@ -96,7 +99,7 @@ var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any
         //     console.log("!!!NOOOO!!!");
         // }
 
-        correctState(state, AppState.prototype);
+        // correctState(state, AppState.prototype);
 
         // if (Iterable.isIterable(state.currentUser)) {
         //     console.log("!!!YAY!!!");
@@ -116,7 +119,7 @@ var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any
         // todo: dispatch "an unknown action" just that redux-devtools is refreshing 
         // the local storage entry and all subscribers get a fresh version
         
-        return state;
+        // return state;
     }
 
     for (var nextKey in store) {
