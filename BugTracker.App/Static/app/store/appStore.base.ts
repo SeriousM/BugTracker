@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 
 import { UserModel, IssueModel, CurrentUserState } from './storeModels';
-import { Implements, ImplementsList } from './storeModels.meta';
+import { ImplementsModel, ImplementsModelList } from './storeModels.meta';
 
 export interface IAction<T> {
     type: T;
@@ -14,9 +14,9 @@ export class IReducerAppState {
 }
 
 export class AppState {
-    @Implements(CurrentUserState) public currentUser: CurrentUserState = new CurrentUserState();
-    @ImplementsList(UserModel) public users: List<UserModel> = List<UserModel>();
-    @ImplementsList(IssueModel) public issues: List<IssueModel> = List<IssueModel>();
+    @ImplementsModel(CurrentUserState) public currentUser: CurrentUserState = new CurrentUserState();
+    @ImplementsModelList(UserModel) public users: List<UserModel> = List<UserModel>();
+    @ImplementsModelList(IssueModel) public issues: List<IssueModel> = List<IssueModel>();
 
     constructor() { }
 }

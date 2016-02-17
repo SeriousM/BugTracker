@@ -2,7 +2,7 @@ import { List, Record } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
 
-import { Implements, ImplementsList, ImplementsMethod } from "./storeModels.meta";
+import { ImplementsModel, ImplementsModelList, ImplementsMethod, ImplementsProperty } from "./storeModels.meta";
 import { manipulateModel } from "./appStore.redux";
 
 export class StoreModelsMetaTests extends TestRunnerBase {
@@ -98,18 +98,18 @@ export class StoreModelsMetaTests extends TestRunnerBase {
 
 interface ILevelOneModel {
     name: string
-    // model: LevelOneModel;
+    model: LevelOneModel;
     // models: List<LevelOneModel>;
 }
 const LevelOneModelRecord = Record(<ILevelOneModel>{
     name: <string>null
-    // ,model: <LevelOneModel>null
+    ,model: <LevelOneModel>null
     // ,models: <List<LevelOneModel>>null
 });
-@Implements(LevelOneModelRecord)
+@ImplementsModel(LevelOneModelRecord)
 class LevelOneModel extends LevelOneModelRecord {
-    public name: string;
-    // @Implements(LevelOneModel) public model: LevelOneModel;
+    @ImplementsProperty() public name: string;
+    @ImplementsModel(LevelOneModel) public model: LevelOneModel;
     // @ImplementsList(LevelOneModel) public models: List<LevelOneModel>;
 
     @ImplementsMethod()
@@ -123,6 +123,6 @@ class LevelOneModel extends LevelOneModelRecord {
 }
 
 class TestAppState {
-    @Implements(LevelOneModel) public model: LevelOneModel;
-    @ImplementsList(LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModel(LevelOneModel) public model: LevelOneModel;
+    @ImplementsModelList(LevelOneModel) public models: List<LevelOneModel>;
 }

@@ -16,7 +16,8 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 
 export interface IMetaImplementsProperty {
     classConstructor: IMetaImplementsClassConstructor,
-    isList: boolean
+    isList: boolean,
+    isPoco: boolean
 }
 
 function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaImplements) {
@@ -29,11 +30,11 @@ function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaImplements) {
     }
 }
 
-export function ImplementsList(Class: Function) {
+export function ImplementsModelList(Class: Function) {
     return InternalImplements(Class, true);
 }
 
-export function Implements(Class: Function) {
+export function ImplementsModel(Class: Function) {
     return InternalImplements(Class, false);
 }
 
@@ -57,6 +58,27 @@ export function ImplementsMethod() {
         args);
 }
 
+export function ImplementsProperty() {
+    return (...args: any[]) => getDecorator(
+        null,
+        (prototype: Function, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>): void => {
+            // property
+        
+            var hasMetaImplements: IHasMetaImplements = prototype;
+            setMetaDataIfMissing(hasMetaImplements);
+            hasMetaImplements.__metaImplements.properties[propertyKey] = {
+                classConstructor: null,
+                isList: false,
+                isPoco: true
+            };
+
+            return;
+        },
+        null,
+        null,
+        args);
+}
+
 function InternalImplements(Class: Function, isList: boolean) {
     return (...args: any[]) => getDecorator(
         (constructor: Function): Function | void => {
@@ -74,7 +96,8 @@ function InternalImplements(Class: Function, isList: boolean) {
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
                 classConstructor: Class,
-                isList: isList
+                isList: isList,
+                isPoco: false
             };
 
             return;

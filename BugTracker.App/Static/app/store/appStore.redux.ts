@@ -28,8 +28,11 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     return storeEnhancers;
 }
 
-function createModelRecord(propMeta: IMetaImplementsProperty, currentPropValue: any) {
+function createModelRecord(currentPropValue: any, propMeta: IMetaImplementsProperty) {
     var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
+
+    // create for each property on the object a propper model if possible
+    manipulateModel(currentPropValue, propMeta.classConstructor);
 
     var newPropRecord = <IObjectIndex>propRecord(currentPropValue);
 
@@ -45,6 +48,10 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
 
     var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
 
+    if (blueprintMeta == null){
+        return;
+    }
+
     var currentProps = Object.getOwnPropertyNames(currentObject);
     for (var index = 0; index < currentProps.length; index++) {
         var currentProp = currentProps[index];
@@ -55,18 +62,20 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
         }
 
         var currentPropValue = currentObject[currentProp];
-        if (currentPropValue == null || Iterable.isIterable(currentPropValue)) {
+        if (currentPropValue == null || 
+            propMeta.isPoco || 
+            Iterable.isIterable(currentPropValue)) {
             continue;
         }
-
+        
         if (Array.isArray(currentPropValue)) {
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
-                return createModelRecord(propMeta, currentArrayValue);
+                return createModelRecord(currentArrayValue, propMeta);
             });
             currentObject[currentProp] = List(newArray);
         }
         else {
-            currentObject[currentProp] = createModelRecord(propMeta, currentPropValue);
+            currentObject[currentProp] = createModelRecord(currentPropValue, propMeta);
         }
     }
 }
