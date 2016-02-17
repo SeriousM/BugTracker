@@ -1,5 +1,5 @@
 import { Record } from 'immutable';
-import { Implements } from './storeModels.meta';
+import { Implements, ImplementsList, ImplementsMethod } from './storeModels.meta';
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
@@ -23,6 +23,7 @@ const UserModelRecord = Record(<IUserModel>{
 export class UserModel extends UserModelRecord implements IUserModel {
     public name: string;
 
+    @ImplementsMethod()
     public setName(value: string): UserModel {
         return <UserModel>this.set(getVariableName(() => this.name), value);
     }
@@ -42,6 +43,7 @@ const IssueModelRecord = Record(<IIssueModel>{
 export class IssueModel extends IssueModelRecord implements IIssueModel {
     public title: string;
 
+    @ImplementsMethod()
     public setTitle(value: string): IssueModel {
         return <IssueModel>this.set(getVariableName(() => this.title), value);
     }
@@ -64,6 +66,7 @@ export class CurrentUserState extends CurrentUserStateRecord implements ICurrent
     public isSet: boolean;
     @Implements(UserModel) public user: UserModel;
 
+    @ImplementsMethod()
     public setUser(value: UserModel): CurrentUserState {
         return <CurrentUserState>this.withMutations(map => {
             map.set(getVariableName(() => this.user), value);
