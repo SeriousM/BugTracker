@@ -94,23 +94,37 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.model.getName()).toEqual("Bob");
     }
+    listOfModelsInModels() {
+        var localStorageState = { models: [ { models: [
+            { name: "Bob" }, { name: "Sally" }
+        ] } ] };
+        var expectedCorrectedState = { models: List<LevelOneModel>([ LevelOneModelRecord({ models: List<LevelOneModel>([
+            LevelOneModelRecord({ name: "Bob" }), LevelOneModelRecord({ name: "Sally" })
+        ]) }) ]) };
+        manipulateModel(localStorageState, TestAppState);
+
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+        expect(modifiedLocalStorageState.models.get(0).models.get(0).name).toEqual("Bob");
+        expect(modifiedLocalStorageState.models.get(0).models.get(1).name).toEqual("Sally");
+    }
 }
 
 interface ILevelOneModel {
     name: string
     model: LevelOneModel;
-    // models: List<LevelOneModel>;
+    models: List<LevelOneModel>;
 }
 const LevelOneModelRecord = Record(<ILevelOneModel>{
-    name: <string>null
-    ,model: <LevelOneModel>null
-    // ,models: <List<LevelOneModel>>null
+    name: <string>null,
+    model: <LevelOneModel>null,
+    models: <List<LevelOneModel>>null
 });
 @ImplementsModel(LevelOneModelRecord)
 class LevelOneModel extends LevelOneModelRecord {
     @ImplementsProperty() public name: string;
     @ImplementsModel(LevelOneModel) public model: LevelOneModel;
-    // @ImplementsList(LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModelList(LevelOneModel) public models: List<LevelOneModel>;
 
     @ImplementsMethod()
     public getName() {
