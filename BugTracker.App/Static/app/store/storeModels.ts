@@ -14,7 +14,8 @@ function getVariableName<TResult>(name: () => TResult) {
 }
 
 interface IUserModel {
-    name: string
+    name: string,
+    setName(value: string): UserModel
 }
 const UserModelRecord = Record(<IUserModel>{
     name: <string>null
@@ -34,7 +35,8 @@ export class UserModel extends UserModelRecord implements IUserModel {
 }
 
 interface IIssueModel {
-    title: string
+    title: string,
+    setTitle(value: string): IssueModel
 }
 const IssueModelRecord = Record(<IIssueModel>{
     title: <string>null
@@ -55,7 +57,8 @@ export class IssueModel extends IssueModelRecord implements IIssueModel {
 
 interface ICurrentUserState {
     isSet: boolean,
-    user: UserModel
+    user: UserModel,
+    setUser(value?: UserModel): CurrentUserState
 }
 const CurrentUserStateRecord = Record(<ICurrentUserState>{
     isSet: <boolean>null,
