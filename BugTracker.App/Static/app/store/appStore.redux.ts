@@ -1,16 +1,19 @@
+import { List, Record } from 'immutable';
 import { AppState } from "./appStore.base";
+import { IHasMetaImplements, IMetaImplements, IMetaImplementsProperty } from "./storeModels.meta";
+import { IObjectIndex } from "../utils/reflection";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;
 
-export function wrapMiddlewareWithRedux(...functions: Function[]){
-    if (reduxDevTools){
+export function wrapMiddlewareWithRedux(...functions: Function[]) {
+    if (reduxDevTools) {
         functions = [
             fixReduxDevToolsState,
             ...functions,
             reduxDevTools()
         ]
     }
-    
+
     return functions;
 }
 
@@ -18,7 +21,36 @@ var assignMissingFunctions = (source: Object, target: Object): void => {
     // TODO
 }
 
-var correctState = (current: any, blueprintFactory: any): void => {
+export const correctStoreState = (currentObject: { [key: string]: any }, blueprintConstructor: Function): void => {
+
+    var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
+
+    var currentProps = Object.getOwnPropertyNames(currentObject);
+    for (var index = 0; index < currentProps.length; index++) {
+        var currentProp = currentProps[index];
+
+        var propMeta = <IMetaImplementsProperty>blueprintMeta.properties[currentProp];
+        if (propMeta == null) {
+            throw new Error(`Property '${currentProp}' was not found in the blueprint.`);
+        }
+
+        var currentPropValue = currentObject[currentProp];
+        if (currentPropValue == null) {
+            continue;
+        }
+
+        var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
+        
+        var newPropRecord = <IObjectIndex>propRecord(currentPropValue);
+        
+        var methodsToApply:Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
+        methodsToApply.forEach(methodName => {
+            newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
+        });
+        
+        currentObject[currentProp] = newPropRecord;
+    }
+
     return;
     
     // var blueprint = {};
@@ -82,14 +114,14 @@ var fixReduxDevToolsState = (next: Function) => (reducer: any, initialState: any
     }
 
     var newGetState = () => {
-        
+
         var state = <AppState>oldGetState();
 
         if (!stateCorrected) {
-            correctState(state, AppState.prototype);
+            correctStoreState(state, AppState);
             stateCorrected = true;
         }
-        
+
         return state;
 
         // if (Iterable.isIterable(state.currentUser)) {

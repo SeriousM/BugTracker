@@ -1,9 +1,16 @@
 // http://blog.wolksoftware.com/decorators-metadata-reflection-in-typescript-from-novice-to-expert-part-4
 
 declare type ClassDecorator = <TFunction extends Function>(constructor: TFunction) => TFunction | void;
-declare type PropertyDecorator = (target: Object, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>) => void;
-declare type MethodDecorator = <T>(target: Object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
-declare type ParameterDecorator = (target: Object, propertyKey: string | symbol, parameterIndex: number) => void;
+declare type PropertyDecorator = (prototype: Function, propertyKey: string | symbol, descriptor?: TypedPropertyDescriptor<any>) => void;
+declare type MethodDecorator = <T>(prototype: Function, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>) => TypedPropertyDescriptor<T> | void;
+declare type ParameterDecorator = (prototype: Function, propertyKey: string | symbol, parameterIndex: number) => void;
+
+export interface IObjectIndex {
+    [key: string]: any
+}
+export interface ITypedObjectIndex<T> extends IObjectIndex {
+    [key: string]: T
+}
 
 export function getDecorator(
     classDecorator: ClassDecorator,
