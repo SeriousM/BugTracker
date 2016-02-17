@@ -108,12 +108,38 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         expect(modifiedLocalStorageState.models.get(0).models.get(0).name).toEqual("Bob");
         expect(modifiedLocalStorageState.models.get(0).models.get(1).name).toEqual("Sally");
     }
+    propertyValueOnRecordInRecordWithDifferentModelsExists(){
+        var localStorageState = { user: { pet: { name: "Boy" } } };
+        var expectedCorrectedState = { user: UserModelRecord({ pet: PetModelRecord({ name: "Boy" }) }) };
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+    }
+    modelMethodOnRecordInRecordWithDifferentModelsReturnsCorrectValue(){
+        var localStorageState = { user: { pet: { name: "Boy" } } };
+        var expectedCorrectedState = { user: UserModelRecord({ pet: PetModelRecord({ name: "Boy" }) }) };
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState.user.pet.bark()).toEqual("Boy");
+    }
+    nestedMethodReturningANewModelHasModelMethods(){
+        var localStorageState = { user: { pet: { name: "Boy" } } };
+        var expectedCorrectedState = { user: UserModelRecord({ pet: PetModelRecord({ name: "Boy" }) }) };
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        var newModel = modifiedLocalStorageState.user.pet.transform("Puppy");
+        expect(newModel.bark()).toEqual("Puppy");
+    }
 }
 
 interface ILevelOneModel {
     name: string
     model: LevelOneModel;
     models: List<LevelOneModel>;
+    getName(): string;
 }
 const LevelOneModelRecord = Record(<ILevelOneModel>{
     name: <string>null,
@@ -121,7 +147,7 @@ const LevelOneModelRecord = Record(<ILevelOneModel>{
     models: <List<LevelOneModel>>null
 });
 @ImplementsModel(LevelOneModelRecord)
-class LevelOneModel extends LevelOneModelRecord {
+class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
     @ImplementsProperty() public name: string;
     @ImplementsModel(LevelOneModel) public model: LevelOneModel;
     @ImplementsModelList(LevelOneModel) public models: List<LevelOneModel>;
@@ -136,7 +162,46 @@ class LevelOneModel extends LevelOneModelRecord {
     }
 }
 
+// TODO: Attention!! The order of the classes are important 
+// because the <ModelType> in @ImplementsModel(<ModelType>) my be undefined if the class is not yet created!!
+
+interface IPetModel{
+    name:string,
+    transform(name:string):PetModel,
+    bark():string
+}
+const PetModelRecord = Record(<IPetModel>{
+    name:<string>null
+})
+@ImplementsModel(PetModelRecord)
+class PetModel extends PetModelRecord implements IPetModel{
+    @ImplementsProperty() public name:string;
+    @ImplementsMethod() public bark(){
+        return this.name;
+    }
+    @ImplementsMethod() public transform(name:string){
+        return <PetModel>this.withMutations(map => {
+            map.set("name", name);
+        });
+    }
+}
+
+interface IUserModel{
+    name:string,
+    pet:PetModel
+}
+const UserModelRecord = Record(<IUserModel>{
+    name:<string>null,
+    pet:<PetModel>null
+})
+@ImplementsModel(UserModelRecord)
+class UserModel extends UserModelRecord implements IUserModel{
+    @ImplementsProperty() public name:string;
+    @ImplementsModel(PetModel) public pet:PetModel;
+}
+
 class TestAppState {
     @ImplementsModel(LevelOneModel) public model: LevelOneModel;
     @ImplementsModelList(LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModel(UserModel) public user: UserModel;
 }
