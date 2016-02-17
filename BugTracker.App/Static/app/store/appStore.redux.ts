@@ -60,10 +60,14 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
         if (propMeta == null) {
             throw new Error(`Property '${currentProp}' was not found in the blueprint.`);
         }
+        
+        if (propMeta.isPoco) {
+            continue;
+        }
 
         var currentPropValue = currentObject[currentProp];
-        if (currentPropValue == null || 
-            propMeta.isPoco || 
+        if (currentPropValue == null ||
+            propMeta.isPoco ||
             Iterable.isIterable(currentPropValue)) {
             continue;
         }
