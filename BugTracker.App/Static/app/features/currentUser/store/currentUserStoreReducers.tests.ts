@@ -38,14 +38,4 @@ export class CurrentUserStoreReducersTest extends TestRunnerBase {
 
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    simulateReduxDevToolsStickySessionStateInit_nameIsSet() {
-        var beforeState = new CurrentUserState();
-
-        // simulate the redux-devtools state set after page reload and sticky session
-        var action = CurrentUserStoreActions.SetCurrentUser(<UserModel>{name:"Bob"});
-
-        deepFreeze(action);
-
-        expect(currentUserStoreReducer(beforeState, action).user.name).toEqual("Bob");
-    }
 }
