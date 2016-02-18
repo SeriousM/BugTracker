@@ -30,7 +30,20 @@ function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaImplements) {
 }
 
 export function ImplementsClass(Class: Function) {
-    return InternalImplementsClass(Class);
+    return (...args: any[]) => getDecorator(
+        (constructor: Function): Function | void => {
+            // class
+        
+            var hasMetaImplements: IHasMetaImplements = constructor.prototype;
+            setMetaDataIfMissing(hasMetaImplements);
+            hasMetaImplements.__metaImplements.classConstructor = Class;
+
+            return;
+        }, 
+        null, 
+        null, 
+        null, 
+        args);
 }
 
 export function ImplementsModelList(Class: Function) {
@@ -60,23 +73,6 @@ export function ImplementsPoco() {
         },
         null,
         null,
-        args);
-}
-
-function InternalImplementsClass(Class: Function) {
-    return (...args: any[]) => getDecorator(
-        (constructor: Function): Function | void => {
-            // class
-        
-            var hasMetaImplements: IHasMetaImplements = constructor.prototype;
-            setMetaDataIfMissing(hasMetaImplements);
-            hasMetaImplements.__metaImplements.classConstructor = Class;
-
-            return;
-        }, 
-        null, 
-        null, 
-        null, 
         args);
 }
 
