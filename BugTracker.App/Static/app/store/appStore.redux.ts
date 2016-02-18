@@ -12,6 +12,7 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
         // result: a(b(c(redux-store)))
         // the last one in the list is responsibe to create the original redux-store.
         // the first one is the one faced to the consumer of the store.
+        // the first one will get the reducer from the app (original reducers), every folowing the reducer from the previous one.
         // every enhancer gets the reducer function (or combination of them) from the previous enhancer.
         // eg. b(reducer=from a):returns store c
         
