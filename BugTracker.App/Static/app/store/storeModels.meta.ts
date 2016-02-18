@@ -15,7 +15,7 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 
 export interface IMetaImplementsProperty {
     name: string,
-    classConstructor: IMetaImplementsClassConstructor,
+    getClassConstructor: () => IMetaImplementsClassConstructor,
     isList: boolean,
     isPoco: boolean
 }
@@ -51,7 +51,7 @@ export function ImplementsPoco() {
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
                 name: propertyKey,
-                classConstructor: null,
+                getClassConstructor: null,
                 isList: false,
                 isPoco: true
             };
@@ -90,7 +90,7 @@ function InternalImplementsModel(Class: Function, isList: boolean) {
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
                 name: propertyKey,
-                classConstructor: Class,
+                getClassConstructor: () => Class,
                 isList: isList,
                 isPoco: false
             };
