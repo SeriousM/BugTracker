@@ -83,7 +83,7 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
                 return createModel(currentProp, currentArrayValue, propMeta);
             });
-            currentObject[currentProp] = List(newArray);
+            currentObject[currentProp] = propMeta.iterableFunction(newArray);
         }
         else {
             currentObject[currentProp] = createModel(currentProp, currentPropValue, propMeta);

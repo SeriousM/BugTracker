@@ -1,4 +1,4 @@
-import { List, Record } from 'immutable';
+import { List, Record, Stack } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
 
@@ -144,6 +144,17 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         
         expect(newUser.name).toEqual("Sally");
     }
+    creationOfStackWorks(){
+        var localStorageState = { userStack:[{name:"Bob"}, {name:"Sally"}]};
+        var expectedCorrectedState = { userStack:Stack<UserModel>([new UserModel("Bob"), new UserModel("Sally")])};
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
+        
+        expect(modifiedLocalStorageState.userStack.peek().name).toEqual("Bob");
+        expect(modifiedLocalStorageState.userStack.pop().peek().name).toEqual("Sally");
+    }
 }
 
 interface ILevelOneModel {
@@ -161,7 +172,7 @@ const LevelOneModelRecord = Record(<ILevelOneModel>{
 class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
     @ImplementsPoco() public name: string;
     @ImplementsModel(() => LevelOneModel) public model: LevelOneModel;
-    @ImplementsModels(() => LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModels(List, () => LevelOneModel) public models: List<LevelOneModel>;
 
     public getName() {
         return this.name;
@@ -230,6 +241,7 @@ class PetModel extends PetModelRecord implements IPetModel{
 
 class TestAppState {
     @ImplementsModel(() => LevelOneModel) public model: LevelOneModel;
-    @ImplementsModels(() => LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModels(List, () => LevelOneModel) public models: List<LevelOneModel>;
     @ImplementsModel(() => UserModel) public user: UserModel;
+    @ImplementsModels(Stack, () => UserModel) public userStack: Stack<UserModel>;
 }

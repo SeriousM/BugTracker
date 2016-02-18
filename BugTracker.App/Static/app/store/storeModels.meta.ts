@@ -1,3 +1,4 @@
+import { Iterable } from 'immutable';
 import { getDecorator, ITypedObjectIndex } from '../utils/reflection';
 
 export interface IHasMetaImplements {
@@ -13,11 +14,14 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 
 }
 
+type IterableFunction = (...args:any[]) => Iterable<any, any>;
+
 export interface IMetaImplementsProperty {
     name: string,
     getClassConstructor: () => IMetaImplementsClassConstructor,
     isList: boolean,
-    isPoco: boolean
+    isPoco: boolean,
+    iterableFunction: IterableFunction
 }
 
 function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaImplements) {
@@ -46,12 +50,12 @@ export function ImplementsClass(Class: Function) {
         args);
 }
 
-export function ImplementsModels(getClass: () => Function) {
-    return InternalImplementsModel(getClass, true);
+export function ImplementsModels(iterableFunction: IterableFunction, getClass: () => Function) {
+    return InternalImplementsModel(getClass, iterableFunction);
 }
 
 export function ImplementsModel(getClass: () => Function) {
-    return InternalImplementsModel(getClass, false);
+    return InternalImplementsModel(getClass);
 }
 
 export function ImplementsPoco() {
@@ -66,7 +70,8 @@ export function ImplementsPoco() {
                 name: propertyKey,
                 getClassConstructor: null,
                 isList: false,
-                isPoco: true
+                isPoco: true,
+                iterableFunction: null
             };
 
             return;
@@ -76,7 +81,7 @@ export function ImplementsPoco() {
         args);
 }
 
-function InternalImplementsModel(getClass: () => Function, isList: boolean) {
+function InternalImplementsModel(getClass: () => Function, iterableFunction: IterableFunction = null) {
     return (...args: any[]) => getDecorator(
         null, 
         (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
@@ -87,8 +92,9 @@ function InternalImplementsModel(getClass: () => Function, isList: boolean) {
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
                 name: propertyKey,
                 getClassConstructor: getClass,
-                isList: isList,
-                isPoco: false
+                isList: iterableFunction != null,
+                isPoco: false,
+                iterableFunction: iterableFunction
             };
 
             return;
