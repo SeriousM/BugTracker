@@ -3,10 +3,10 @@ import { UserModel, CurrentUserState } from "../../../store/storeModels";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction, IRemoveCurrentUserAction } from "./currentUserStoreActions";
 
 const setCurrentUser = (state: CurrentUserState, action: ISetCurrentUserAction): CurrentUserState => {
-    return new CurrentUserState(action.user);
+    return state.setUser(action.user);
 }
 const removeCurrentUser = (state: CurrentUserState, action: IRemoveCurrentUserAction): CurrentUserState => {
-    return new CurrentUserState();
+    return state.setUser();
 }
 
 export const currentUserStoreReducer = (state: CurrentUserState = new CurrentUserState(), action: IAction<CurrentUserStoreActions>): CurrentUserState => {

@@ -5,7 +5,7 @@ import { UserModel, CurrentUserState } from "../../../store/storeModels";
 import { currentUserStoreReducer } from "./currentUserStoreReducers";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction } from "./currentUserStoreActions";
 
-export class CurrentUserStoreReducersTest extends TestRunnerBase {
+export class CurrentUserStoreReducersTests extends TestRunnerBase {
     initialSetCurrentUser_works() {
         var beforeState = new CurrentUserState();
         var afterState = new CurrentUserState(new UserModel("Bob"));
@@ -37,5 +37,15 @@ export class CurrentUserStoreReducersTest extends TestRunnerBase {
         deepFreeze(action);
 
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
+    }
+    simulateReduxDevToolsStickySessionStateInit_nameIsSet() {
+        var beforeState = new CurrentUserState();
+
+        // simulate the redux-devtools state set after page reload and sticky session
+        var action = CurrentUserStoreActions.SetCurrentUser(<UserModel>{name:"Bob"});
+
+        deepFreeze(action);
+
+        expect(currentUserStoreReducer(beforeState, action).user.name).toEqual("Bob");
     }
 }

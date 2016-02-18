@@ -8,6 +8,7 @@ import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
 import { currentUserStoreReducer } from "../features/currentUser/store/currentuserStoreReducers";
 
 import { IReducerAppState, AppState } from "./appStore.base";
+import { wrapMiddlewareWithRedux } from "./appStore.redux";
 
 export const appStoreFactory = () => {
     const logger = createLogger({
@@ -30,21 +31,18 @@ export const appStoreFactory = () => {
     }
     var finalReducer = combineReducers(reducerAppState);
 
-    var initialState = <AppState>{};
+    // the object sent as initial state has to be of type Object, not of type AppStore.
+    // therefore we just execute the constructor of the AppStore on a plain object.
+    var initialAppStore = {};
+    AppState.call(initialAppStore);
+    var initialState = <AppState>initialAppStore;
 
-    var reduxDevTools: any = (<any>window).devToolsExtension;
-    var dummyStoreEnhancer = (next: Function) => (reducer: any, initialState: any, enhancer: any) => {
-        const store = next(reducer, initialState, enhancer);
-        return store;
-    };
-
-    var finalCreateStore = compose(
-        applyMiddleware(logger),
-        reduxDevTools != null ? reduxDevTools() : dummyStoreEnhancer
-    )(createStore);
+    var finalCreateStore = compose(...wrapMiddlewareWithRedux(
+        applyMiddleware(logger)
+    ))(createStore);
 
     var appStore = finalCreateStore(finalReducer, initialState);
-    
+
     return new AppStore(appStore);
 }
 

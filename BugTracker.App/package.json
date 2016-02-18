@@ -9,7 +9,16 @@
   },
   "version": "1.0.0",
   "scripts": {
-    "start": "typings install & concurrent \"tsc -w\" \"live-server --open=static --ignorePattern=.*\\.(ts|map)\""
+    "pwd": "echo %cd%",
+    "tsc": "tsc | findstr /C:\"Static\/\"",
+    "tscw": "tsc -w",
+    "typings": "typings install",
+    "liveserver": "live-server --open=static --ignorePattern=\".*\\.(ts|map)\"",
+    "start-dev": "npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\""
+  },
+  "engines": {
+      "node" : ">=4.0.0",
+      "npm" : ">=2.14.2"
   },
   "dependencies": {
     "jquery": "2.2.0",

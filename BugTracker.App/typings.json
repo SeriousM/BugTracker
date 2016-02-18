@@ -5,6 +5,7 @@
         "immutable": "github:facebook/immutable-js/dist/immutable.d.ts#95335c36f2c4a3635b2ee139d906647c1d997279",
         "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#44c9273e1e92bc95368f599d1dcda9f560a68956",
         "redux-logger": "file:typings_custom/redux-logger.d.ts",
+        "reflect-metadata": "file:node_modules/reflect-metadata/reflect-metadata.d.ts",
         "systemjs": "github:DefinitelyTyped/DefinitelyTyped/systemjs/systemjs.d.ts#d6c51c607bd90c8bf0e065fabc41bc3f937425df"
     },
     "dependencies": {
