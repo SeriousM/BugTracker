@@ -16,7 +16,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     propertyValueOnRecordExists() {
         var localStorageState = { model: { name: "Bob" } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
+        var expectedCorrectedState = { model: new LevelOneModel("Bob") };
         manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -24,7 +24,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     modelMethodOnRecordExists() {
         var localStorageState = { model: {} };
-        var expectedCorrectedState = { model: LevelOneModelRecord({}) };
+        var expectedCorrectedState = { model: new LevelOneModel() };
         manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -32,7 +32,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     modelMethodOnRecordReturnsCorrectValue() {
         var localStorageState = { model: { name: "Bob" } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ name: "Bob" }) };
+        var expectedCorrectedState = { model: new LevelOneModel("Bob") };
         manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -61,7 +61,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
             { name: "Bob" }, { name: "Sally" }
         ] };
         var expectedCorrectedState = { models: List<LevelOneModel>([
-            LevelOneModelRecord({ name: "Bob" }), LevelOneModelRecord({ name: "Sally" })
+            new LevelOneModel("Bob"), new LevelOneModel("Sally")
         ]) };
         manipulateModel(localStorageState, TestAppState);
 
@@ -72,7 +72,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     propertyValueOnRecordInRecordExists(){
         var localStorageState = { model: { model: {name:"Bob"} } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ model: LevelOneModelRecord({ name: "Bob" }) }) };
+        var expectedCorrectedState = { model: new LevelOneModel(null, new LevelOneModel("Bob")) };
         manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -80,7 +80,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     modelMethodOnRecordInRecordExists() {
         var localStorageState = { model: { model: {name:"Bob"} } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ model: LevelOneModelRecord({ name: "Bob" }) }) };
+        var expectedCorrectedState = { model: new LevelOneModel(null, new LevelOneModel("Bob")) };
         manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -88,7 +88,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     modelMethodOnRecordInRecordReturnsCorrectValue() {
         var localStorageState = { model: { model: {name:"Bob"} } };
-        var expectedCorrectedState = { model: LevelOneModelRecord({ model: LevelOneModelRecord({ name: "Bob" }) }) };
+        var expectedCorrectedState = { model: new LevelOneModel(null, new LevelOneModel("Bob")) };
         manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -98,9 +98,9 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         var localStorageState = { models: [ { models: [
             { name: "Bob" }, { name: "Sally" }
         ] } ] };
-        var expectedCorrectedState = { models: List<LevelOneModel>([ LevelOneModelRecord({ models: List<LevelOneModel>([
-            LevelOneModelRecord({ name: "Bob" }), LevelOneModelRecord({ name: "Sally" })
-        ]) }) ]) };
+        var expectedCorrectedState = { models: List<LevelOneModel>([ new LevelOneModel(null, null, List<LevelOneModel>([
+            new LevelOneModel("Bob"), new LevelOneModel("Sally")
+        ])) ]) };
         manipulateModel(localStorageState, TestAppState);
 
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -110,7 +110,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     propertyValueOnRecordInRecordWithDifferentModelsExists(){
         var localStorageState = { user: { pet: { name: "Boy" } } };
-        var expectedCorrectedState = { user: UserModelRecord({ pet: PetModelRecord({ name: "Boy" }) }) };
+        var expectedCorrectedState = { user: new UserModel(null, new PetModel("Boy")) };
         manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
@@ -118,26 +118,31 @@ export class StoreModelsMetaTests extends TestRunnerBase {
     }
     modelMethodOnRecordInRecordWithDifferentModelsReturnsCorrectValue(){
         var localStorageState = { user: { pet: { name: "Boy" } } };
-        var expectedCorrectedState = { user: UserModelRecord({ pet: PetModelRecord({ name: "Boy" }) }) };
+        var expectedCorrectedState = { user: new UserModel(null, new PetModel("Boy")) };
         manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.user.pet.bark()).toEqual("Boy");
     }
-    nestedMethodReturningANewModelHasModelMethods(){
+    nestedModelReturningANewModelHasModelMethods(){
         var localStorageState = { user: { pet: { name: "Boy" } } };
-        var expectedCorrectedState = { user: UserModelRecord({ pet: PetModelRecord({ name: "Boy" }) }) };
+        var expectedCorrectedState = { user: new UserModel(null, new PetModel("Boy")) };
         manipulateModel(localStorageState, TestAppState);
         
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         var newModel = modifiedLocalStorageState.user.pet.transform("Puppy");
         expect(newModel.bark()).toEqual("Puppy");
     }
-    test(){
-        var a = { user:{}};
-        var b = { user:new UserModel()};
-        manipulateModel(a, TestAppState);
-        expect(a).toEqual(b);
+    modifiedModelModifyingAPropertyReturningCorrectValue(){
+        var localStorageState = { user:{name:"Bob"}};
+        var expectedCorrectedState = { user:new UserModel("Bob")};
+        manipulateModel(localStorageState, TestAppState);
+        
+        var modifiedLocalStorageState = <TestAppState><any>localStorageState;
+        
+        var newUser = modifiedLocalStorageState.user.setName("Sally");
+        
+        expect(newUser.name).toEqual("Sally");
     }
 }
 
@@ -163,8 +168,12 @@ class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
         return this.name;
     }
 
-    constructor(name: string) {
-        super({ name });
+    constructor(name: string=null, model:LevelOneModel=null, models:List<LevelOneModel>=null) {
+        super({ 
+            name, 
+            model,
+            models
+        });
     }
 }
 
@@ -190,6 +199,11 @@ class PetModel extends PetModelRecord implements IPetModel{
             map.set("name", name);
         });
     }
+    constructor(name:string=null){
+        super({
+            name
+        })
+    }
 }
 
 interface IUserModel{
@@ -204,6 +218,18 @@ const UserModelRecord = Record(<IUserModel>{
 class UserModel extends UserModelRecord implements IUserModel{
     @ImplementsProperty() public name:string;
     @ImplementsModel(PetModel) public pet:PetModel;
+    @ImplementsMethod() public setName(name:string):UserModel{
+        var newImmutable = <UserModel>this.withMutations(map => {
+            map.set("name", name);
+        });
+        return newImmutable;
+    }
+    constructor(name:string=null, pet:PetModel=null){
+        super({
+            name,
+            pet
+        })
+    }
 }
 
 class TestAppState {
