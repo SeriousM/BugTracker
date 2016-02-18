@@ -179,32 +179,6 @@ class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
 // TODO: Attention!! The order of the classes are important 
 // because the <ModelType> in @ImplementsModel(<ModelType>) my be undefined if the class is not yet created!!
 
-interface IPetModel{
-    name:string,
-    transform(name:string):PetModel,
-    bark():string
-}
-const PetModelRecord = Record(<IPetModel>{
-    name:<string>null
-})
-@ImplementsClass(PetModelRecord)
-class PetModel extends PetModelRecord implements IPetModel{
-    @ImplementsPoco() public name:string;
-    public bark(){
-        return this.name;
-    }
-    public transform(name:string){
-        return <PetModel>this.withMutations(map => {
-            map.set("name", name);
-        });
-    }
-    constructor(name:string=null){
-        super({
-            name
-        })
-    }
-}
-
 interface IUserModel{
     name:string,
     pet:PetModel
@@ -227,6 +201,32 @@ class UserModel extends UserModelRecord implements IUserModel{
         super({
             name,
             pet
+        })
+    }
+}
+
+interface IPetModel{
+    name:string,
+    transform(name:string):PetModel,
+    bark():string
+}
+const PetModelRecord = Record(<IPetModel>{
+    name:<string>null
+})
+@ImplementsClass(PetModelRecord)
+class PetModel extends PetModelRecord implements IPetModel{
+    @ImplementsPoco() public name:string;
+    public bark(){
+        return this.name;
+    }
+    public transform(name:string){
+        return <PetModel>this.withMutations(map => {
+            map.set("name", name);
+        });
+    }
+    constructor(name:string=null){
+        super({
+            name
         })
     }
 }
