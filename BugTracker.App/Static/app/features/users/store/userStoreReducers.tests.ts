@@ -7,7 +7,7 @@ import { UserModel } from "../../../store/storeModels";
 import { userStoreReducer } from "./userStoreReducers";
 import { UserStoreActionTypes, UserStoreActions, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
-export class UserStoreReducersTest extends TestRunnerBase {
+export class UserStoreReducersTests extends TestRunnerBase {
     addNewUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>()

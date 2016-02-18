@@ -1,4 +1,5 @@
-import { Record, List } from 'immutable';
+import { Record } from 'immutable';
+import { ImplementsModel, ImplementsModelList, ImplementsMethod, ImplementsProperty } from './storeModels.meta';
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
@@ -13,14 +14,17 @@ function getVariableName<TResult>(name: () => TResult) {
 }
 
 interface IUserModel {
-    name: string
+    name: string,
+    setName(value: string): UserModel
 }
 const UserModelRecord = Record(<IUserModel>{
     name: <string>null
 });
+@ImplementsModel(UserModelRecord)
 export class UserModel extends UserModelRecord implements IUserModel {
-    public name: string;
+    @ImplementsProperty() public name: string;
 
+    @ImplementsMethod()
     public setName(value: string): UserModel {
         return <UserModel>this.set(getVariableName(() => this.name), value);
     }
@@ -31,14 +35,17 @@ export class UserModel extends UserModelRecord implements IUserModel {
 }
 
 interface IIssueModel {
-    title: string
+    title: string,
+    setTitle(value: string): IssueModel
 }
 const IssueModelRecord = Record(<IIssueModel>{
     title: <string>null
 });
+@ImplementsModel(IssueModelRecord)
 export class IssueModel extends IssueModelRecord implements IIssueModel {
-    public title: string;
+    @ImplementsProperty() public title: string;
 
+    @ImplementsMethod()
     public setTitle(value: string): IssueModel {
         return <IssueModel>this.set(getVariableName(() => this.title), value);
     }
@@ -50,17 +57,20 @@ export class IssueModel extends IssueModelRecord implements IIssueModel {
 
 interface ICurrentUserState {
     isSet: boolean,
-    user: UserModel
+    user: UserModel,
+    setUser(value?: UserModel): CurrentUserState
 }
 const CurrentUserStateRecord = Record(<ICurrentUserState>{
     isSet: <boolean>null,
     user: <UserModel>null
 });
+@ImplementsModel(CurrentUserStateRecord)
 export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState {
-    public isSet: boolean;
-    public user: UserModel;
+    @ImplementsProperty() public isSet: boolean;
+    @ImplementsModel(UserModel) public user: UserModel;
 
-    public setUser(value: UserModel): CurrentUserState {
+    @ImplementsMethod()
+    public setUser(value?: UserModel): CurrentUserState {
         return <CurrentUserState>this.withMutations(map => {
             map.set(getVariableName(() => this.user), value);
             map.set(getVariableName(() => this.isSet), value != null);

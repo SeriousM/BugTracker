@@ -1,13 +1,15 @@
 import { TestRunnerBase } from "./tests.base";
 
-import { UserStoreReducersTest } from "../app/features/users/store/userStoreReducers.tests";
-import { IssueStoreReducersTest } from "../app/features/issues/store/issueStoreReducers.tests";
-import { CurrentUserStoreReducersTest } from "../app/features/currentUser/store/currentUserStoreReducers.tests";
+import { UserStoreReducersTests } from "../app/features/users/store/userStoreReducers.tests";
+import { IssueStoreReducersTests } from "../app/features/issues/store/issueStoreReducers.tests";
+import { CurrentUserStoreReducersTests } from "../app/features/currentUser/store/currentUserStoreReducers.tests";
+import { StoreModelsMetaTests } from "../app/store/storeModels.meta.tests";
 
 export const getTestFixtures = (): Array<TestRunnerBase> => {
     return <Array<TestRunnerBase>>[
-        new UserStoreReducersTest(),
-        new IssueStoreReducersTest(),
-        new CurrentUserStoreReducersTest()
+        new UserStoreReducersTests(),
+        new IssueStoreReducersTests(),
+        new CurrentUserStoreReducersTests(),
+        new StoreModelsMetaTests()
     ];
 }
