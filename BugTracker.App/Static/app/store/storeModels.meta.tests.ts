@@ -2,7 +2,7 @@ import { List, Record } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
 
-import { ImplementsModel, ImplementsModelList, ImplementsMethod, ImplementsProperty } from "./storeModels.meta";
+import { ImplementsClass, ImplementsModel, ImplementsModelList, ImplementsPoco } from "./storeModels.meta";
 import { manipulateModel } from "./appStore.redux";
 
 export class StoreModelsMetaTests extends TestRunnerBase {
@@ -157,13 +157,12 @@ const LevelOneModelRecord = Record(<ILevelOneModel>{
     model: <LevelOneModel>null,
     models: <List<LevelOneModel>>null
 });
-@ImplementsModel(LevelOneModelRecord)
+@ImplementsClass(LevelOneModelRecord)
 class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
-    @ImplementsProperty() public name: string;
+    @ImplementsPoco() public name: string;
     @ImplementsModel(LevelOneModel) public model: LevelOneModel;
     @ImplementsModelList(LevelOneModel) public models: List<LevelOneModel>;
 
-    @ImplementsMethod()
     public getName() {
         return this.name;
     }
@@ -188,13 +187,13 @@ interface IPetModel{
 const PetModelRecord = Record(<IPetModel>{
     name:<string>null
 })
-@ImplementsModel(PetModelRecord)
+@ImplementsClass(PetModelRecord)
 class PetModel extends PetModelRecord implements IPetModel{
-    @ImplementsProperty() public name:string;
-    @ImplementsMethod() public bark(){
+    @ImplementsPoco() public name:string;
+    public bark(){
         return this.name;
     }
-    @ImplementsMethod() public transform(name:string){
+    public transform(name:string){
         return <PetModel>this.withMutations(map => {
             map.set("name", name);
         });
@@ -214,11 +213,11 @@ const UserModelRecord = Record(<IUserModel>{
     name:<string>null,
     pet:<PetModel>null
 })
-@ImplementsModel(UserModelRecord)
+@ImplementsClass(UserModelRecord)
 class UserModel extends UserModelRecord implements IUserModel{
-    @ImplementsProperty() public name:string;
+    @ImplementsPoco() public name:string;
     @ImplementsModel(PetModel) public pet:PetModel;
-    @ImplementsMethod() public setName(name:string):UserModel{
+    public setName(name:string):UserModel{
         var newImmutable = <UserModel>this.withMutations(map => {
             map.set("name", name);
         });

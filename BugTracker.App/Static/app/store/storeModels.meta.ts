@@ -7,7 +7,6 @@ export interface IHasMetaImplements {
 export interface IMetaImplements {
     classConstructor: IMetaImplementsClassConstructor;
     properties: ITypedObjectIndex<IMetaImplementsProperty>;
-    methods: Array<string>;
 }
 
 export interface IMetaImplementsClassConstructor extends Function, IHasMetaImplements {
@@ -25,41 +24,24 @@ function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaImplements) {
     if (!maybeHasMetaImplements.__metaImplements) {
         maybeHasMetaImplements.__metaImplements = {
             classConstructor: null,
-            properties: {},
-            methods: []
+            properties: {}
         }
     }
 }
 
+export function ImplementsClass(Class: Function) {
+    return InternalImplementsClass(Class);
+}
+
 export function ImplementsModelList(Class: Function) {
-    return InternalImplements(Class, true);
+    return InternalImplementsModel(Class, true);
 }
 
 export function ImplementsModel(Class: Function) {
-    return InternalImplements(Class, false);
+    return InternalImplementsModel(Class, false);
 }
 
-export function ImplementsMethod() {
-    return (...args: any[]) => getDecorator(
-        null,
-        null,
-        (prototype: Function, propertyKey: string, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> | void => {
-            // method
-            
-            var hasMetaImplements: IHasMetaImplements = prototype;
-            setMetaDataIfMissing(hasMetaImplements);
-
-            if (hasMetaImplements.__metaImplements.methods.indexOf(propertyKey) < 0) {
-                hasMetaImplements.__metaImplements.methods.push(propertyKey);
-            }
-
-            return;
-        },
-        null,
-        args);
-}
-
-export function ImplementsProperty() {
+export function ImplementsPoco() {
     return (...args: any[]) => getDecorator(
         null,
         (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
@@ -81,7 +63,7 @@ export function ImplementsProperty() {
         args);
 }
 
-function InternalImplements(Class: Function, isList: boolean) {
+function InternalImplementsClass(Class: Function) {
     return (...args: any[]) => getDecorator(
         (constructor: Function): Function | void => {
             // class
@@ -91,7 +73,17 @@ function InternalImplements(Class: Function, isList: boolean) {
             hasMetaImplements.__metaImplements.classConstructor = Class;
 
             return;
-        }, (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
+        }, 
+        null, 
+        null, 
+        null, 
+        args);
+}
+
+function InternalImplementsModel(Class: Function, isList: boolean) {
+    return (...args: any[]) => getDecorator(
+        null, 
+        (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
             // property
         
             var hasMetaImplements: IHasMetaImplements = prototype;
