@@ -12,6 +12,10 @@ export interface ITypedObjectIndex<T> extends IObjectIndex {
     [key: string]: T
 }
 
+function throwError(message: string) {
+    throw new Error(message);
+}
+
 export function getDecorator(
     classDecorator: ClassDecorator,
     propertyDecorator: PropertyDecorator,
@@ -20,19 +24,19 @@ export function getDecorator(
     args: any[]) {
     switch (args.length) {
         case 1:
-            return classDecorator ? classDecorator.apply(this, args) : null;
+            return classDecorator ? classDecorator.apply(this, args) : throwError("This decorator is not allowed on class.");
         case 2:
-            return propertyDecorator ? propertyDecorator.apply(this, args) : null;
+            return propertyDecorator ? propertyDecorator.apply(this, args) : throwError("This decorator is not allowed on property.");
         case 3:
             if (typeof args[2] === "number") {
-                return parameterDecorator ? parameterDecorator.apply(this, args) : null;
+                return parameterDecorator ? parameterDecorator.apply(this, args) : throwError("This decorator is not allowed on parameter.");
             }
             if (typeof args[2] === null || !args[2].value) {
                 // for some reason, the typescript playground returns 3 arguments, not two.
                 // therefore we treat this behavior as well.
-                return propertyDecorator ? propertyDecorator.apply(this, args) : null;
+                return propertyDecorator ? propertyDecorator.apply(this, args) : throwError("This decorator is not allowed on property.");
             }
-            return methodDecorator ? methodDecorator.apply(this, args) : null;
+            return methodDecorator ? methodDecorator.apply(this, args) : throwError("This decorator is not allowed on method.");
         default:
             throw new Error("Decorators are not valid here!");
     }
