@@ -24,9 +24,9 @@
     
     "tasks": [
         {
-            "taskName": "pwd",
+            "taskName": "npm-install",
             //npm task name
-            "args": ["pwd"],
+            "args": ["npm-install"],
             "isBuildCommand": false,
             "isTestCommand": false,
             "isWatching": false,
