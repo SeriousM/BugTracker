@@ -15,7 +15,7 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 
 export interface IMetaImplementsProperty {
     name: string,
-    classConstructor: IMetaImplementsClassConstructor,
+    getClassConstructor: () => IMetaImplementsClassConstructor,
     isList: boolean,
     isPoco: boolean
 }
@@ -46,12 +46,12 @@ export function ImplementsClass(Class: Function) {
         args);
 }
 
-export function ImplementsModelList(Class: Function) {
-    return InternalImplementsModel(Class, true);
+export function ImplementsModelList(getClass: () => Function) {
+    return InternalImplementsModel(getClass, true);
 }
 
-export function ImplementsModel(Class: Function) {
-    return InternalImplementsModel(Class, false);
+export function ImplementsModel(getClass: () => Function) {
+    return InternalImplementsModel(getClass, false);
 }
 
 export function ImplementsPoco() {
@@ -64,7 +64,7 @@ export function ImplementsPoco() {
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
                 name: propertyKey,
-                classConstructor: null,
+                getClassConstructor: null,
                 isList: false,
                 isPoco: true
             };
@@ -76,7 +76,7 @@ export function ImplementsPoco() {
         args);
 }
 
-function InternalImplementsModel(Class: Function, isList: boolean) {
+function InternalImplementsModel(getClass: () => Function, isList: boolean) {
     return (...args: any[]) => getDecorator(
         null, 
         (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
@@ -86,7 +86,7 @@ function InternalImplementsModel(Class: Function, isList: boolean) {
             setMetaDataIfMissing(hasMetaImplements);
             hasMetaImplements.__metaImplements.properties[propertyKey] = {
                 name: propertyKey,
-                classConstructor: Class,
+                getClassConstructor: getClass,
                 isList: isList,
                 isPoco: false
             };

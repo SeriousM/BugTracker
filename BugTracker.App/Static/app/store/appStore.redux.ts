@@ -30,12 +30,12 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
 }
 
 function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
-    var propClass = <IMetaImplementsClassConstructor>propMeta.classConstructor;
+    var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     // create for each property on the object a propper model if possible
-    manipulateModel(propValue, propMeta.classConstructor);
+    manipulateModel(propValue, propMeta.getClassConstructor());
 
     // create an instance of the target model
     var model = Object.create(propClassProto);
