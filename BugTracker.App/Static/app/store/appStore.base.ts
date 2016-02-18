@@ -14,9 +14,9 @@ export class IReducerAppState {
 }
 
 export class AppState {
-    @ImplementsModel(CurrentUserState) public currentUser: CurrentUserState = new CurrentUserState();
-    @ImplementsModelList(UserModel) public users: List<UserModel> = List<UserModel>();
-    @ImplementsModelList(IssueModel) public issues: List<IssueModel> = List<IssueModel>();
+    @ImplementsModel(() => CurrentUserState) public currentUser: CurrentUserState = new CurrentUserState();
+    @ImplementsModelList(() => UserModel) public users: List<UserModel> = List<UserModel>();
+    @ImplementsModelList(() => IssueModel) public issues: List<IssueModel> = List<IssueModel>();
 
     constructor() { }
 }

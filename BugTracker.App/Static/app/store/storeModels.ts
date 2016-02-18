@@ -65,7 +65,7 @@ const CurrentUserStateRecord = Record(<ICurrentUserState>{
 @ImplementsClass(CurrentUserStateRecord)
 export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState {
     @ImplementsPoco() public isSet: boolean;
-    @ImplementsModel(UserModel) public user: UserModel;
+    @ImplementsModel(() => UserModel) public user: UserModel;
 
     public setUser(value?: UserModel): CurrentUserState {
         return <CurrentUserState>this.withMutations(map => {
