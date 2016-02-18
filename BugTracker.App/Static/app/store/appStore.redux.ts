@@ -1,6 +1,6 @@
 import { Iterable, List, Record } from 'immutable';
 import { AppState, IAction } from "./appStore.base";
-import { IHasMetaImplements, IMetaImplements, IMetaImplementsProperty } from "./storeModels.meta";
+import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty } from "./storeModels.meta";
 import { IObjectIndex } from "../utils/reflection";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;
@@ -29,26 +29,20 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     return storeEnhancers;
 }
 
-function createModelRecord(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
-    var propRecord = <Record.Class>propMeta.classConstructor.prototype.__metaImplements.classConstructor;
+function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
+    var propClass = <IMetaImplementsClassConstructor>propMeta.classConstructor;
+    var propClassProto = <IHasMetaImplements>propClass.prototype;
+    var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     // create for each property on the object a propper model if possible
     manipulateModel(propValue, propMeta.classConstructor);
 
-    function tempConstructor(...args: any[]) {
-        propRecord.apply(this, args);
-    }
-    tempConstructor.prototype = Object.create(propMeta.classConstructor.prototype);
-    tempConstructor.prototype.constructor = propRecord;
-
-    var newPropRecord = <IObjectIndex>(new tempConstructor(propValue));
-
-    // var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
-    // methodsToApply.forEach(methodName => {
-    //     newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
-    // });
-
-    return newPropRecord;
+    // create an instance of the target model
+    var model = Object.create(propClassProto);
+    // run the record-method on the model to populate it with the existing values from the poco
+    propRecord.call(model, propValue);
+    
+    return model;
 }
 
 export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: Function): void {
@@ -74,7 +68,6 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
 
         var currentPropValue = currentObject[currentProp];
         if (currentPropValue == null ||
-            propMeta.isPoco ||
             Iterable.isIterable(currentPropValue)) {
             continue;
         }
@@ -88,12 +81,12 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
 
         if (propMeta.isList) {
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
-                return createModelRecord(currentProp, currentArrayValue, propMeta);
+                return createModel(currentProp, currentArrayValue, propMeta);
             });
             currentObject[currentProp] = List(newArray);
         }
         else {
-            currentObject[currentProp] = createModelRecord(currentProp, currentPropValue, propMeta);
+            currentObject[currentProp] = createModel(currentProp, currentPropValue, propMeta);
         }
     }
 }
