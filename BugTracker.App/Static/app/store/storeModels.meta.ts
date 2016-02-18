@@ -46,7 +46,7 @@ export function ImplementsClass(Class: Function) {
         args);
 }
 
-export function ImplementsModelList(getClass: () => Function) {
+export function ImplementsModels(getClass: () => Function) {
     return InternalImplementsModel(getClass, true);
 }
 

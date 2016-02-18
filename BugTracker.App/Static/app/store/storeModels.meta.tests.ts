@@ -2,7 +2,7 @@ import { List, Record } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
 
-import { ImplementsClass, ImplementsModel, ImplementsModelList, ImplementsPoco } from "./storeModels.meta";
+import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./storeModels.meta";
 import { manipulateModel } from "./appStore.redux";
 
 export class StoreModelsMetaTests extends TestRunnerBase {
@@ -161,7 +161,7 @@ const LevelOneModelRecord = Record(<ILevelOneModel>{
 class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
     @ImplementsPoco() public name: string;
     @ImplementsModel(() => LevelOneModel) public model: LevelOneModel;
-    @ImplementsModelList(() => LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModels(() => LevelOneModel) public models: List<LevelOneModel>;
 
     public getName() {
         return this.name;
@@ -230,6 +230,6 @@ class PetModel extends PetModelRecord implements IPetModel{
 
 class TestAppState {
     @ImplementsModel(() => LevelOneModel) public model: LevelOneModel;
-    @ImplementsModelList(() => LevelOneModel) public models: List<LevelOneModel>;
+    @ImplementsModels(() => LevelOneModel) public models: List<LevelOneModel>;
     @ImplementsModel(() => UserModel) public user: UserModel;
 }

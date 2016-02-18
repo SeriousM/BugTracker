@@ -1,5 +1,5 @@
 import { Record } from 'immutable';
-import { ImplementsClass, ImplementsModel, ImplementsModelList, ImplementsPoco } from './storeModels.meta';
+import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from './storeModels.meta';
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
