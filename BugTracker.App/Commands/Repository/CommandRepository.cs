@@ -22,6 +22,13 @@ namespace BugTracker.App.Commands.Repository
             return command;
         }
 
+        public CommandBase<User> RegisterNewUserIfUnknown(RegisterUserModel registrationModel)
+        {
+            var command = this.commandFactory.CreateCommand<RegisterNewUserIfUnknownCommand, User>();
+            command.Initialize(registrationModel);
+            return command;
+        }
+
         public CommandBase<Issue> CreateNewIssue(IssueModel issueModel)
         {
             var command = this.commandFactory.CreateCommand<CreateNewIssueCommand, Issue>();

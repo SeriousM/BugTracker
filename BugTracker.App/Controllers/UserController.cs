@@ -42,6 +42,23 @@ namespace BugTracker.App.Controllers
             return response;
         }
 
+        [HttpPut]
+        public async Task<HttpResponseMessage> RegisterIfUnknown(RegisterUserModel registrationModel)
+        {
+            HttpResponseMessage response;
+            if (registrationModel == null)
+            {
+                response = this.CreateErrorResponse("The registrationModel is not set.", HttpStatusCode.BadRequest);
+                return response;
+            }
+
+            var registerNewUserCommand = this.commandRepository.RegisterNewUserIfUnknown(registrationModel);
+            var commandResult = await this.commandExecutor.ExecuteAsync(registerNewUserCommand);
+
+            response = this.CreateResponseFromCommandResult(commandResult);
+            return response;
+        }
+
         [HttpGet]
         public HttpResponseMessage Get(Guid id)
         {
