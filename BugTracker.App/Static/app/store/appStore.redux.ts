@@ -28,7 +28,7 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     return storeEnhancers;
 }
 
-function createModelRecord(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
+function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
     var propClass = <IMetaImplementsClassConstructor>propMeta.classConstructor;
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
@@ -36,22 +36,12 @@ function createModelRecord(propName: string, propValue: any, propMeta: IMetaImpl
     // create for each property on the object a propper model if possible
     manipulateModel(propValue, propMeta.classConstructor);
 
-    function FixedRecord(...args: any[]) {
-        propRecord.apply(this, args);
-    }
-    FixedRecord.prototype = Object.create(propClassProto);
-    FixedRecord.prototype.constructor = propClass;
+    // create an instance of the target model
+    var model = Object.create(propClassProto);
+    // run the record-method on the model to populate it with the existing values from the poco
+    propRecord.call(model, propValue);
     
-    // the FixRecord will call the Record method on itself, will look like a *Model and it's constructor is the Record() method
-
-    var newPropRecord = <IObjectIndex>(new FixedRecord(propValue));
-
-    // var methodsToApply: Array<string> = propMeta.classConstructor.prototype.__metaImplements.methods;
-    // methodsToApply.forEach(methodName => {
-    //     newPropRecord[methodName] = propMeta.classConstructor.prototype[methodName];
-    // });
-
-    return newPropRecord;
+    return model;
 }
 
 export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: Function): void {
@@ -77,7 +67,6 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
 
         var currentPropValue = currentObject[currentProp];
         if (currentPropValue == null ||
-            propMeta.isPoco ||
             Iterable.isIterable(currentPropValue)) {
             continue;
         }
@@ -91,12 +80,12 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
 
         if (propMeta.isList) {
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
-                return createModelRecord(currentProp, currentArrayValue, propMeta);
+                return createModel(currentProp, currentArrayValue, propMeta);
             });
             currentObject[currentProp] = List(newArray);
         }
         else {
-            currentObject[currentProp] = createModelRecord(currentProp, currentPropValue, propMeta);
+            currentObject[currentProp] = createModel(currentProp, currentPropValue, propMeta);
         }
     }
 }
