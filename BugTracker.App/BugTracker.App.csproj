@@ -159,24 +159,6 @@
       <Name>BugTracker.Shared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Static\app\models\IssueModel.ts">
-      <DependentUpon>GernateServerModels.tst</DependentUpon>
-      <CustomToolNamespace>Models\IssueModel.cs</CustomToolNamespace>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\models\PermissionModel.ts">
-      <DependentUpon>GernateServerModels.tst</DependentUpon>
-      <CustomToolNamespace>Models\PermissionModel.cs</CustomToolNamespace>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\models\RegisterUserModel.ts">
-      <DependentUpon>GernateServerModels.tst</DependentUpon>
-      <CustomToolNamespace>Models\RegisterUserModel.cs</CustomToolNamespace>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\models\UserModel.ts">
-      <DependentUpon>GernateServerModels.tst</DependentUpon>
-      <CustomToolNamespace>Models\UserModel.cs</CustomToolNamespace>
-    </TypeScriptCompile>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
