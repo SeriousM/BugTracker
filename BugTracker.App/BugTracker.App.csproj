@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\TypescriptListType.cs" />
     <Compile Include="Commands\CreateNewIssueCommand.cs" />
     <Compile Include="Commands\RegisterNewUserCommand.cs" />
     <Compile Include="Commands\RegisterNewUserIfUnknownCommand.cs" />
@@ -124,6 +125,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\PermissionModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +135,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
+    <Content Include="Static\app\models\GernateServerModels.tst" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -141,7 +145,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Static\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -155,6 +158,24 @@
       <Project>{3C061E8F-3E9D-4C30-969A-5E4ACFA83E1C}</Project>
       <Name>BugTracker.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Static\app\models\IssueModel.ts">
+      <DependentUpon>GernateServerModels.tst</DependentUpon>
+      <CustomToolNamespace>Models\IssueModel.cs</CustomToolNamespace>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\models\PermissionModel.ts">
+      <DependentUpon>GernateServerModels.tst</DependentUpon>
+      <CustomToolNamespace>Models\PermissionModel.cs</CustomToolNamespace>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\models\RegisterUserModel.ts">
+      <DependentUpon>GernateServerModels.tst</DependentUpon>
+      <CustomToolNamespace>Models\RegisterUserModel.cs</CustomToolNamespace>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\models\UserModel.ts">
+      <DependentUpon>GernateServerModels.tst</DependentUpon>
+      <CustomToolNamespace>Models\UserModel.cs</CustomToolNamespace>
+    </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
