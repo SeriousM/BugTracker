@@ -1,6 +1,12 @@
 import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
 import { IHasMetaTests } from "./meta";
 
+function getModelName(Class: Function) {
+    var funcNameRegex = /function (.{1,})\(/;
+    var results = (funcNameRegex).exec(Class.toString());
+    return (results && results.length > 1) ? results[1] : "";
+};
+
 export class TestRunner extends TestRunnerBase {
 
     constructor(private testFixtures: TestRunnerBase[]) {
@@ -15,7 +21,18 @@ export class TestRunner extends TestRunnerBase {
     }
 
     public execute(fixtureFilter: string, methodFilter: string): ITestResults {
-        var allTestResults: TestResult[] = this.testFixtures.map((testRunner: TestRunner) => {
+        this.testFixtures.forEach((testRunner: TestRunnerBase) => {
+            var metaTests = (<IHasMetaTests>testRunner.constructor.prototype).__metaTests;
+            
+            if (!metaTests || !metaTests.isTestFixture){
+                throw new Error(`Object '${getModelName(testRunner.constructor)}' is not marked with @TestFixture.`);
+            }
+            if (!(testRunner instanceof TestRunnerBase)){
+                throw new Error(`Object '${getModelName(testRunner.constructor)}' is not a TestRunnerBase.`);
+            }
+        });
+        
+        var allTestResults: TestResult[] = this.testFixtures.map((testRunner: TestRunnerBase) => {
 
             var testFixtureName: string = testRunner.constructor.toString().match(/\w+/g)[1];
 
@@ -23,7 +40,8 @@ export class TestRunner extends TestRunnerBase {
                 return [];
             }
 
-            var testMethods: string[] = testRunner.constructor.prototype.__metaTests.tests;
+            var metaTests = (<IHasMetaTests>testRunner.constructor.prototype).__metaTests;
+            var testMethods: string[] = metaTests.tests;
 
             var testResults: TestResult[] = testMethods.map(testMethod => {
                 // cast to any to bypass the typechecking

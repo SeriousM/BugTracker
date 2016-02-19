@@ -6,27 +6,25 @@ export interface IHasMetaTests {
 }
 
 export interface IMetaTests {
+    isTestFixture: boolean;
     tests: string[];
 }
 
 function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaTests) {
     if (!maybeHasMetaImplements.__metaTests) {
         maybeHasMetaImplements.__metaTests = {
+            isTestFixture: false,
             tests: []
         }
     }
 }
 
-function getModelName(Class: Function) {
-    var funcNameRegex = /function (.{1,})\(/;
-    var results = (funcNameRegex).exec(Class.toString());
-    return (results && results.length > 1) ? results[1] : "";
-};
-
 export function TestFixture(constructor: Function): void {
 
     var hasMetaTests: IHasMetaTests = constructor.prototype;
     setMetaDataIfMissing(hasMetaTests);
+    
+    hasMetaTests.__metaTests.isTestFixture = true;
 
     return;
 }
