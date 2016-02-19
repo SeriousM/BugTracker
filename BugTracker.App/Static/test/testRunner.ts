@@ -42,6 +42,9 @@ export class TestRunner extends TestRunnerBase {
 
             var metaTests = (<IHasMetaTests>testRunner.constructor.prototype).__metaTests;
             var testMethods: string[] = metaTests.tests;
+            if (methodFilter != null){
+                testMethods = testMethods.filter(testName => testName == methodFilter);
+            }
 
             var testResults: TestResult[] = testMethods.map(testMethod => {
                 // cast to any to bypass the typechecking
