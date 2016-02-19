@@ -1,50 +1,38 @@
 import { Iterable, Record } from 'immutable';
-import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction } from "./meta";
+import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction, ClassConstructorGetter, getIMetaImplementsProperty } from "./meta";
 import { IObjectIndex } from "../reflection";
 
-export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: T, currentObject: Object): T {
-    var propMeta: IMetaImplementsProperty = {
-        name: "",
-        getClassConstructor: () => blueprintConstructor,
-        isList: false,
-        isPoco: false,
-        iterableFunction: null
-    }
-    var model = createModelOrModels("", currentObject, propMeta);
+export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: ClassConstructorGetter, currentObject: Object): T {
+    var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, null);
+    var model = createModelOrModels(currentObject, propMeta);
     return model;
 }
 
-export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: T, currentArray: Object[]): T {
-    var propMeta: IMetaImplementsProperty = {
-        name: "",
-        getClassConstructor: () => blueprintConstructor,
-        isList: true,
-        isPoco: false,
-        iterableFunction: iterableFunction
-    }
-    var model = createModelOrModels("", currentArray, propMeta);
+export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: ClassConstructorGetter, currentArray: Object[]): T {
+    var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, iterableFunction);
+    var model = createModelOrModels(currentArray, propMeta);
     return model;
 }
 
-function createModelOrModels(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
+function createModelOrModels(propValue: any, propMeta: IMetaImplementsProperty) {
     var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     if (propMeta.isList) {
         var newArray = (<any[]>propValue).map(currentArrayValue => {
-            return createModel(propName, currentArrayValue, propMeta);
+            return createModel(currentArrayValue, propMeta);
         });
         var newList = propMeta.iterableFunction(newArray);
         return newList;
     }
     else {
-        var model = createModel(propName, propValue, propMeta);
+        var model = createModel(propValue, propMeta);
         return model;
     }
 }
 
-function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
+function createModel(propValue: any, propMeta: IMetaImplementsProperty) {
     var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
@@ -94,6 +82,6 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
             throw new Error(`Property '${currentProp}' isn't an array but should be one regarding to the blueprint.`);
         }
 
-        currentObject[currentProp] = createModelOrModels(currentProp, currentPropValue, propMeta);
+        currentObject[currentProp] = createModelOrModels(currentPropValue, propMeta);
     }
 }

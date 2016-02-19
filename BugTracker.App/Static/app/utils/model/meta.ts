@@ -11,14 +11,23 @@ export interface IMetaImplements {
 }
 
 export interface IMetaImplementsClassConstructor extends Function, IHasMetaImplements {
-
 }
 
 export type IterableFunction = (...args: any[]) => Iterable<any, any>;
+export type ClassConstructorGetter = (...args: any[]) => IMetaImplementsClassConstructor;
+
+export function getIMetaImplementsProperty(blueprintConstructor: ClassConstructorGetter, isPoco: boolean, iterableFunction: IterableFunction): IMetaImplementsProperty {
+    var propMeta: IMetaImplementsProperty = {
+        getClassConstructor: blueprintConstructor,
+        isList: iterableFunction != null,
+        isPoco: isPoco,
+        iterableFunction: iterableFunction
+    }
+    return propMeta;
+}
 
 export interface IMetaImplementsProperty {
-    name: string,
-    getClassConstructor: () => IMetaImplementsClassConstructor,
+    getClassConstructor: ClassConstructorGetter,
     isList: boolean,
     isPoco: boolean,
     iterableFunction: IterableFunction
@@ -66,13 +75,7 @@ export function ImplementsPoco() {
         
             var hasMetaImplements: IHasMetaImplements = prototype;
             setMetaDataIfMissing(hasMetaImplements);
-            hasMetaImplements.__metaImplements.properties[propertyKey] = {
-                name: propertyKey,
-                getClassConstructor: null,
-                isList: false,
-                isPoco: true,
-                iterableFunction: null
-            };
+            hasMetaImplements.__metaImplements.properties[propertyKey] = getIMetaImplementsProperty(null, true, null);
 
             return;
         },
@@ -81,7 +84,7 @@ export function ImplementsPoco() {
         args);
 }
 
-function InternalImplementsModel(getClass: () => Function, iterableFunction: IterableFunction = null) {
+function InternalImplementsModel(getClass: ClassConstructorGetter, iterableFunction: IterableFunction = null) {
     return (...args: any[]) => getDecorator(
         null,
         (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
@@ -89,13 +92,7 @@ function InternalImplementsModel(getClass: () => Function, iterableFunction: Ite
         
             var hasMetaImplements: IHasMetaImplements = prototype;
             setMetaDataIfMissing(hasMetaImplements);
-            hasMetaImplements.__metaImplements.properties[propertyKey] = {
-                name: propertyKey,
-                getClassConstructor: getClass,
-                isList: iterableFunction != null,
-                isPoco: false,
-                iterableFunction: iterableFunction
-            };
+            hasMetaImplements.__metaImplements.properties[propertyKey] = getIMetaImplementsProperty(getClass, false, iterableFunction);
 
             return;
         }, (prototype: Function, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<any>): TypedPropertyDescriptor<any> | void => {
