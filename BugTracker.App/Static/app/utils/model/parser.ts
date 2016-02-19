@@ -32,7 +32,7 @@ function createModelOrModels(propName: string, propValue: any, propMeta: IMetaIm
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     if (propMeta.isList) {
-        var newArray = (<Array<any>>propValue).map(currentArrayValue => {
+        var newArray = (<any[]>propValue).map(currentArrayValue => {
             return createModel(propName, currentArrayValue, propMeta);
         });
         var newList = propMeta.iterableFunction(newArray);

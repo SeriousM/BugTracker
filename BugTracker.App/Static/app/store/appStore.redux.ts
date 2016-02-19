@@ -29,24 +29,26 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
 
 type ReducerFunction = (state: any, action: IAction<any>) => ReducerFunction;
 
-const fixReduxDevToolsState = (BlueprintObject: Function) => (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
+function fixReduxDevToolsState(BlueprintObject: Function) { 
+    return (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
 
-    const reduxInit: string = "@@redux/INIT";
-    const reduxDevToolsInit: string = "@@INIT";
+        const reduxInit: string = "@@redux/INIT";
+        const reduxDevToolsInit: string = "@@INIT";
 
-    var newReducer = (state: any, action: IAction<any>) => {
-        // reduxDevTools will send the init-action multiple times depending on the session setup and during session reset
-        // therefore we need to correct the state as often as needed
-        
-        // the redux init-action on the other hand is not important because it will only send once the configured initial state
-        if (action.type == reduxDevToolsInit) {
-            manipulateModel(state, BlueprintObject);
-        }
+        function newReducer(state: any, action: IAction<any>) {
+            // reduxDevTools will send the init-action multiple times depending on the session setup and during session reset
+            // therefore we need to correct the state as often as needed
+            
+            // the redux init-action on the other hand is not important because it will only send once the configured initial state
+            if (action.type == reduxDevToolsInit) {
+                manipulateModel(state, BlueprintObject);
+            }
 
-        return reducer(state, action);
-    };
+            return reducer(state, action);
+        };
 
-    const nextStore = next(newReducer, initialState, enhancer);
+        const nextStore = next(newReducer, initialState, enhancer);
 
-    return nextStore;
-};
+        return nextStore;
+    }
+}

@@ -2,7 +2,7 @@ import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
 
 export class TestRunner extends TestRunnerBase {
 
-    constructor(private testFixtures: Array<TestRunnerBase>) {
+    constructor(private testFixtures: TestRunnerBase[]) {
         super();
     }
 
@@ -19,7 +19,7 @@ export class TestRunner extends TestRunnerBase {
 
 
     public execute(fixtureFilter: string, methodFilter: string): ITestResults {
-        var allTestResults: Array<TestResult> = this.testFixtures.map((testRunner: TestRunner) => {
+        var allTestResults: TestResult[] = this.testFixtures.map((testRunner: TestRunner) => {
 
             var testFixtureName: string = testRunner.constructor.toString().match(/\w+/g)[1];
 
@@ -27,7 +27,7 @@ export class TestRunner extends TestRunnerBase {
                 return [];
             }
 
-            var testMethods: Array<string> = [];
+            var testMethods: string[] = [];
             for (var property in testRunner) {
                 if (!this.isTestMethod(testRunner, property)) {
                     continue;
@@ -37,7 +37,7 @@ export class TestRunner extends TestRunnerBase {
                 }
             }
 
-            var testResults: Array<TestResult> = testMethods.map(testMethod => {
+            var testResults: TestResult[] = testMethods.map(testMethod => {
                 // cast to any to bypass the typechecking
                 var method = <Function>(<any>testRunner)[testMethod];
 

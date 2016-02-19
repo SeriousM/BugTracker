@@ -5,8 +5,8 @@ import { IssueStoreReducersTests } from "../app/features/issues/store/issueStore
 import { CurrentUserStoreReducersTests } from "../app/features/currentUser/store/currentUserStoreReducers.tests";
 import { ModelParserTests } from "../app/utils/model/parser.tests";
 
-export const getTestFixtures = (): Array<TestRunnerBase> => {
-    return <Array<TestRunnerBase>>[
+export function getTestFixtures(): TestRunnerBase[] {
+    return <TestRunnerBase[]>[
         new UserStoreReducersTests(),
         new IssueStoreReducersTests(),
         new CurrentUserStoreReducersTests(),

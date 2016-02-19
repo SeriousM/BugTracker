@@ -39,7 +39,7 @@ export class ModelParserTests extends TestRunnerBase {
         expect(modifiedLocalStorageState.model.getName()).toEqual("Bob");
     }
     emptyListOfModels() {
-        var localStorageState = { models: <Array<any>>[] };
+        var localStorageState = { models: <any[]>[] };
         var expectedCorrectedState = { models: List<LevelOneModel>() };
         manipulateModel(localStorageState, TestAppState);
 
