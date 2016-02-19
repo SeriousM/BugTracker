@@ -1,7 +1,7 @@
 import { List } from 'immutable';
 
 import { UserModel, IssueModel, CurrentUserState } from './storeModels';
-import { ImplementsModel, ImplementsModels } from './storeModels.meta';
+import { ImplementsModel, ImplementsModels } from '../utils/model/meta';
 
 export interface IAction<T> {
     type: T;

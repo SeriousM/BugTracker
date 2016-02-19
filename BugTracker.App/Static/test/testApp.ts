@@ -37,23 +37,23 @@ export class TestApp {
 
         var fixtureFilter = this.getParameterByName("fixture");
         var methodFilter = this.getParameterByName("method");
-        
+
         this.isFilteredView = fixtureFilter != null || methodFilter != null;
 
         this.testResults = testRunner.execute(fixtureFilter, methodFilter);
-        
+
         this.updateDocumentTitle();
     }
-    private getTitleStatus(){
-        if (this.testResults.failed.length == 0){
+    private getTitleStatus() {
+        if (this.testResults.failed.length == 0) {
             return "✔✔";
         }
-        if (this.testResults.success.length != 0 && this.testResults.failed.length != 0){
+        if (this.testResults.success.length != 0 && this.testResults.failed.length != 0) {
             return "✔✖";
         }
         return "✖✖";
     }
-    private updateDocumentTitle(){
+    private updateDocumentTitle() {
         document.title = this.getTitleStatus() + " - " + document.title;
     }
     private getParameterByName(name: string, url?: string) {

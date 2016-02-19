@@ -17,7 +17,7 @@ export class TestResult {
     }
 }
 export interface ITestResults {
-    all: Array<TestResult>;
-    success: Array<TestResult>;
-    failed: Array<TestResult>;
+    all: TestResult[];
+    success: TestResult[];
+    failed: TestResult[];
 }

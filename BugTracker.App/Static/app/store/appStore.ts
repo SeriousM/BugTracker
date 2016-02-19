@@ -10,7 +10,7 @@ import { currentUserStoreReducer } from "../features/currentUser/store/currentus
 import { IReducerAppState, AppState } from "./appStore.base";
 import { wrapMiddlewareWithRedux } from "./appStore.redux";
 
-export const appStoreFactory = () => {
+export function appStoreFactory() {
     const logger = createLogger({
         // this transforms the state into a representable object. important to convert immutables with "object.toJS()".
         stateTransformer: (state: AppState) => {

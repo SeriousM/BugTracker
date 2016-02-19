@@ -1,11 +1,11 @@
 import { List, Record, Stack } from 'immutable';
 
-import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
+import { expect, deepFreeze, TestRunnerBase } from "../../../test/tests.base";
 
-import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./storeModels.meta";
-import { manipulateModel } from "./appStore.redux";
+import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./meta";
+import { manipulateModel, createModelFromPoco, createModelsFromPoco } from "./parser";
 
-export class StoreModelsMetaTests extends TestRunnerBase {
+export class ModelParserTests extends TestRunnerBase {
     empty() {
         var localStorageState = {};
         var expectedCorrectedState = {};
@@ -39,7 +39,7 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         expect(modifiedLocalStorageState.model.getName()).toEqual("Bob");
     }
     emptyListOfModels() {
-        var localStorageState = { models: <Array<any>>[] };
+        var localStorageState = { models: <any[]>[] };
         var expectedCorrectedState = { models: List<LevelOneModel>() };
         manipulateModel(localStorageState, TestAppState);
 
@@ -154,6 +154,24 @@ export class StoreModelsMetaTests extends TestRunnerBase {
         
         expect(modifiedLocalStorageState.userStack.peek().name).toEqual("Bob");
         expect(modifiedLocalStorageState.userStack.pop().peek().name).toEqual("Sally");
+    }
+    simulateWebApiResponse_transformSingleUser(){
+        var json = `{"name":"Bob"}`;
+        var userResponsePoco = JSON.parse(json);
+        var expectedUserModel = new UserModel("Bob");
+        
+        var modifiedUserPoco = createModelFromPoco(UserModel, userResponsePoco);
+        
+        expect(modifiedUserPoco).toEqual(expectedUserModel);
+    }
+    simulateWebApiResponse_transformArrayOfUsers(){
+        var json = `[{"name":"Bob"},{"name":"Sally"}]`;
+        var userResponsePoco = JSON.parse(json);
+        var expectedUserModel = List<UserModel>([new UserModel("Bob"),new UserModel("Sally")]);
+        
+        var modifiedUserPoco = createModelsFromPoco(List, UserModel, userResponsePoco);
+        
+        expect(modifiedUserPoco).toEqual(expectedUserModel);
     }
 }
 
