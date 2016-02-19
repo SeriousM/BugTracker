@@ -63,6 +63,37 @@ namespace BugTracker.Tests.App.Controllers
         }
 
         [Test]
+        public async void RegisterIfUnknown_WithNullModel_ReturnsBadRequest()
+        {
+            // arrange
+            RegisterUserModel registrationModel = null;
+
+            // act
+            var response = await this.controller.RegisterIfUnknown(registrationModel);
+
+            // assert
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+        }
+
+        [Test]
+        public async void RegisterIfUnknown_WithValidModel_ReturnsOk()
+        {
+            // arrange
+            this.commandRepositoryMock
+                .Setup(x => x.RegisterNewUserIfUnknown(It.IsNotNull<RegisterUserModel>()))
+                .Returns(this.CreateCommandMock(new CommandResult<User>(true, new User())));
+            RegisterUserModel registrationModel = new RegisterUserModel();
+
+            // act
+            var response = await this.controller.RegisterIfUnknown(registrationModel);
+
+            // assert
+            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            User createdUser;
+            Assert.IsTrue(response.TryGetContentValue(out createdUser));
+        }
+
+        [Test]
         public void Get_WithInvalidId_ReturnsBadRequest()
         {
             // arrange

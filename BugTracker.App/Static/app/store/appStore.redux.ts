@@ -30,12 +30,12 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
 }
 
 function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
-    var propClass = <IMetaImplementsClassConstructor>propMeta.classConstructor;
+    var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     // create for each property on the object a propper model if possible
-    manipulateModel(propValue, propMeta.classConstructor);
+    manipulateModel(propValue, propMeta.getClassConstructor());
 
     // create an instance of the target model
     var model = Object.create(propClassProto);
@@ -83,7 +83,7 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
             var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
                 return createModel(currentProp, currentArrayValue, propMeta);
             });
-            currentObject[currentProp] = List(newArray);
+            currentObject[currentProp] = propMeta.iterableFunction(newArray);
         }
         else {
             currentObject[currentProp] = createModel(currentProp, currentPropValue, propMeta);

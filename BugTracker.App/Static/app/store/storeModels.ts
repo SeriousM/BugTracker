@@ -1,5 +1,5 @@
 import { Record } from 'immutable';
-import { ImplementsClass, ImplementsModel, ImplementsModelList, ImplementsPoco } from './storeModels.meta';
+import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from './storeModels.meta';
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
@@ -65,7 +65,7 @@ const CurrentUserStateRecord = Record(<ICurrentUserState>{
 @ImplementsClass(CurrentUserStateRecord)
 export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState {
     @ImplementsPoco() public isSet: boolean;
-    @ImplementsModel(UserModel) public user: UserModel;
+    @ImplementsModel(() => UserModel) public user: UserModel;
 
     public setUser(value?: UserModel): CurrentUserState {
         return <CurrentUserState>this.withMutations(map => {

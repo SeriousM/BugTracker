@@ -9,12 +9,13 @@
   },
   "version": "1.0.0",
   "scripts": {
+    "npm-install": "npm install",
     "pwd": "echo %cd%",
     "tsc": "tsc | findstr /C:\"Static\/\"",
     "tscw": "tsc -w",
     "typings": "typings install",
     "liveserver": "live-server --open=static --ignorePattern=\".*\\.(ts|map)\"",
-    "start-dev": "npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\""
+    "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\""
   },
   "engines": {
       "node" : ">=4.0.0",
@@ -35,7 +36,8 @@
     "angular2-redux-store": "1.2.0",
     "redux-logger": "2.5.2",
     "immutable": "3.7.6",
-    "reselect": "2.0.3"
+    "reselect": "2.0.3",
+    "crypto": "0.0.3"
   },
   "devDependencies": {
     "concurrently": "1.0.0",
