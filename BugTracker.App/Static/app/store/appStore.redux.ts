@@ -1,6 +1,6 @@
 import { Iterable, List, Record } from 'immutable';
 import { AppState, IAction } from "./appStore.base";
-import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty } from "./storeModels.meta";
+import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction } from "./storeModels.meta";
 import { IObjectIndex } from "../utils/reflection";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;
@@ -29,11 +29,53 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     return storeEnhancers;
 }
 
-function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
+export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: T, currentObject: Object): T {
+    var propMeta: IMetaImplementsProperty = {
+        name: "",
+        getClassConstructor: () => blueprintConstructor,
+        isList: false,
+        isPoco: false,
+        iterableFunction: null
+    }
+    var model = createModelOrModels("", currentObject, propMeta);
+    return model;
+}
+
+export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: T, currentArray: Object[]): T {
+    var propMeta: IMetaImplementsProperty = {
+        name: "",
+        getClassConstructor: () => blueprintConstructor,
+        isList: true,
+        isPoco: false,
+        iterableFunction: iterableFunction
+    }
+    var model = createModelOrModels("", currentArray, propMeta);
+    return model;
+}
+
+function createModelOrModels(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
     var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
+    if (propMeta.isList) {
+        var newArray = (<Array<any>>propValue).map(currentArrayValue => {
+            return createModel(propName, currentArrayValue, propMeta);
+        });
+        var newList = propMeta.iterableFunction(newArray);
+        return newList;
+    }
+    else {
+        var model = createModel(propName, propValue, propMeta);
+        return model;
+    }
+}
+
+function createModel(propName: string, propValue: any, propMeta: IMetaImplementsProperty) {
+    var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
+    var propClassProto = <IHasMetaImplements>propClass.prototype;
+    var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
+    
     // create for each property on the object a propper model if possible
     manipulateModel(propValue, propMeta.getClassConstructor());
 
@@ -41,7 +83,7 @@ function createModel(propName: string, propValue: any, propMeta: IMetaImplements
     var model = Object.create(propClassProto);
     // run the record-method on the model to populate it with the existing values from the poco
     propRecord.call(model, propValue);
-    
+
     return model;
 }
 
@@ -79,15 +121,7 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
             throw new Error(`Property '${currentProp}' isn't an array but should be one regarding to the blueprint.`);
         }
 
-        if (propMeta.isList) {
-            var newArray = (<Array<any>>currentPropValue).map(currentArrayValue => {
-                return createModel(currentProp, currentArrayValue, propMeta);
-            });
-            currentObject[currentProp] = propMeta.iterableFunction(newArray);
-        }
-        else {
-            currentObject[currentProp] = createModel(currentProp, currentPropValue, propMeta);
-        }
+        currentObject[currentProp] = createModelOrModels(currentProp, currentPropValue, propMeta);
     }
 }
 

@@ -14,7 +14,7 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 
 }
 
-type IterableFunction = (...args:any[]) => Iterable<any, any>;
+export type IterableFunction = (...args:any[]) => Iterable<any, any>;
 
 export interface IMetaImplementsProperty {
     name: string,
