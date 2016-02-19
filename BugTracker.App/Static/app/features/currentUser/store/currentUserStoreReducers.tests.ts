@@ -1,12 +1,13 @@
-import { expect, deepFreeze, TestRunnerBase } from "../../../../test/tests.base";
+import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../../test/tests.base";
 import { IAction, AppState } from "../../../store/appStore.base";
 import { UserModel, CurrentUserState } from "../../../store/storeModels";
 
 import { currentUserStoreReducer } from "./currentUserStoreReducers";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction } from "./currentUserStoreActions";
 
+@TestFixture
 export class CurrentUserStoreReducersTests extends TestRunnerBase {
-    initialSetCurrentUser_works() {
+    @Test initialSetCurrentUser_works() {
         var beforeState = new CurrentUserState();
         var afterState = new CurrentUserState(new UserModel("Bob"));
 
@@ -16,7 +17,7 @@ export class CurrentUserStoreReducersTests extends TestRunnerBase {
 
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    replaceCurrentUser_works() {
+    @Test replaceCurrentUser_works() {
         var beforeState = new CurrentUserState(new UserModel("Bob"));
         var afterState = new CurrentUserState(new UserModel("Sally"));
 
@@ -27,7 +28,7 @@ export class CurrentUserStoreReducersTests extends TestRunnerBase {
 
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    removeCurrentUser_works() {
+    @Test removeCurrentUser_works() {
         var beforeState = new CurrentUserState(new UserModel("Bob"));
         var afterState = new CurrentUserState();
 
@@ -38,7 +39,7 @@ export class CurrentUserStoreReducersTests extends TestRunnerBase {
 
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    simulateReduxDevToolsStickySessionStateInit_nameIsSet() {
+    @Test simulateReduxDevToolsStickySessionStateInit_nameIsSet() {
         var beforeState = new CurrentUserState();
 
         // simulate the redux-devtools state set after page reload and sticky session

@@ -1,14 +1,15 @@
 import { List } from 'immutable';
 
-import { expect, deepFreeze, TestRunnerBase } from "../../../../test/tests.base";
+import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../../test/tests.base";
 import { IAction, AppState } from "../../../store/appStore.base";
 import { UserModel } from "../../../store/storeModels";
 
 import { userStoreReducer } from "./userStoreReducers";
 import { UserStoreActionTypes, UserStoreActions, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
+@TestFixture
 export class UserStoreReducersTests extends TestRunnerBase {
-    addNewUser_works() {
+    @Test addNewUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>()
             .push(new UserModel("Bob"));
@@ -20,7 +21,7 @@ export class UserStoreReducersTests extends TestRunnerBase {
 
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    removeUser_works() {
+    @Test removeUser_works() {
         var beforeState = List<UserModel>()
             .push(new UserModel("A"))
             .push(new UserModel("B"))
@@ -36,7 +37,7 @@ export class UserStoreReducersTests extends TestRunnerBase {
 
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
-    removeUnknownUser_works() {
+    @Test removeUnknownUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>();
 

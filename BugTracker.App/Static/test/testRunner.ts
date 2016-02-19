@@ -1,13 +1,10 @@
 import { TestRunnerBase, TestResult, ITestResults } from "./tests.base";
+import { IHasMetaTests } from "./meta";
 
 export class TestRunner extends TestRunnerBase {
 
     constructor(private testFixtures: TestRunnerBase[]) {
         super();
-    }
-
-    private isTestMethod(object: any, name: string): boolean {
-        return name != "constructor" && typeof object[name] == "function";
     }
 
     private getFailedTestResults(testResult: TestResult) {
@@ -16,7 +13,6 @@ export class TestRunner extends TestRunnerBase {
     private getSuccessTestResults(testResult: TestResult) {
         return testResult.successful;
     }
-
 
     public execute(fixtureFilter: string, methodFilter: string): ITestResults {
         var allTestResults: TestResult[] = this.testFixtures.map((testRunner: TestRunner) => {
@@ -27,15 +23,7 @@ export class TestRunner extends TestRunnerBase {
                 return [];
             }
 
-            var testMethods: string[] = [];
-            for (var property in testRunner) {
-                if (!this.isTestMethod(testRunner, property)) {
-                    continue;
-                }
-                if (methodFilter == null || property == methodFilter) {
-                    testMethods.push(property);
-                }
-            }
+            var testMethods: string[] = testRunner.constructor.prototype.__metaTests.tests;
 
             var testResults: TestResult[] = testMethods.map(testMethod => {
                 // cast to any to bypass the typechecking

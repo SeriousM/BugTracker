@@ -1,7 +1,11 @@
 export { default as expect } from "expect";
 export { default as deepFreeze } from "deep-freeze";
 
-export abstract class TestRunnerBase {
+import { IHasMetaTests, TestFixture, Test } from "./meta";
+
+export { TestFixture, Test };
+
+export abstract class TestRunnerBase implements IHasMetaTests {
 }
 export class TestResult {
     public successful: boolean;

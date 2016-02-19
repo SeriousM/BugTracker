@@ -1,12 +1,13 @@
 import { List, Record, Stack } from 'immutable';
 
-import { expect, deepFreeze, TestRunnerBase } from "../../../test/tests.base";
+import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../test/tests.base";
 
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./meta";
 import { manipulateModel, createModelFromPoco, createModelsFromPoco } from "./parser";
 
+@TestFixture
 export class ModelParserTests extends TestRunnerBase {
-    empty() {
+    @Test empty() {
         var localStorageState = {};
         var expectedCorrectedState = {};
         manipulateModel(localStorageState, TestAppState);
@@ -14,7 +15,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
     }
-    propertyValueOnRecordExists() {
+    @Test propertyValueOnRecordExists() {
         var localStorageState = { model: { name: "Bob" } };
         var expectedCorrectedState = { model: new LevelOneModel("Bob") };
         manipulateModel(localStorageState, TestAppState);
@@ -22,7 +23,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
     }
-    modelMethodOnRecordExists() {
+    @Test modelMethodOnRecordExists() {
         var localStorageState = { model: {} };
         var expectedCorrectedState = { model: new LevelOneModel() };
         manipulateModel(localStorageState, TestAppState);
@@ -30,7 +31,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.getName).toExist();
     }
-    modelMethodOnRecordReturnsCorrectValue() {
+    @Test modelMethodOnRecordReturnsCorrectValue() {
         var localStorageState = { model: { name: "Bob" } };
         var expectedCorrectedState = { model: new LevelOneModel("Bob") };
         manipulateModel(localStorageState, TestAppState);
@@ -38,7 +39,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.getName()).toEqual("Bob");
     }
-    emptyListOfModels() {
+    @Test emptyListOfModels() {
         var localStorageState = { models: <any[]>[] };
         var expectedCorrectedState = { models: List<LevelOneModel>() };
         manipulateModel(localStorageState, TestAppState);
@@ -47,7 +48,7 @@ export class ModelParserTests extends TestRunnerBase {
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
         expect(modifiedLocalStorageState.models.count()).toEqual(0);
     }
-    ignoreIterables() {
+    @Test ignoreIterables() {
         var localStorageState = { models: List<LevelOneModel>() };
         var expectedCorrectedState = { models: List<LevelOneModel>() };
         manipulateModel(localStorageState, TestAppState);
@@ -56,7 +57,7 @@ export class ModelParserTests extends TestRunnerBase {
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
         expect(modifiedLocalStorageState.models.count()).toEqual(0);
     }
-    listOfModels() {
+    @Test listOfModels() {
         var localStorageState = { models: [
             { name: "Bob" }, { name: "Sally" }
         ] };
@@ -70,7 +71,7 @@ export class ModelParserTests extends TestRunnerBase {
         expect(modifiedLocalStorageState.models.get(0).name).toEqual("Bob");
         expect(modifiedLocalStorageState.models.get(1).name).toEqual("Sally");
     }
-    propertyValueOnRecordInRecordExists(){
+    @Test propertyValueOnRecordInRecordExists(){
         var localStorageState = { model: { model: {name:"Bob"} } };
         var expectedCorrectedState = { model: new LevelOneModel(null, new LevelOneModel("Bob")) };
         manipulateModel(localStorageState, TestAppState);
@@ -78,7 +79,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
     }
-    modelMethodOnRecordInRecordExists() {
+    @Test modelMethodOnRecordInRecordExists() {
         var localStorageState = { model: { model: {name:"Bob"} } };
         var expectedCorrectedState = { model: new LevelOneModel(null, new LevelOneModel("Bob")) };
         manipulateModel(localStorageState, TestAppState);
@@ -86,7 +87,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.model.getName).toExist();
     }
-    modelMethodOnRecordInRecordReturnsCorrectValue() {
+    @Test modelMethodOnRecordInRecordReturnsCorrectValue() {
         var localStorageState = { model: { model: {name:"Bob"} } };
         var expectedCorrectedState = { model: new LevelOneModel(null, new LevelOneModel("Bob")) };
         manipulateModel(localStorageState, TestAppState);
@@ -94,7 +95,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.model.model.getName()).toEqual("Bob");
     }
-    listOfModelsInModels() {
+    @Test listOfModelsInModels() {
         var localStorageState = { models: [ { models: [
             { name: "Bob" }, { name: "Sally" }
         ] } ] };
@@ -108,7 +109,7 @@ export class ModelParserTests extends TestRunnerBase {
         expect(modifiedLocalStorageState.models.get(0).models.get(0).name).toEqual("Bob");
         expect(modifiedLocalStorageState.models.get(0).models.get(1).name).toEqual("Sally");
     }
-    propertyValueOnRecordInRecordWithDifferentModelsExists(){
+    @Test propertyValueOnRecordInRecordWithDifferentModelsExists(){
         var localStorageState = { user: { pet: { name: "Boy" } } };
         var expectedCorrectedState = { user: new UserModel(null, new PetModel("Boy")) };
         manipulateModel(localStorageState, TestAppState);
@@ -116,7 +117,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
     }
-    modelMethodOnRecordInRecordWithDifferentModelsReturnsCorrectValue(){
+    @Test modelMethodOnRecordInRecordWithDifferentModelsReturnsCorrectValue(){
         var localStorageState = { user: { pet: { name: "Boy" } } };
         var expectedCorrectedState = { user: new UserModel(null, new PetModel("Boy")) };
         manipulateModel(localStorageState, TestAppState);
@@ -124,7 +125,7 @@ export class ModelParserTests extends TestRunnerBase {
         var modifiedLocalStorageState = <TestAppState><any>localStorageState;
         expect(modifiedLocalStorageState.user.pet.bark()).toEqual("Boy");
     }
-    nestedModelReturningANewModelHasModelMethods(){
+    @Test nestedModelReturningANewModelHasModelMethods(){
         var localStorageState = { user: { pet: { name: "Boy" } } };
         var expectedCorrectedState = { user: new UserModel(null, new PetModel("Boy")) };
         manipulateModel(localStorageState, TestAppState);
@@ -133,7 +134,7 @@ export class ModelParserTests extends TestRunnerBase {
         var newModel = modifiedLocalStorageState.user.pet.transform("Puppy");
         expect(newModel.bark()).toEqual("Puppy");
     }
-    modifiedModelModifyingAPropertyReturningCorrectValue(){
+    @Test modifiedModelModifyingAPropertyReturningCorrectValue(){
         var localStorageState = { user:{name:"Bob"}};
         var expectedCorrectedState = { user:new UserModel("Bob")};
         manipulateModel(localStorageState, TestAppState);
@@ -144,7 +145,7 @@ export class ModelParserTests extends TestRunnerBase {
         
         expect(newUser.name).toEqual("Sally");
     }
-    creationOfStackWorks(){
+    @Test creationOfStackWorks(){
         var localStorageState = { userStack:[{name:"Bob"}, {name:"Sally"}]};
         var expectedCorrectedState = { userStack:Stack<UserModel>([new UserModel("Bob"), new UserModel("Sally")])};
         manipulateModel(localStorageState, TestAppState);
@@ -155,7 +156,7 @@ export class ModelParserTests extends TestRunnerBase {
         expect(modifiedLocalStorageState.userStack.peek().name).toEqual("Bob");
         expect(modifiedLocalStorageState.userStack.pop().peek().name).toEqual("Sally");
     }
-    simulateWebApiResponse_transformSingleUser(){
+    @Test simulateWebApiResponse_transformSingleUser(){
         var json = `{"name":"Bob"}`;
         var userResponsePoco = JSON.parse(json);
         var expectedUserModel = new UserModel("Bob");
@@ -164,7 +165,7 @@ export class ModelParserTests extends TestRunnerBase {
         
         expect(modifiedUserPoco).toEqual(expectedUserModel);
     }
-    simulateWebApiResponse_transformArrayOfUsers(){
+    @Test simulateWebApiResponse_transformArrayOfUsers(){
         var json = `[{"name":"Bob"},{"name":"Sally"}]`;
         var userResponsePoco = JSON.parse(json);
         var expectedUserModel = List<UserModel>([new UserModel("Bob"),new UserModel("Sally")]);
