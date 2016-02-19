@@ -33,6 +33,6 @@ export class App {
 }
 
 bootstrap(App, [
-    WebService, 
+    WebService,
     provide(AppStore, { useFactory: appStoreFactory })
 ]);

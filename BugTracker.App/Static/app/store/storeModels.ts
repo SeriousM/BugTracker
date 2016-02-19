@@ -1,17 +1,11 @@
 import { Record } from 'immutable';
-import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from './storeModels.meta';
+import { getVariableName } from '../utils/reflection';
+import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
 
 // http://blog.jhades.org/angular-2-application-architecture-building-flux-like-apps-using-redux-and-immutable-js-js/
 
 // Note: the properties have to be defined as normal public properties, not as public parameters for the constructor.
 // Otherwise you will face an "Cannot set on an immutable record." error.
-
-var varExtractor = new RegExp("return (?:[_]?this\.)?(.*);");
-function getVariableName<TResult>(name: () => TResult) {
-    var m = varExtractor.exec(name + "");
-    if (m == null) throw new Error("The function does not contain a statement matching 'return variableName;'");
-    return m[1];
-}
 
 interface IUserModel {
     name: string,

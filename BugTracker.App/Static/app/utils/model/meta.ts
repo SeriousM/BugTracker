@@ -1,5 +1,5 @@
 import { Iterable } from 'immutable';
-import { getDecorator, ITypedObjectIndex } from '../utils/reflection';
+import { getDecorator, ITypedObjectIndex } from '../reflection';
 
 export interface IHasMetaImplements {
     __metaImplements?: IMetaImplements;
@@ -14,7 +14,7 @@ export interface IMetaImplementsClassConstructor extends Function, IHasMetaImple
 
 }
 
-export type IterableFunction = (...args:any[]) => Iterable<any, any>;
+export type IterableFunction = (...args: any[]) => Iterable<any, any>;
 
 export interface IMetaImplementsProperty {
     name: string,
@@ -43,10 +43,10 @@ export function ImplementsClass(Class: Function) {
             hasMetaImplements.__metaImplements.classConstructor = Class;
 
             return;
-        }, 
-        null, 
-        null, 
-        null, 
+        },
+        null,
+        null,
+        null,
         args);
 }
 
@@ -83,7 +83,7 @@ export function ImplementsPoco() {
 
 function InternalImplementsModel(getClass: () => Function, iterableFunction: IterableFunction = null) {
     return (...args: any[]) => getDecorator(
-        null, 
+        null,
         (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
             // property
         

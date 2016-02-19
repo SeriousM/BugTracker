@@ -1,11 +1,11 @@
 import { List, Record, Stack } from 'immutable';
 
-import { expect, deepFreeze, TestRunnerBase } from "../../test/tests.base";
+import { expect, deepFreeze, TestRunnerBase } from "../../../test/tests.base";
 
-import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./storeModels.meta";
-import { manipulateModel, createModelFromPoco, createModelsFromPoco } from "./appStore.redux";
+import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./meta";
+import { manipulateModel, createModelFromPoco, createModelsFromPoco } from "./parser";
 
-export class StoreModelsMetaTests extends TestRunnerBase {
+export class ModelParserTests extends TestRunnerBase {
     empty() {
         var localStorageState = {};
         var expectedCorrectedState = {};

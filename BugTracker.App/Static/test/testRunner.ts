@@ -42,13 +42,13 @@ export class TestRunner extends TestRunnerBase {
                 var method = <Function>(<any>testRunner)[testMethod];
 
                 var occurredError: any = null;
-                var start:any = new Date();
+                var start: any = new Date();
                 try {
                     method.call(testRunner);
                 } catch (error) {
                     occurredError = error;
                 }
-                var end:any = new Date();
+                var end: any = new Date();
                 var executionTimeMs = end - start;
                 var testResult: TestResult;
 
@@ -57,11 +57,11 @@ export class TestRunner extends TestRunnerBase {
                 }
                 else {
                     testResult = new TestResult(testFixtureName, testMethod, executionTimeMs, occurredError);
-                    
+
                     if (occurredError.actual || occurredError.expected) {
-                        console.error(occurredError, {actual: occurredError.actual }, {expected: occurredError.expected });
+                        console.error(occurredError, { actual: occurredError.actual }, { expected: occurredError.expected });
                     }
-                    else{
+                    else {
                         console.error(occurredError);
                     }
                 }
