@@ -17,7 +17,7 @@
 
     string getListType (Property property)
     {
-        Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptListType"));
+        Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptListTypeAttribute"));
         if (attribute != null)
         {
             return attribute.Value;

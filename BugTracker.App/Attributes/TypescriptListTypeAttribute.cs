@@ -1,10 +1,10 @@
 ﻿namespace BugTracker.App.Attributes
 {
-    public class TypescriptListType : System.Attribute
+    public class TypescriptListTypeAttribute : System.Attribute
     {
         private readonly string _name;
 
-        public TypescriptListType(string name)
+        public TypescriptListTypeAttribute(string name)
         {   
             _name = name;
         }

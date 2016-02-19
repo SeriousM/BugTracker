@@ -67,7 +67,7 @@ module BugTracker.App.Static.models {
                 return <string>this.set("lastname", lastname);
             }
         
-            List
+            
             public setPermissions(permissions: PermissionModel[]): PermissionModel[] {
                 return <PermissionModel[]>this.set("permissions", permissions);
             }
