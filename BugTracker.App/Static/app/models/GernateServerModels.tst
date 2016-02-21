@@ -52,7 +52,7 @@
         }
         else if (!property.Type.IsPrimitive && property.Type.IsEnumerable)
         {
-            return "@ImplementsModelList()";
+            return "@ImplementsModels()";
         }
         else if (!property.Type.IsPrimitive && !property.Type.IsEnumerable)
         {
@@ -60,17 +60,25 @@
         }
         return "---";
     }
-}
-import { Record } from 'immutable';
+
+    string getClassName(Class c)
+    {
+        return c.Name;
+    }
+
+    string getDelimeterIfProperties(Class c){
+        return c.Properties.Count > 0 ? "," : string.Empty;
+    }
+    string getParentClassName(Property p){return ((Class)p.Parent).Name;}
+}import { Record } from 'immutable';
 import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
 
 $Classes(*Model)[
-
 interface I$Name {
-    $Properties[
-    // $LoudName
-    $name: $Type;
+    $Properties[$name: $Type;][
+    ]
+    $Properties[set$Name(value: $Type): $getParentClassName;][
     ]
 }
 
