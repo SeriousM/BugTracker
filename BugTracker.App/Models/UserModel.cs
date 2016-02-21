@@ -14,5 +14,6 @@ namespace BugTracker.App.Models
         public string Lastname { get; set; }
         [TypescriptListType("List")]
         public List<PermissionModel> Permissions { get; set; }
+        public PermissionModel Permission { get; set; }
     }
 }
