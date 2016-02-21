@@ -19,79 +19,106 @@
 
         return camelCasedName;
     }
-
-    // Uncomment the constructor to change template settings.
     Template(Settings settings)
     {
         //settings.IncludeProject("Project.Name");
         //settings.OutputExtension = ".tsx";
         settings.OutputFilenameFactory = file => GetCamelCaseFileName(file.Name);
     }
-
-    // Custom extension methods can be used in the template by adding a $ prefix e.g. $LoudName
-    string getRecordClassName(Class c)
+    string getRecordClassName(Class c){return c.Name+"Record";}
+    string getListType(Property property)
     {
-        return c.Name+"Record";
-    }
-
-    string getListType (Property property)
-    {
-        Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptListTypeAttribute"));
+        // note: the name is "TypescriptListType" even the type is "TypescriptListTypeAttribute"!
+        Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptListType"));
         if (attribute != null)
         {
             return attribute.Value;
         }
-        return "";
+        throw new Exception("Attribute TypescriptListTypeAttribute must be applied on list properties");
     }
-
-    string getImplemntType (Property property)
+    Type getTypeFromList(Property p){if (p.Type.IsEnumerable){return p.Type.TypeArguments.First();}throw new Exception("Type " + p + " is not a list");}
+    string getImplementType(Property property)
     {
         if (property.Type.IsPrimitive)
         {
             return "@ImplementsPoco()";
         }
-        else if (!property.Type.IsPrimitive && property.Type.IsEnumerable)
+        else
         {
-            return "@ImplementsModels()";
+            if (property.Type.IsEnumerable)
+            {
+                return "@ImplementsModels(Immutable."+getListType(property)+", () => Models."+getTypeFromList(property)+")";
+            }
+            else
+            {
+                return "@ImplementsModel(() => "+getModelName(property)+")";
+            }
         }
-        else if (!property.Type.IsPrimitive && !property.Type.IsEnumerable)
-        {
-            return "@ImplementsModel()";
-        }
-        return "---";
+        throw new Exception("Cannot annotate the property " + property);
     }
-
-    string getClassName(Class c)
+    Property[] getKeysPropertiesFromModel(Property p)
     {
-        return c.Name;
+        var keyCollection = new List<Property>();
+        foreach(var modelProp in getTypeFromList(p).Properties)
+        {
+            var key = modelProp.Attributes.FirstOrDefault(a => a.Name == "Key");
+            if (key != null)
+            {
+                keyCollection.Add(modelProp);
+            }
+        }
+        return keyCollection.ToArray();
     }
+    string getKeysParameterFromModel(Property p)
+    {
+        var keyCollection = getKeysPropertiesFromModel(p);
+        return string.Join(", ", keyCollection.Select(k => k.name + ": " + k.Type));
+    }
+    string getKeysQueryFromModel(Property p)
+    {
+        var keyCollection = getKeysPropertiesFromModel(p);
+        return string.Join(" && ", keyCollection.Select(k => "item." + k.name + " == " + k.name));
+    }
+    string getClassName(Class c){return c.Name;}
     string getParentClassName(Property p){return ((Class)p.Parent).Name;}
-}import { Record } from 'immutable';
+    string getModelName(Property p){return p.Type.IsPrimitive ? p.Type : "Models." + (p.Type.IsEnumerable ? getTypeFromList(p) : p.Type.Name);}
+    bool isNonPrimitiveList(Property p){return !p.Type.IsPrimitive && p.Type.IsEnumerable;}
+}import * as Immutable from 'immutable';
 import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
+import * as Models from './models';
 
 $Classes(*Model)[interface I$Name {
-    $Properties[$name: $Type;][
+    $Properties[$name: $getModelName;][
     ]
-    $Properties[set$Name(value: $Type): $getParentClassName;][
+    $Properties[set$Name(value: $getModelName): $getParentClassName;$isNonPrimitiveList[
+    add$Name(value: $getModelName): $getParentClassName;
+    remove$Name($getKeysParameterFromModel): $getParentClassName;]][
     ]
 }
 
-const $getRecordClassName = Record(<I$Name>{
-    $Properties[$name: <$Type>$Type[$Default]][,
+const $getRecordClassName = Immutable.Record(<I$Name>{
+    $Properties[$name: <$getModelName>$Type[null]][,
     ]
 });
 
 @ImplementsClass($getRecordClassName)
 export class $Name extends $getRecordClassName implements I$Name {
-    $Properties[$getImplemntType public $name: $Type;][
+    $Properties[$getImplementType public $name: $getModelName;][
     ]
-    $Properties[$getListType
-    public set$Name($name: $Type): $getParentClassName {
+    $Properties[public set$Name($name: $getModelName): $getParentClassName {
         return <$getParentClassName>this.set("$name", $name);
-    }][
+    }$isNonPrimitiveList[
+    public add$Name(value: $getModelName): $getParentClassName {
+        var newSet = this.$name.concat(value);
+        return this.set$Name(newSet);
+    }
+    public remove$Name($getKeysParameterFromModel): $getParentClassName {
+        var key = this.$name.findKey(item => $getKeysQueryFromModel);
+        var newSet = this.$name.filter((item, itemKey) => itemKey != key);
+        return this.set$Name(newSet);
+    }]][
     ]
-
     constructor() {
         super({});
     }
