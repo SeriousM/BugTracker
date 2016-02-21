@@ -164,6 +164,7 @@
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\IssueModel.cs</CustomToolNamespace>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\models\models.ts" />
     <TypeScriptCompile Include="Static\app\models\permissionModel.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\PermissionModel.cs</CustomToolNamespace>
@@ -190,7 +191,7 @@
     <TypeScriptModuleKind>System</TypeScriptModuleKind>
     <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptOutFile />
-    <TypeScriptModuleResolution>NodeJs</TypeScriptModuleResolution>
+    <TypeScriptModuleResolution>Node</TypeScriptModuleResolution>
     <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
