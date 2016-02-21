@@ -82,10 +82,9 @@ interface I$Name {
     ]
 }
 
-const $GetRecordPropertyName =  Record (<I$Name>{
-    $Properties[
-    // $LoudName
-    $name: <$Type>$Type[$Default]][, ]
+const $GetRecordPropertyName = Record(<I$Name>{
+    $Properties[$name: <$Type>$Type[$Default]][,
+    ]
 });
 
 @ImplementsClass($GetRecordPropertyName)
