@@ -1,11 +1,14 @@
-﻿namespace BugTracker.App.Attributes
+﻿using System;
+
+namespace BugTracker.App.Attributes
 {
-    public class TypescriptListTypeAttribute : System.Attribute
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class TypescriptListTypeAttribute : Attribute
     {
         private readonly string _name;
 
         public TypescriptListTypeAttribute(string name)
-        {   
+        {
             _name = name;
         }
     }
