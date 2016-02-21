@@ -1,62 +1,45 @@
-
-import { Record } from 'immutable';
+import * as Immutable from 'immutable';
 import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
-
-
+import * as Models from './models';
 
 interface IIssueModel {
-    
-    // $LoudName
+    id: string;
     userId: string;
-    
-    // $LoudName
     title: string;
-    
-    // $LoudName
     content: string;
-    
+    setId(value: string): IssueModel;
+    setUserId(value: string): IssueModel;
+    setTitle(value: string): IssueModel;
+    setContent(value: string): IssueModel;
 }
 
-const IssueModelRecord =  Record (<IIssueModel>{
-    
-    // $LoudName
-    userId: <string>null, 
-    // $LoudName
-    title: <string>null, 
-    // $LoudName
+const IssueModelRecord = Immutable.Record(<IIssueModel>{
+    id: <string>null,
+    userId: <string>null,
+    title: <string>null,
     content: <string>null
 });
 
 @ImplementsClass(IssueModelRecord)
 export class IssueModel extends IssueModelRecord implements IIssueModel {
-    
-        @ImplementsPoco() public userId: string;
-    
-        @ImplementsPoco() public title: string;
-    
-        @ImplementsPoco() public content: string;
-    
-
-    
-        
-        public setUserId(userId: string): string {
-            return <string>this.set("userId", userId);
-        }
-    
-        
-        public setTitle(title: string): string {
-            return <string>this.set("title", title);
-        }
-    
-        
-        public setContent(content: string): string {
-            return <string>this.set("content", content);
-        }
-    
-
+    @ImplementsPoco() public id: string;
+    @ImplementsPoco() public userId: string;
+    @ImplementsPoco() public title: string;
+    @ImplementsPoco() public content: string;
+    public setId(id: string): IssueModel {
+        return <IssueModel>this.set("id", id);
+    }
+    public setUserId(userId: string): IssueModel {
+        return <IssueModel>this.set("userId", userId);
+    }
+    public setTitle(title: string): IssueModel {
+        return <IssueModel>this.set("title", title);
+    }
+    public setContent(content: string): IssueModel {
+        return <IssueModel>this.set("content", content);
+    }
     constructor() {
-        super();
+        super({});
     }
 }
-

@@ -1,74 +1,63 @@
-
-import { Record } from 'immutable';
+import * as Immutable from 'immutable';
 import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
-
-
+import * as Models from './models';
 
 interface IUserModel {
-    
-    // $LoudName
     id: string;
-    
-    // $LoudName
     firstname: string;
-    
-    // $LoudName
     lastname: string;
-    
-    // $LoudName
-    permissions: PermissionModel[];
-    
+    permissions: Models.PermissionModel;
+    permission: Models.PermissionModel;
+    setId(value: string): UserModel;
+    setFirstname(value: string): UserModel;
+    setLastname(value: string): UserModel;
+    setPermissions(value: Models.PermissionModel): UserModel;
+    addPermissions(value: Models.PermissionModel): UserModel;
+    removePermissions(id: string): UserModel;
+    setPermission(value: Models.PermissionModel): UserModel;
 }
 
-const UserModelRecord =  Record (<IUserModel>{
-    
-    // $LoudName
-    id: <string>null, 
-    // $LoudName
-    firstname: <string>null, 
-    // $LoudName
-    lastname: <string>null, 
-    // $LoudName
-    permissions: <PermissionModel[]>[]
+const UserModelRecord = Immutable.Record(<IUserModel>{
+    id: <string>null,
+    firstname: <string>null,
+    lastname: <string>null,
+    permissions: <Models.PermissionModel>null,
+    permission: <Models.PermissionModel>null
 });
 
 @ImplementsClass(UserModelRecord)
 export class UserModel extends UserModelRecord implements IUserModel {
-    
-        @ImplementsPoco() public id: string;
-    
-        @ImplementsPoco() public firstname: string;
-    
-        @ImplementsPoco() public lastname: string;
-    
-        @ImplementsModelList() public permissions: PermissionModel[];
-    
-
-    
-        
-        public setId(id: string): string {
-            return <string>this.set("id", id);
-        }
-    
-        
-        public setFirstname(firstname: string): string {
-            return <string>this.set("firstname", firstname);
-        }
-    
-        
-        public setLastname(lastname: string): string {
-            return <string>this.set("lastname", lastname);
-        }
-    
-        
-        public setPermissions(permissions: PermissionModel[]): PermissionModel[] {
-            return <PermissionModel[]>this.set("permissions", permissions);
-        }
-    
-
+    @ImplementsPoco() public id: string;
+    @ImplementsPoco() public firstname: string;
+    @ImplementsPoco() public lastname: string;
+    @ImplementsModels(Immutable.List, () => Models.PermissionModel) public permissions: Models.PermissionModel;
+    @ImplementsModel(() => Models.PermissionModel) public permission: Models.PermissionModel;
+    public setId(id: string): UserModel {
+        return <UserModel>this.set("id", id);
+    }
+    public setFirstname(firstname: string): UserModel {
+        return <UserModel>this.set("firstname", firstname);
+    }
+    public setLastname(lastname: string): UserModel {
+        return <UserModel>this.set("lastname", lastname);
+    }
+    public setPermissions(permissions: Models.PermissionModel): UserModel {
+        return <UserModel>this.set("permissions", permissions);
+    }
+    public addPermissions(value: Models.PermissionModel): UserModel {
+        var newSet = this.permissions.concat(value);
+        return this.setPermissions(newSet);
+    }
+    public removePermissions(id: string): UserModel {
+        var key = this.permissions.findKey(item => item.id == id);
+        var newSet = this.permissions.filter((item, itemKey) => itemKey != key);
+        return this.setPermissions(newSet);
+    }
+    public setPermission(permission: Models.PermissionModel): UserModel {
+        return <UserModel>this.set("permission", permission);
+    }
     constructor() {
-        super();
+        super({});
     }
 }
-

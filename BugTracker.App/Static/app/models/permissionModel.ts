@@ -1,38 +1,31 @@
-
-import { Record } from 'immutable';
+import * as Immutable from 'immutable';
 import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
-
-
+import * as Models from './models';
 
 interface IPermissionModel {
-    
-    // $LoudName
+    id: string;
     name: string;
-    
+    setId(value: string): PermissionModel;
+    setName(value: string): PermissionModel;
 }
 
-const PermissionModelRecord =  Record (<IPermissionModel>{
-    
-    // $LoudName
+const PermissionModelRecord = Immutable.Record(<IPermissionModel>{
+    id: <string>null,
     name: <string>null
 });
 
 @ImplementsClass(PermissionModelRecord)
 export class PermissionModel extends PermissionModelRecord implements IPermissionModel {
-    
-        @ImplementsPoco() public name: string;
-    
-
-    
-        
-        public setName(name: string): string {
-            return <string>this.set("name", name);
-        }
-    
-
+    @ImplementsPoco() public id: string;
+    @ImplementsPoco() public name: string;
+    public setId(id: string): PermissionModel {
+        return <PermissionModel>this.set("id", id);
+    }
+    public setName(name: string): PermissionModel {
+        return <PermissionModel>this.set("name", name);
+    }
     constructor() {
-        super();
+        super({});
     }
 }
-
