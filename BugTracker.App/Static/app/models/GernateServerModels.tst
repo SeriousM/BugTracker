@@ -29,9 +29,9 @@
     }
 
     // Custom extension methods can be used in the template by adding a $ prefix e.g. $LoudName
-    string GetRecordPropertyName(Class classname)
+    string getRecordClassName(Class c)
     {
-        return classname+"Record";
+        return c.Name+"Record";
     }
 
     string getListType (Property property)
@@ -65,47 +65,37 @@
     {
         return c.Name;
     }
-
-    string getDelimeterIfProperties(Class c){
-        return c.Properties.Count > 0 ? "," : string.Empty;
-    }
     string getParentClassName(Property p){return ((Class)p.Parent).Name;}
 }import { Record } from 'immutable';
 import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
 
-$Classes(*Model)[
-interface I$Name {
+$Classes(*Model)[interface I$Name {
     $Properties[$name: $Type;][
     ]
     $Properties[set$Name(value: $Type): $getParentClassName;][
     ]
 }
 
-const $GetRecordPropertyName = Record(<I$Name>{
+const $getRecordClassName = Record(<I$Name>{
     $Properties[$name: <$Type>$Type[$Default]][,
     ]
 });
 
-@ImplementsClass($GetRecordPropertyName)
-export class $Name extends $GetRecordPropertyName implements I$Name {
-    $Properties[
-        $getImplemntType public $name: $Type;
+@ImplementsClass($getRecordClassName)
+export class $Name extends $getRecordClassName implements I$Name {
+    $Properties[$getImplemntType public $name: $Type;][
     ]
-
-    $Properties[
-        $getListType
-        public set$Name($name: $Type): $Type {
-            return <$Type>this.set("$name", $name);
-        }
+    $Properties[$getListType
+    public set$Name($name: $Type): $getParentClassName {
+        return <$getParentClassName>this.set("$name", $name);
+    }][
     ]
 
     constructor() {
-        super();
+        super({});
     }
-}
-]
-${
+}]${
 /*module BugTracker.App.Static.models {
 
     // $Classes/Enums/Interfaces(filter)[template][separator]
