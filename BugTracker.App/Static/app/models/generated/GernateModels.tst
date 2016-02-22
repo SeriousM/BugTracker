@@ -107,24 +107,24 @@ import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
 
 $Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name != "AppState")[interface I$Name {
-    $Properties[$name: $getModelTypeRepresentation;][
+    $Properties(p => p.HasSetter)[$name: $getModelTypeRepresentation;][
     ]
-    $Properties[set$Name($name: $getModelTypeRepresentation): $getParentClassName;$isNonPrimitiveList[
+    $Properties(p => p.HasSetter)[set$Name($name: $getModelTypeRepresentation): $getParentClassName;$isNonPrimitiveList[
     add$singularPascalCase($singularCamelCase: $getModelName): $getParentClassName;$hasKeyedPropertiesFromModel[
     remove$singularPascalCase($getKeysParameterFromModel): $getParentClassName;]]][
     ]
 }
 
 const $getRecordClassName = Immutable.Record(<I$Name>{
-    $Properties[$name: <$getModelTypeRepresentation>$Type[null]][,
+    $Properties(p => p.HasSetter)[$name: <$getModelTypeRepresentation>$Type[null]][,
     ]
 });
 
 @ModelMeta.ImplementsClass($getRecordClassName)
 export class $Name extends $getRecordClassName implements I$Name {
-    $Properties[$getImplementType public $name: $getModelTypeRepresentation;][
+    $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
-    $Properties[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
+    $Properties(p => p.HasSetter)[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
         return <$getParentClassName>this.set("$name", $name);
     }$isNonPrimitiveList[
     public add$singularPascalCase($singularCamelCase: $getModelName): $getParentClassName {

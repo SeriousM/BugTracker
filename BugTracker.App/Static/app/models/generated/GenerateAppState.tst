@@ -74,11 +74,11 @@ import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
 
 $Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name == "AppState")[export interface IReducer$Name {
-    $Properties[$name: (state: any, action: any) => any;][
+    $Properties(p => p.HasSetter)[$name: (state: any, action: any) => any;][
     ]
 }
 
 export class $Name {
-    $Properties[$getImplementType public $name: $getModelTypeRepresentation;][
+    $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
 }]
