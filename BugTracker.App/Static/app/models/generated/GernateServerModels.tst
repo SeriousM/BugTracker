@@ -34,7 +34,8 @@
         Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptIterableType"));
         if (attribute != null)
         {
-            return attribute.Value;
+            // "value" of the content is "BugTracker.App.Attributes.TypescriptIterable.List" where "List" is chooseable
+            return attribute.Value.Substring("BugTracker.App.Attributes.TypescriptIterable.".Length);
         }
         throw new Exception("Attribute TypescriptIterableType must be applied on list properties.");
     }

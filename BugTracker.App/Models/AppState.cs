@@ -6,9 +6,9 @@ namespace BugTracker.App.Models
 {
     public class AppState
     {
-        [TypescriptIterableType("List")]
+        [TypescriptIterableType(TypescriptIterable.List)]
         public List<UserModel> Users { get; set; }
-        [TypescriptIterableType("List")]
+        [TypescriptIterableType(TypescriptIterable.List)]
         public List<IssueModel> Issues { get; set; }
         public CurrentUserState CurrentUser { get; set; }
     }

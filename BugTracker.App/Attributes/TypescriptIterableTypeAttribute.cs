@@ -9,7 +9,8 @@ namespace BugTracker.App.Attributes
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class TypescriptIterableTypeAttribute : Attribute
     {
-        public TypescriptIterableTypeAttribute(string name)
+        // note: the empty constructor body is ok, we just need the attribute on the property to get the information into typewriter
+        public TypescriptIterableTypeAttribute(TypescriptIterable iterable)
         {
         }
     }
