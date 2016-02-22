@@ -53,17 +53,17 @@
     {
         if (property.Type.IsPrimitive)
         {
-            return "@ImplementsPoco()";
+            return "@ModelMeta.ImplementsPoco()";
         }
         else
         {
             if (property.Type.IsEnumerable)
             {
-                return "@ImplementsModels("+getListType(property)+", () => Models."+getTypeFromList(property)+")";
+                return "@ModelMeta.ImplementsModels("+getListType(property)+", () => Models."+getTypeFromList(property)+")";
             }
             else
             {
-                return "@ImplementsModel(() => "+getModelName(property)+")";
+                return "@ModelMeta.ImplementsModel(() => "+getModelName(property)+")";
             }
         }
         throw new Exception("Cannot annotate the property " + property);
@@ -102,10 +102,10 @@
     string singularCamelCase(Property p) { return p.Type.IsEnumerable ? p.name.Substring(0, p.name.Length -1) : p.name; }
     string singularPascalCase(Property p) { return p.Type.IsEnumerable ? p.Name.Substring(0, p.Name.Length -1) : p.Name; }
 }import * as Immutable from 'immutable';
-import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../../utils/model/meta';
+import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
 
-$Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name.EndsWith("Model"))[interface I$Name {
+$Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name != "AppState")[interface I$Name {
     $Properties[$name: $getModelTypeRepresentation;][
     ]
     $Properties[set$Name($name: $getModelTypeRepresentation): $getParentClassName;$isNonPrimitiveList[
@@ -119,7 +119,7 @@ const $getRecordClassName = Immutable.Record(<I$Name>{
     ]
 });
 
-@ImplementsClass($getRecordClassName)
+@ModelMeta.ImplementsClass($getRecordClassName)
 export class $Name extends $getRecordClassName implements I$Name {
     $Properties[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
@@ -142,89 +142,4 @@ export class $Name extends $getRecordClassName implements I$Name {
     constructor() {
         super({});
     }
-}]${
-/*module BugTracker.App.Static.models {
-
-    // $Classes/Enums/Interfaces(filter)[template][separator]
-    // filter (optional): Matches the name or full name of the current item. * = match any, wrap in [] to match attributes or prefix with : to match interfaces or base classes.
-    // template: The template to repeat for each matched item
-    // separator (optional): A separator template that is placed between all templates e.g. $Properties[public $name: $Type][, ]
-
-    // More info: http://frhagn.github.io/Typewriter/
-
-    
-
-    interface IUserModel {
-        
-        // $LoudName
-        firstname: string;
-        
-        // $LoudName
-        lastname: string;
-        
-        // $LoudName
-        permissions: List<PermissionModel>;
-
-        //methods
-        setFirstName(value: string);
-        setLastName(value: string);
-        setPermissions(value: List<PermissionModel>) : UserModel;
-        addPermission(value: PermissionModel): UserModel;
-        removePermission(key1: string, ....): UserModel;
-    }
-
-    const UserModelRecord =  Record (<IUserModel>{
-        
-        // $LoudName
-        firstname: <string>null, 
-        // $LoudName
-        lastname: <string>null, 
-        // $LoudName
-        permissions: <List<PermissionModel>>null
-    });
-
-    @ImplementsClass(UserModelRecord)
-    export class UserModel extends UserModelRecord implements IUserModel {
-        
-            @ImplementsPoco() public firstname: string;
-        
-            @ImplementsPoco() public lastname: string;
-        
-            @ImplementsModelList() public permissions: List<PermissionModel>;
-        
-
-        
-            public setFirstname(firstname: string): string {
-                return <string>this.set("firstname", firstname);
-            }
-        
-            public setLastname(lastname: string): string {
-                return <string>this.set("lastname", lastname);
-            }
-        
-            public setPermissions(permissions: List<PermissionModel>): UserModel {
-                return <UserModel>this.set("permissions", permissions);
-            }
-        
-            public removePermission(key1: string): UserModel {
-                var foundIndex = this.permissions.indexOf((permission) => return permission.key1 == key1);
-                if (foundIndex < 0) {
-                    return this;
-                }
-                var newList = this.permissions.removeAt(foundIndex);
-                return this.setPermissions(newList);
-            }
-
-            public addPermission(value: PermissionModel): UserModel {                
-                var newList = this.permissions.push(value);
-                return this.setPermissions(newList);
-            }
-
-
-        constructor() {
-            super({});
-        }
-    }
-    
-}*/
-}
+}]
