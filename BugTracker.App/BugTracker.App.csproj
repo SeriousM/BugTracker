@@ -113,7 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Attributes\TypescriptListTypeAttribute.cs" />
+    <Compile Include="Attributes\TypescriptIterableTypeAttribute.cs" />
     <Compile Include="Commands\CreateNewIssueCommand.cs" />
     <Compile Include="Commands\RegisterNewUserCommand.cs" />
     <Compile Include="Commands\RegisterNewUserIfUnknownCommand.cs" />

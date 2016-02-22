@@ -7,9 +7,9 @@ namespace BugTracker.App.Attributes
     /// This attribute is used to annotate a list property with "immutable.js" list type.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class TypescriptListTypeAttribute : Attribute
+    public class TypescriptIterableTypeAttribute : Attribute
     {
-        public TypescriptListTypeAttribute(string name)
+        public TypescriptIterableTypeAttribute(string name)
         {
         }
     }
