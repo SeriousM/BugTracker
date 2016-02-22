@@ -126,6 +126,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AppState.cs" />
     <Compile Include="Models\CurrentUserState.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
@@ -137,6 +138,7 @@
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
     <Content Include="Static\app\models\generated\GernateServerModels.tst" />
+    <Content Include="Static\app\models\generated\GenerateAppState.tst" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -161,6 +163,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Static\app\models\generated\appState.ts">
+      <DependentUpon>GenerateAppState.tst</DependentUpon>
+      <CustomToolNamespace>Models\AppState.cs</CustomToolNamespace>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Static\app\models\generated\currentUserState.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\CurrentUserState.cs</CustomToolNamespace>
