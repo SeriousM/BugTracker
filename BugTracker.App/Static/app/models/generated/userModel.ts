@@ -4,32 +4,25 @@ import * as Models from '../models';
 
 interface IUserModel {
     id: string;
-    firstname: string;
-    lastname: string;
+    name: string;
     setId(id: string): UserModel;
-    setFirstname(firstname: string): UserModel;
-    setLastname(lastname: string): UserModel;
+    setName(name: string): UserModel;
 }
 
 const UserModelRecord = Immutable.Record(<IUserModel>{
     id: <string>null,
-    firstname: <string>null,
-    lastname: <string>null
+    name: <string>null
 });
 
 @ModelMeta.ImplementsClass(UserModelRecord)
 export class UserModel extends UserModelRecord implements IUserModel {
     @ModelMeta.ImplementsPoco() public id: string;
-    @ModelMeta.ImplementsPoco() public firstname: string;
-    @ModelMeta.ImplementsPoco() public lastname: string;
+    @ModelMeta.ImplementsPoco() public name: string;
     public setId(id: string): UserModel {
         return <UserModel>this.set("id", id);
     }
-    public setFirstname(firstname: string): UserModel {
-        return <UserModel>this.set("firstname", firstname);
-    }
-    public setLastname(lastname: string): UserModel {
-        return <UserModel>this.set("lastname", lastname);
+    public setName(name: string): UserModel {
+        return <UserModel>this.set("name", name);
     }
     constructor() {
         super({});

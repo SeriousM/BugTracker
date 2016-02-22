@@ -7,17 +7,23 @@ interface IIssueModel {
     userId: string;
     title: string;
     content: string;
+    reportDate: Date;
+    isClosed: boolean;
     setId(id: string): IssueModel;
     setUserId(userId: string): IssueModel;
     setTitle(title: string): IssueModel;
     setContent(content: string): IssueModel;
+    setReportDate(reportDate: Date): IssueModel;
+    setIsClosed(isClosed: boolean): IssueModel;
 }
 
 const IssueModelRecord = Immutable.Record(<IIssueModel>{
     id: <string>null,
     userId: <string>null,
     title: <string>null,
-    content: <string>null
+    content: <string>null,
+    reportDate: <Date>null,
+    isClosed: <boolean>null
 });
 
 @ModelMeta.ImplementsClass(IssueModelRecord)
@@ -26,6 +32,8 @@ export class IssueModel extends IssueModelRecord implements IIssueModel {
     @ModelMeta.ImplementsPoco() public userId: string;
     @ModelMeta.ImplementsPoco() public title: string;
     @ModelMeta.ImplementsPoco() public content: string;
+    @ModelMeta.ImplementsPoco() public reportDate: Date;
+    @ModelMeta.ImplementsPoco() public isClosed: boolean;
     public setId(id: string): IssueModel {
         return <IssueModel>this.set("id", id);
     }
@@ -37,6 +45,12 @@ export class IssueModel extends IssueModelRecord implements IIssueModel {
     }
     public setContent(content: string): IssueModel {
         return <IssueModel>this.set("content", content);
+    }
+    public setReportDate(reportDate: Date): IssueModel {
+        return <IssueModel>this.set("reportDate", reportDate);
+    }
+    public setIsClosed(isClosed: boolean): IssueModel {
+        return <IssueModel>this.set("isClosed", isClosed);
     }
     constructor() {
         super({});
