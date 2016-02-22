@@ -4,8 +4,7 @@ import { bootstrap } from "angular2/platform/browser";
 import { WebService, DefaultRequestOptions } from "./webservice/webservice";
 import { AppStore, appStoreFactory } from "./store/appStore";
 
-
-import { CurrentUserState } from "./store/storeModels";
+import { CurrentUserState } from "./models/models";
 
 import { UserLogin } from "./features/currentUser/view/userLoginComponent";
 import { UserAvatar } from "./features/currentUser/view/userAvatarComponent";
@@ -16,9 +15,9 @@ import { IssuesContainer } from "./features/issues/view/issuesContainerComponent
     directives: [UserLogin, UserAvatar, IssuesContainer],
     template: `
         <div>
-            <user-login *ngIf="!currentUser.isSet"></user-login>
-            <user-avatar *ngIf="currentUser.isSet"></user-avatar>
-            <issues-container *ngIf="currentUser.isSet"></issues-container>
+            <user-login *ngIf="currentUser.user == null"></user-login>
+            <user-avatar *ngIf="currentUser.user != null"></user-avatar>
+            <issues-container *ngIf="currentUser.user != null"></issues-container>
         </div>
     `
 })

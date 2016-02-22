@@ -1,4 +1,5 @@
-import { AppState, IAction } from "./appStore.base";
+import { IAction } from "./appStore.base";
+import { AppState } from "../models/models";
 import { manipulateModel } from "../utils/model/parser";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;

@@ -7,7 +7,7 @@ import { userStoreReducer } from "../features/users/store/userStoreReducers";
 import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
 import { currentUserStoreReducer } from "../features/currentUser/store/currentuserStoreReducers";
 
-import { IReducerAppState, AppState } from "./appStore.base";
+import { IReducerAppState, AppState } from "../models/models";
 import { wrapMiddlewareWithRedux } from "./appStore.redux";
 
 export function appStoreFactory() {

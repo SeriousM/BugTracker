@@ -1,12 +1,12 @@
-import { IAction, AppState } from "../../../store/appStore.base";
-import { UserModel, CurrentUserState } from "../../../store/storeModels";
+import { IAction } from "../../../store/appStore.base";
+import { AppState, UserModel, CurrentUserState } from "../../../models/models";
 import { CurrentUserStoreActionTypes, CurrentUserStoreActions, ISetCurrentUserAction, IRemoveCurrentUserAction } from "./currentUserStoreActions";
 
 function setCurrentUser(state: CurrentUserState, action: ISetCurrentUserAction): CurrentUserState {
     return state.setUser(action.user);
 }
 function removeCurrentUser(state: CurrentUserState, action: IRemoveCurrentUserAction): CurrentUserState {
-    return state.setUser();
+    return state.setUser(null);
 }
 
 export function currentUserStoreReducer(state: CurrentUserState = new CurrentUserState(), action: IAction<CurrentUserStoreActions>): CurrentUserState {

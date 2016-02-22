@@ -1,6 +1,6 @@
 import { Component, Input, Output, ChangeDetectionStrategy, EventEmitter } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
-import { IssueModel } from "../../../store/storeModels";
+import { IssueModel } from "../../../models/models";
 
 @Component({
     selector: "issue",

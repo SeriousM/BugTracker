@@ -1,11 +1,11 @@
 import { List } from 'immutable';
 
-import { IAction, AppState } from "../../../store/appStore.base";
-import { IssueModel } from "../../../store/storeModels";
+import { IAction } from "../../../store/appStore.base";
+import { AppState, IssueModel } from "../../../models/models";
 import { IssueStoreActionTypes, IAddIssueAction, IChangeTitleAction } from "./issueStoreActions";
 
 function addIssue(state: List<IssueModel>, action: IAddIssueAction): List<IssueModel> {
-    var newState = state.push(new IssueModel(action.title));
+    var newState = state.push(new IssueModel().setTitle(action.title));
     return newState;
 }
 function changeTitle(state: List<IssueModel>, action: IChangeTitleAction): List<IssueModel> {

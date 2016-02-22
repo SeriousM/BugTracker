@@ -1,5 +1,5 @@
 import { IAction } from "../../../store/appStore.base";
-import { UserModel } from "../../../store/storeModels";
+import { UserModel } from "../../../models/models";
 
 const actionPrefix = "CURRENT_USER.";
 export class CurrentUserStoreActionTypes {

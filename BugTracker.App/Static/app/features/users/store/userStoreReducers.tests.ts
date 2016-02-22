@@ -1,8 +1,8 @@
 import { List } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../../test/tests.base";
-import { IAction, AppState } from "../../../store/appStore.base";
-import { UserModel } from "../../../store/storeModels";
+import { IAction } from "../../../store/appStore.base";
+import { AppState, UserModel } from "../../../models/models";
 
 import { userStoreReducer } from "./userStoreReducers";
 import { UserStoreActionTypes, UserStoreActions, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
@@ -12,7 +12,7 @@ export class UserStoreReducersTests extends TestRunnerBase {
     @Test addNewUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>()
-            .push(new UserModel("Bob"));
+            .push(new UserModel().setName("Bob"));
 
         var action = UserStoreActions.AddUser("Bob");
 
@@ -23,12 +23,12 @@ export class UserStoreReducersTests extends TestRunnerBase {
     }
     @Test removeUser_works() {
         var beforeState = List<UserModel>()
-            .push(new UserModel("A"))
-            .push(new UserModel("B"))
-            .push(new UserModel("C"));
+            .push(new UserModel().setName("A"))
+            .push(new UserModel().setName("B"))
+            .push(new UserModel().setName("C"));
         var afterState = List<UserModel>()
-            .push(new UserModel("A"))
-            .push(new UserModel("C"));
+            .push(new UserModel().setName("A"))
+            .push(new UserModel().setName("C"));
 
         var action = UserStoreActions.RemoveUser(1 /* user "B" */);
 

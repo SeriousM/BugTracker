@@ -1,4 +1,4 @@
-export { AppState } from './generated/appState';
+export { IReducerAppState, AppState } from './generated/appState';
 
 export { CurrentUserState } from './generated/currentUserState';
 export { IssueModel } from './generated/issueModel';

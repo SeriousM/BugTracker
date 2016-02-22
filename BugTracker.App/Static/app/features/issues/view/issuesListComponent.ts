@@ -2,7 +2,7 @@ import { List } from 'immutable';
 
 import { Component, OnDestroy } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
-import { IssueModel } from "../../../store/storeModels";
+import { IssueModel } from "../../../models/models";
 
 import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
