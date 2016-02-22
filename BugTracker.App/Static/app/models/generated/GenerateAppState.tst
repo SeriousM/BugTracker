@@ -30,12 +30,13 @@
     string getRawListType(Property property)
     {
         // note: the name is "TypescriptListType" even the type is "TypescriptListTypeAttribute"!
-        Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptListType"));
+        Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptIterableType"));
         if (attribute != null)
         {
-            return attribute.Value;
+            // "value" of the content is "BugTracker.App.Attributes.TypescriptIterable.List" where "List" is chooseable
+            return attribute.Value.Substring("BugTracker.App.Attributes.TypescriptIterable.".Length);
         }
-        throw new Exception("Attribute TypescriptListTypeAttribute must be applied on list properties.");
+        throw new Exception("Attribute TypescriptIterableType must be applied on list properties.");
     }
     string getListType(Property property) { return "Immutable." + getRawListType(property); }
     string getModelTypeRepresentation(Property p)
