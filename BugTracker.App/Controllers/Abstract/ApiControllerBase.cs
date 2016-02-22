@@ -1,11 +1,12 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using System.Web.Http.Cors;
 using BugTracker.Shared.Command.Entities;
 
 namespace BugTracker.App.Controllers.Abstract
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public abstract class ApiControllerBase : ApiController
     {
         protected HttpResponseMessage CreateErrorResponse(string message, HttpStatusCode httpStatusCode)

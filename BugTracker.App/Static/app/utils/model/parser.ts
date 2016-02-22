@@ -2,13 +2,13 @@ import { Iterable, Record } from 'immutable';
 import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction, ClassConstructorGetter, getIMetaImplementsProperty } from "./meta";
 import { IObjectIndex } from "../reflection";
 
-export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: ClassConstructorGetter, currentObject: Object): T {
+export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: IMetaImplementsClassConstructor, currentObject: Object): T {
     var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, null);
     var model = createModelOrModels(currentObject, propMeta);
     return model;
 }
 
-export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: ClassConstructorGetter, currentArray: Object[]): T {
+export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: IMetaImplementsClassConstructor, currentArray: Object[]): T {
     var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, iterableFunction);
     var model = createModelOrModels(currentArray, propMeta);
     return model;
