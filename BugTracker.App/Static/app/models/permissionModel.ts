@@ -1,5 +1,4 @@
 import * as Immutable from 'immutable';
-import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
 import * as Models from './models';
 

@@ -84,11 +84,10 @@
     string getModelName(Property p){return p.Type.IsPrimitive ? p.Type : "Models." + (p.Type.IsEnumerable ? getTypeFromList(p) : p.Type.Name);}
     bool isNonPrimitiveList(Property p){return !p.Type.IsPrimitive && p.Type.IsEnumerable;}
 }import * as Immutable from 'immutable';
-import { getVariableName } from '../utils/reflection';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../utils/model/meta';
 import * as Models from './models';
 
-$Classes(*Model)[interface I$Name {
+$Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name.EndsWith("Model"))[interface I$Name {
     $Properties[$name: $getModelName;][
     ]
     $Properties[set$Name(value: $getModelName): $getParentClassName;$isNonPrimitiveList[
