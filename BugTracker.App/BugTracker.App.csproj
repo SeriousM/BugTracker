@@ -126,7 +126,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\PermissionModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\IssueModel.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
@@ -166,10 +165,6 @@
       <CustomToolNamespace>Models\IssueModel.cs</CustomToolNamespace>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Static\app\models\models.ts" />
-    <TypeScriptCompile Include="Static\app\models\generated\permissionModel.ts">
-      <DependentUpon>GernateServerModels.tst</DependentUpon>
-      <CustomToolNamespace>Models\PermissionModel.cs</CustomToolNamespace>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="Static\app\models\generated\registerUserModel.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\RegisterUserModel.cs</CustomToolNamespace>

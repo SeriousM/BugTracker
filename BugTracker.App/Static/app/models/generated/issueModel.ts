@@ -7,10 +7,10 @@ interface IIssueModel {
     userId: string;
     title: string;
     content: string;
-    setId(value: string): IssueModel;
-    setUserId(value: string): IssueModel;
-    setTitle(value: string): IssueModel;
-    setContent(value: string): IssueModel;
+    setId(id: string): IssueModel;
+    setUserId(userId: string): IssueModel;
+    setTitle(title: string): IssueModel;
+    setContent(content: string): IssueModel;
 }
 
 const IssueModelRecord = Immutable.Record(<IIssueModel>{

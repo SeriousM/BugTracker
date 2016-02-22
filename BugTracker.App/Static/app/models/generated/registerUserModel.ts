@@ -4,7 +4,7 @@ import * as Models from '../models';
 
 interface IRegisterUserModel {
     username: string;
-    setUsername(value: string): RegisterUserModel;
+    setUsername(username: string): RegisterUserModel;
 }
 
 const RegisterUserModelRecord = Immutable.Record(<IRegisterUserModel>{

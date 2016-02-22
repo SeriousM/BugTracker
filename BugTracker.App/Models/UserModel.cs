@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using BugTracker.App.Attributes;
 
 namespace BugTracker.App.Models
 {
@@ -9,11 +7,7 @@ namespace BugTracker.App.Models
     {
         [Key]
         public Guid Id { get; set; }
-        
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        [TypescriptListType("List")]
-        public List<PermissionModel> Permissions { get; set; }
-        public PermissionModel Permission { get; set; }
     }
 }
