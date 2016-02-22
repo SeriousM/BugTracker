@@ -135,7 +135,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
-    <Content Include="Static\app\models\GernateServerModels.tst" />
+    <Content Include="Static\app\models\generated\GernateServerModels.tst" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -160,20 +160,20 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Static\app\models\issueModel.ts">
+    <TypeScriptCompile Include="Static\app\models\generated\issueModel.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\IssueModel.cs</CustomToolNamespace>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Static\app\models\models.ts" />
-    <TypeScriptCompile Include="Static\app\models\permissionModel.ts">
+    <TypeScriptCompile Include="Static\app\models\generated\permissionModel.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\PermissionModel.cs</CustomToolNamespace>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\models\registerUserModel.ts">
+    <TypeScriptCompile Include="Static\app\models\generated\registerUserModel.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\RegisterUserModel.cs</CustomToolNamespace>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\models\userModel.ts">
+    <TypeScriptCompile Include="Static\app\models\generated\userModel.ts">
       <DependentUpon>GernateServerModels.tst</DependentUpon>
       <CustomToolNamespace>Models\UserModel.cs</CustomToolNamespace>
     </TypeScriptCompile>

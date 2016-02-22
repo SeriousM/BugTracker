@@ -1,4 +1,4 @@
-export { IssueModel } from './issueModel';
-export { PermissionModel } from './permissionModel';
-export { RegisterUserModel } from './registerUserModel';
-export { UserModel } from './userModel';
+export { IssueModel } from './generated/issueModel';
+export { PermissionModel } from './generated/permissionModel';
+export { RegisterUserModel } from './generated/registerUserModel';
+export { UserModel } from './generated/userModel';
