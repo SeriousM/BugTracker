@@ -161,7 +161,7 @@ export class ModelParserTests extends TestRunnerBase {
         var userResponsePoco = JSON.parse(json);
         var expectedUserModel = new UserModel("Bob");
         
-        var modifiedUserPoco = createModelFromPoco(UserModel, userResponsePoco);
+        var modifiedUserPoco = createModelFromPoco<UserModel>(UserModel, userResponsePoco);
         
         expect(modifiedUserPoco).toEqual(expectedUserModel);
     }
@@ -170,7 +170,7 @@ export class ModelParserTests extends TestRunnerBase {
         var userResponsePoco = JSON.parse(json);
         var expectedUserModel = List<UserModel>([new UserModel("Bob"),new UserModel("Sally")]);
         
-        var modifiedUserPoco = createModelsFromPoco(List, UserModel, userResponsePoco);
+        var modifiedUserPoco = createModelsFromPoco<UserModel>(List, UserModel, userResponsePoco);
         
         expect(modifiedUserPoco).toEqual(expectedUserModel);
     }

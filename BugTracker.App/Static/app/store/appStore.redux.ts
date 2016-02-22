@@ -30,7 +30,7 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
 
 type ReducerFunction = (state: any, action: IAction<any>) => ReducerFunction;
 
-function fixReduxDevToolsState(BlueprintObject: Function) { 
+function fixReduxDevToolsState(blueprintObject: Function) { 
     return (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
 
         const reduxInit: string = "@@redux/INIT";
@@ -42,7 +42,7 @@ function fixReduxDevToolsState(BlueprintObject: Function) {
             
             // the redux init-action on the other hand is not important because it will only send once the configured initial state
             if (action.type == reduxDevToolsInit) {
-                manipulateModel(state, BlueprintObject);
+                manipulateModel(state, blueprintObject);
             }
 
             return reducer(state, action);

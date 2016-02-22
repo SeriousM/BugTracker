@@ -10,7 +10,14 @@ export interface IMetaImplements {
     properties: ITypedObjectIndex<IMetaImplementsProperty>;
 }
 
-export interface IMetaImplementsClassConstructor extends Function, IHasMetaImplements {
+export interface IMetaImplementsProperty {
+    getClassConstructor: ClassConstructorGetter,
+    isList: boolean,
+    isPoco: boolean,
+    iterableFunction: IterableFunction
+}
+
+export interface IMetaImplementsClassConstructor extends IHasMetaImplements {
 }
 
 export type IterableFunction = (...args: any[]) => Iterable<any, any>;
@@ -24,13 +31,6 @@ export function getIMetaImplementsProperty(blueprintConstructor: ClassConstructo
         iterableFunction: iterableFunction
     }
     return propMeta;
-}
-
-export interface IMetaImplementsProperty {
-    getClassConstructor: ClassConstructorGetter,
-    isList: boolean,
-    isPoco: boolean,
-    iterableFunction: IterableFunction
 }
 
 function setMetaDataIfMissing(maybeHasMetaImplements: IHasMetaImplements) {
