@@ -2,7 +2,7 @@ import { List, Record, Stack } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../test/tests.base";
 
-import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./meta";
+import { IClassHasMetaImplements, ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./meta";
 import { manipulateModel, createModelFromPoco, createModelsFromPoco } from "./parser";
 
 @TestFixture
@@ -188,7 +188,7 @@ const LevelOneModelRecord = Record(<ILevelOneModel>{
     models: <List<LevelOneModel>>null
 });
 @ImplementsClass(LevelOneModelRecord)
-class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel {
+class LevelOneModel extends LevelOneModelRecord implements ILevelOneModel, IClassHasMetaImplements {
     @ImplementsPoco() public name: string;
     @ImplementsModel(() => LevelOneModel) public model: LevelOneModel;
     @ImplementsModels(List, () => LevelOneModel) public models: List<LevelOneModel>;
@@ -215,7 +215,7 @@ const UserModelRecord = Record(<IUserModel>{
     pet:<PetModel>null
 })
 @ImplementsClass(UserModelRecord)
-class UserModel extends UserModelRecord implements IUserModel{
+class UserModel extends UserModelRecord implements IUserModel, IClassHasMetaImplements{
     @ImplementsPoco() public name:string;
     @ImplementsModel(() => PetModel) public pet:PetModel;
     public setName(name:string):UserModel{
@@ -241,7 +241,7 @@ const PetModelRecord = Record(<IPetModel>{
     name:<string>null
 })
 @ImplementsClass(PetModelRecord)
-class PetModel extends PetModelRecord implements IPetModel{
+class PetModel extends PetModelRecord implements IPetModel, IClassHasMetaImplements{
     @ImplementsPoco() public name:string;
     public bark(){
         return this.name;

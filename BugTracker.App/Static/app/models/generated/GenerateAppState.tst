@@ -78,7 +78,7 @@ $Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name == "AppState")[ex
     ]
 }
 
-export class $Name {
+export class $Name implements ModelMeta.IClassHasMetaImplements {
     $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
 }]

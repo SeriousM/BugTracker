@@ -1,6 +1,10 @@
 import { Iterable } from 'immutable';
 import { getDecorator, ITypedObjectIndex } from '../reflection';
 
+export interface IClassHasMetaImplements {
+    prototype?: IHasMetaImplements//|Function
+}
+
 export interface IHasMetaImplements {
     __metaImplements?: IMetaImplements;
 }
@@ -17,7 +21,7 @@ export interface IMetaImplementsProperty {
     iterableFunction: IterableFunction
 }
 
-export interface IMetaImplementsClassConstructor extends IHasMetaImplements {
+export interface IMetaImplementsClassConstructor extends IClassHasMetaImplements {
 }
 
 export type IterableFunction = (...args: any[]) => Iterable<any, any>;
@@ -59,11 +63,11 @@ export function ImplementsClass(Class: Function) {
         args);
 }
 
-export function ImplementsModels(iterableFunction: IterableFunction, getClass: () => Function) {
+export function ImplementsModels(iterableFunction: IterableFunction, getClass: () => IClassHasMetaImplements) {
     return InternalImplementsModel(getClass, iterableFunction);
 }
 
-export function ImplementsModel(getClass: () => Function) {
+export function ImplementsModel(getClass: () => IClassHasMetaImplements) {
     return InternalImplementsModel(getClass);
 }
 

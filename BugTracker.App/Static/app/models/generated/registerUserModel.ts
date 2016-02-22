@@ -12,7 +12,7 @@ const RegisterUserModelRecord = Immutable.Record(<IRegisterUserModel>{
 });
 
 @ModelMeta.ImplementsClass(RegisterUserModelRecord)
-export class RegisterUserModel extends RegisterUserModelRecord implements IRegisterUserModel {
+export class RegisterUserModel extends RegisterUserModelRecord implements IRegisterUserModel, ModelMeta.IClassHasMetaImplements {
     @ModelMeta.ImplementsPoco() public username: string;
     public setUsername(username: string): RegisterUserModel {
         return <RegisterUserModel>this.set("username", username);

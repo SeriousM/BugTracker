@@ -1,5 +1,5 @@
 import { Iterable, Record } from 'immutable';
-import { IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction, ClassConstructorGetter, getIMetaImplementsProperty } from "./meta";
+import { IClassHasMetaImplements, IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction, ClassConstructorGetter, getIMetaImplementsProperty } from "./meta";
 import { IObjectIndex } from "../reflection";
 
 export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: IMetaImplementsClassConstructor, currentObject: Object): T {
@@ -15,7 +15,7 @@ export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(
 }
 
 function createModelOrModels(propValue: any, propMeta: IMetaImplementsProperty) {
-    var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
+    var propClass = <IClassHasMetaImplements>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
@@ -33,7 +33,7 @@ function createModelOrModels(propValue: any, propMeta: IMetaImplementsProperty) 
 }
 
 function createModel(propValue: any, propMeta: IMetaImplementsProperty) {
-    var propClass = <IMetaImplementsClassConstructor>propMeta.getClassConstructor();
+    var propClass = <IClassHasMetaImplements>propMeta.getClassConstructor();
     var propClassProto = <IHasMetaImplements>propClass.prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
     
@@ -48,9 +48,9 @@ function createModel(propValue: any, propMeta: IMetaImplementsProperty) {
     return model;
 }
 
-export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: Function): void {
+export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: IClassHasMetaImplements): void {
 
-    var blueprintMeta: IMetaImplements = (<IHasMetaImplements>blueprintConstructor.prototype).__metaImplements;
+    var blueprintMeta: IMetaImplements = blueprintConstructor.prototype.__metaImplements;
 
     if (blueprintMeta == null) {
         return;

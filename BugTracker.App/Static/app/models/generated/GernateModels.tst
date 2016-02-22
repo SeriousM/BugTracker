@@ -121,7 +121,7 @@ const $getRecordClassName = Immutable.Record(<I$Name>{
 });
 
 @ModelMeta.ImplementsClass($getRecordClassName)
-export class $Name extends $getRecordClassName implements I$Name {
+export class $Name extends $getRecordClassName implements I$Name, ModelMeta.IClassHasMetaImplements {
     $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
     $Properties(p => p.HasSetter)[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {

@@ -12,7 +12,7 @@ const CurrentUserStateRecord = Immutable.Record(<ICurrentUserState>{
 });
 
 @ModelMeta.ImplementsClass(CurrentUserStateRecord)
-export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState {
+export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState, ModelMeta.IClassHasMetaImplements {
     @ModelMeta.ImplementsModel(() => Models.UserModel) public user: Models.UserModel;
     public setUser(user: Models.UserModel): CurrentUserState {
         return <CurrentUserState>this.set("user", user);

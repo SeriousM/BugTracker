@@ -27,7 +27,7 @@ const IssueModelRecord = Immutable.Record(<IIssueModel>{
 });
 
 @ModelMeta.ImplementsClass(IssueModelRecord)
-export class IssueModel extends IssueModelRecord implements IIssueModel {
+export class IssueModel extends IssueModelRecord implements IIssueModel, ModelMeta.IClassHasMetaImplements {
     @ModelMeta.ImplementsPoco() public id: string;
     @ModelMeta.ImplementsPoco() public userId: string;
     @ModelMeta.ImplementsPoco() public title: string;

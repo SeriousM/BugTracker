@@ -1,6 +1,7 @@
 import { IAction } from "./appStore.base";
 import { AppState } from "../models/models";
 import { manipulateModel } from "../utils/model/parser";
+import { IClassHasMetaImplements } from "../utils/model/meta";
 
 var reduxDevTools: any = (<any>window).devToolsExtension;
 
@@ -30,7 +31,7 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
 
 type ReducerFunction = (state: any, action: IAction<any>) => ReducerFunction;
 
-function fixReduxDevToolsState(blueprintObject: Function) { 
+function fixReduxDevToolsState(blueprintObject: IClassHasMetaImplements) { 
     return (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
 
         const reduxInit: string = "@@redux/INIT";

@@ -15,7 +15,7 @@ const UserModelRecord = Immutable.Record(<IUserModel>{
 });
 
 @ModelMeta.ImplementsClass(UserModelRecord)
-export class UserModel extends UserModelRecord implements IUserModel {
+export class UserModel extends UserModelRecord implements IUserModel, ModelMeta.IClassHasMetaImplements {
     @ModelMeta.ImplementsPoco() public id: string;
     @ModelMeta.ImplementsPoco() public name: string;
     public setId(id: string): UserModel {
