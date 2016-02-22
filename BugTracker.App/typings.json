@@ -1,7 +1,5 @@
 {
     "ambientDependencies": {
-        "deep-freeze": "file:typings_custom/deep-freeze.d.ts",
-        "expect": "github:DefinitelyTyped/DefinitelyTyped/expect/expect.d.ts#46719185c564694c5583c4b7ad94dbb786ecad46",
         "immutable": "github:facebook/immutable-js/dist/immutable.d.ts#95335c36f2c4a3635b2ee139d906647c1d997279",
         "redux": "github:DefinitelyTyped/DefinitelyTyped/redux/redux.d.ts#44c9273e1e92bc95368f599d1dcda9f560a68956",
         "redux-logger": "file:typings_custom/redux-logger.d.ts",
@@ -10,5 +8,9 @@
     },
     "dependencies": {
         "angular2-redux-store": "file:node_modules/angular2-redux-store/lib/ReduxStore.d.ts"
+    },
+    "ambientDevDependencies": {
+        "deep-freeze": "file:typings_custom/deep-freeze.d.ts",
+        "expect": "github:DefinitelyTyped/DefinitelyTyped/expect/expect.d.ts#46719185c564694c5583c4b7ad94dbb786ecad46"
     }
 }
