@@ -371,6 +371,20 @@ userAccessMock.Setup(...);
 // ...
 ```
 
+## C# to Typescript transformation
+
+### Models
+Models from C# get generated from [Typewriter](https://frhagn.github.io/Typewriter) in the `\BugTracker.App\Static\app\models\generated\GernateServerModels.tst` file.
+To add new models you need to add a C# file to `BugTracker.App.Models` which will be converted to `\BugTracker.App\Static\app\models\generated\*.ts`.
+Note that only public properties are taken into account.
+
+Additional to that you have to extend the `\BugTracker.App\Static\app\models\models.ts` file with the new model (there is no automatism yet).
+
+#### API
+- normal property: no special api required
+- key property: annotate all key properties with `[Key]` to sign generate correct remove methods on referee models
+- lists: use `List<T>` as list format. annotate the porperty with `TypescriptListType` and choose the correct type from the enum.
+
 ## Configuration (`web.config`, `app.config`)
 
 ### log4net

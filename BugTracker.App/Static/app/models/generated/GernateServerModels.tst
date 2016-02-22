@@ -8,25 +8,27 @@
 
     // Enable extension methods by adding using Typewriter.Extensions.*
     using Typewriter.Extensions.Types;
+    Template(Settings settings)
+    {
+        settings.OutputFilenameFactory = file => GetCamelCaseFileName(file.Name);
+    }
 
     string GetCamelCaseFileName(string name)
     {
         // input "abc.cs"
-
         var camelCasedName = name.Substring(0,1).ToLower() + name.Substring(1);
         camelCasedName = camelCasedName.Substring(0, camelCasedName.Length - 3);
         camelCasedName += ".ts";
 
         return camelCasedName;
     }
-    Template(Settings settings)
-    {
-        //settings.IncludeProject("Project.Name");
-        //settings.OutputExtension = ".tsx";
-        settings.OutputFilenameFactory = file => GetCamelCaseFileName(file.Name);
-    }
     string getRecordClassName(Class c){return c.Name+"Record";}
-    string getListType(Property property)
+    Type getGroundlyingModelType(Type t)
+    {
+        if (t.IsEnumerable) { return t.TypeArguments.First(); }
+        return t;
+    }
+    string getRawListType(Property property)
     {
         // note: the name is "TypescriptListType" even the type is "TypescriptListTypeAttribute"!
         Attribute attribute = property.Attributes.FirstOrDefault(a => a.Name.Equals("TypescriptListType"));
@@ -34,7 +36,17 @@
         {
             return attribute.Value;
         }
-        throw new Exception("Attribute TypescriptListTypeAttribute must be applied on list properties");
+        throw new Exception("Attribute TypescriptListTypeAttribute must be applied on list properties.");
+    }
+    string getListType(Property property) { return "Immutable." + getRawListType(property); }
+    string getModelTypeRepresentation(Property p)
+    {
+        var t = getGroundlyingModelType(p.Type);
+        var typescriptType = t.Name;
+        if (t.IsPrimitive) { return typescriptType; }
+        typescriptType = "Models." + typescriptType;
+        if (p.Type.IsEnumerable) { typescriptType = getListType(p) + "<" + typescriptType + ">"; }
+        return typescriptType;
     }
     Type getTypeFromList(Property p){if (p.Type.IsEnumerable){return p.Type.TypeArguments.First();}throw new Exception("Type " + p + " is not a list");}
     string getImplementType(Property property)
@@ -47,7 +59,7 @@
         {
             if (property.Type.IsEnumerable)
             {
-                return "@ImplementsModels(Immutable."+getListType(property)+", () => Models."+getTypeFromList(property)+")";
+                return "@ImplementsModels("+getListType(property)+", () => Models."+getTypeFromList(property)+")";
             }
             else
             {
@@ -55,6 +67,10 @@
             }
         }
         throw new Exception("Cannot annotate the property " + property);
+    }
+    bool hasKeyedPropertiesFromModel(Property p)
+    {
+        return getTypeFromList(p).Properties.Any(x => x.Attributes.FirstOrDefault(a => a.Name == "Key") != null);
     }
     Property[] getKeysPropertiesFromModel(Property p)
     {
@@ -83,40 +99,45 @@
     string getParentClassName(Property p){return ((Class)p.Parent).Name;}
     string getModelName(Property p){return p.Type.IsPrimitive ? p.Type : "Models." + (p.Type.IsEnumerable ? getTypeFromList(p) : p.Type.Name);}
     bool isNonPrimitiveList(Property p){return !p.Type.IsPrimitive && p.Type.IsEnumerable;}
+    string singularCamelCase(Property p) { return p.Type.IsEnumerable ? p.name.Substring(0, p.name.Length -1) : p.name; }
+    string singularPascalCase(Property p) { return p.Type.IsEnumerable ? p.Name.Substring(0, p.Name.Length -1) : p.Name; }
 }import * as Immutable from 'immutable';
 import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../../utils/model/meta';
 import * as Models from '../models';
 
 $Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name.EndsWith("Model"))[interface I$Name {
-    $Properties[$name: $getModelName;][
+    $Properties[$name: $getModelTypeRepresentation;][
     ]
-    $Properties[set$Name(value: $getModelName): $getParentClassName;$isNonPrimitiveList[
-    add$Name(value: $getModelName): $getParentClassName;
-    remove$Name($getKeysParameterFromModel): $getParentClassName;]][
+    $Properties[set$Name($name: $getModelTypeRepresentation): $getParentClassName;$isNonPrimitiveList[
+    add$singularPascalCase($singularCamelCase: $getModelName): $getParentClassName;$hasKeyedPropertiesFromModel[
+    remove$singularPascalCase($getKeysParameterFromModel): $getParentClassName;]]][
     ]
 }
 
 const $getRecordClassName = Immutable.Record(<I$Name>{
-    $Properties[$name: <$getModelName>$Type[null]][,
+    $Properties[$name: <$getModelTypeRepresentation>$Type[null]][,
     ]
 });
 
 @ImplementsClass($getRecordClassName)
 export class $Name extends $getRecordClassName implements I$Name {
-    $Properties[$getImplementType public $name: $getModelName;][
+    $Properties[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
-    $Properties[public set$Name($name: $getModelName): $getParentClassName {
+    $Properties[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
         return <$getParentClassName>this.set("$name", $name);
     }$isNonPrimitiveList[
-    public add$Name(value: $getModelName): $getParentClassName {
-        var newSet = this.$name.concat(value);
-        return this.set$Name(newSet);
-    }
-    public remove$Name($getKeysParameterFromModel): $getParentClassName {
-        var key = this.$name.findKey(item => $getKeysQueryFromModel);
-        var newSet = this.$name.filter((item, itemKey) => itemKey != key);
-        return this.set$Name(newSet);
-    }]][
+    public add$singularPascalCase($singularCamelCase: $getModelName): $getParentClassName {
+        var newSet = this.$name.concat($singularCamelCase);
+        return <$getParentClassName>this.set$Name(newSet.to$getRawListType());
+    }$hasKeyedPropertiesFromModel[
+    public remove$singularPascalCase($getKeysParameterFromModel): $getParentClassName {
+        var index = this.$name.findIndex(item => $getKeysQueryFromModel);
+        if (index < 0) {
+            return this;
+        }
+        var newSet = this.$name.remove(index);
+        return <$getParentClassName>this.set$Name(newSet.to$getRawListType());
+    }]]][
     ]
     constructor() {
         super({});
