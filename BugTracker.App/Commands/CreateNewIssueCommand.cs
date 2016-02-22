@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using BugTracker.App.Models;
-using BugTracker.Data.Entities;
 using BugTracker.Data.Repositories.Abstract;
 using BugTracker.Shared.Command.Abstract;
 using BugTracker.Shared.Command.Entities;
@@ -9,7 +8,7 @@ using BugTracker.Shared.Extensions;
 
 namespace BugTracker.App.Commands
 {
-    internal class CreateNewIssueCommand : CommandBase<Issue>
+    internal class CreateNewIssueCommand : CommandBase<IssueModel>
     {
         private readonly IIssueAccess issueAccess;
         private readonly IUserAccess userAccess;
@@ -52,10 +51,11 @@ namespace BugTracker.App.Commands
             return base.CanExecuteAsync();
         }
 
-        protected override Task<CommandResult<Issue>> ExecuteAsync()
+        protected override Task<CommandResult<IssueModel>> ExecuteAsync()
         {
             var newIssue = this.issueAccess.Add(this.issueModel.UserId, this.issueModel.Title, this.issueModel.Content);
-            return this.SuccessExecution(newIssue).ToTaskResult();
+            var model = IssueModel.FromIssue(newIssue);
+            return this.SuccessExecution(model).ToTaskResult();
         }
     }
 }

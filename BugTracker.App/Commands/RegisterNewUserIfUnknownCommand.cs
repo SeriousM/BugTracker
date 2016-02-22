@@ -9,7 +9,7 @@ using BugTracker.Shared.Extensions;
 
 namespace BugTracker.App.Commands
 {
-    internal class RegisterNewUserIfUnknownCommand : CommandBase<User>
+    internal class RegisterNewUserIfUnknownCommand : CommandBase<UserModel>
     {
         private readonly IUserAccess userAccess;
         private RegisterUserModel registrationModel;
@@ -39,22 +39,25 @@ namespace BugTracker.App.Commands
             return base.CanExecuteAsync();
         }
 
-        protected override Task<CommandResult<User>> ExecuteAsync()
+        protected override Task<CommandResult<UserModel>> ExecuteAsync()
         {
             var usernameToRegister = this.registrationModel.Username;
 
             var maybeExistingUser = this.userAccess.TryGetByName(usernameToRegister);
 
             User registeredUser;
+            UserModel model;
             if (maybeExistingUser.HasValue)
             {
                 registeredUser = maybeExistingUser.Value;
-                return this.SuccessExecution(registeredUser).ToTaskResult();
+                model = UserModel.FromUser(registeredUser);
+                return this.SuccessExecution(model).ToTaskResult();
             }
 
             registeredUser = this.userAccess.Add(usernameToRegister);
+            model = UserModel.FromUser(registeredUser);
 
-            return this.SuccessExecution(registeredUser).ToTaskResult();
+            return this.SuccessExecution(model).ToTaskResult();
         }
     }
 }

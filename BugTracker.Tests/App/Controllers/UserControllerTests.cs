@@ -50,7 +50,7 @@ namespace BugTracker.Tests.App.Controllers
             // arrange
             this.commandRepositoryMock
                 .Setup(x => x.RegisterNewUser(It.IsNotNull<RegisterUserModel>()))
-                .Returns(this.CreateCommandMock(new CommandResult<User>(true, new User())));
+                .Returns(this.CreateCommandMock(new CommandResult<UserModel>(true, new UserModel())));
             RegisterUserModel registrationModel = new RegisterUserModel();
 
             // act
@@ -58,7 +58,7 @@ namespace BugTracker.Tests.App.Controllers
 
             // assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            User createdUser;
+            UserModel createdUser;
             Assert.IsTrue(response.TryGetContentValue(out createdUser));
         }
 
@@ -81,7 +81,7 @@ namespace BugTracker.Tests.App.Controllers
             // arrange
             this.commandRepositoryMock
                 .Setup(x => x.RegisterNewUserIfUnknown(It.IsNotNull<RegisterUserModel>()))
-                .Returns(this.CreateCommandMock(new CommandResult<User>(true, new User())));
+                .Returns(this.CreateCommandMock(new CommandResult<UserModel>(true, new UserModel())));
             RegisterUserModel registrationModel = new RegisterUserModel();
 
             // act
@@ -89,7 +89,7 @@ namespace BugTracker.Tests.App.Controllers
 
             // assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            User createdUser;
+            UserModel createdUser;
             Assert.IsTrue(response.TryGetContentValue(out createdUser));
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 
 using BugTracker.App.Models;
-using BugTracker.Data.Entities;
 using BugTracker.Data.Repositories.Abstract;
 using BugTracker.Shared.Command.Abstract;
 using BugTracker.Shared.Command.Entities;
@@ -9,7 +8,7 @@ using BugTracker.Shared.Extensions;
 
 namespace BugTracker.App.Commands
 {
-    internal class RegisterNewUserCommand : CommandBase<User>
+    internal class RegisterNewUserCommand : CommandBase<UserModel>
     {
         private readonly IUserAccess userAccess;
         private RegisterUserModel registrationModel;
@@ -39,7 +38,7 @@ namespace BugTracker.App.Commands
             return base.CanExecuteAsync();
         }
 
-        protected override Task<CommandResult<User>> ExecuteAsync()
+        protected override Task<CommandResult<UserModel>> ExecuteAsync()
         {
             var usernameToRegister = this.registrationModel.Username;
 
@@ -50,8 +49,9 @@ namespace BugTracker.App.Commands
             }
 
             var registeredUser = this.userAccess.Add(usernameToRegister);
+            var model = UserModel.FromUser(registeredUser);
 
-            return this.SuccessExecution(registeredUser).ToTaskResult();
+            return this.SuccessExecution(model).ToTaskResult();
         }
     }
 }

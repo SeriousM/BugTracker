@@ -1,6 +1,5 @@
 ﻿using BugTracker.App.Commands.Repository.Abstract;
 using BugTracker.App.Models;
-using BugTracker.Data.Entities;
 using BugTracker.Shared.Command.Abstract;
 using BugTracker.Shared.Command.Utils.Abstract;
 
@@ -15,23 +14,23 @@ namespace BugTracker.App.Commands.Repository
             this.commandFactory = commandFactory;
         }
 
-        public CommandBase<User> RegisterNewUser(RegisterUserModel registrationModel)
+        public CommandBase<UserModel> RegisterNewUser(RegisterUserModel registrationModel)
         {
-            var command = this.commandFactory.CreateCommand<RegisterNewUserCommand, User>();
+            var command = this.commandFactory.CreateCommand<RegisterNewUserCommand, UserModel>();
             command.Initialize(registrationModel);
             return command;
         }
 
-        public CommandBase<User> RegisterNewUserIfUnknown(RegisterUserModel registrationModel)
+        public CommandBase<UserModel> RegisterNewUserIfUnknown(RegisterUserModel registrationModel)
         {
-            var command = this.commandFactory.CreateCommand<RegisterNewUserIfUnknownCommand, User>();
+            var command = this.commandFactory.CreateCommand<RegisterNewUserIfUnknownCommand, UserModel>();
             command.Initialize(registrationModel);
             return command;
         }
 
-        public CommandBase<Issue> CreateNewIssue(IssueModel issueModel)
+        public CommandBase<IssueModel> CreateNewIssue(IssueModel issueModel)
         {
-            var command = this.commandFactory.CreateCommand<CreateNewIssueCommand, Issue>();
+            var command = this.commandFactory.CreateCommand<CreateNewIssueCommand, IssueModel>();
             command.Initialize(issueModel);
             return command;
         }

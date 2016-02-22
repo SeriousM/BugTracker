@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using BugTracker.Data.Entities;
 
 namespace BugTracker.App.Models
 {
@@ -7,7 +8,17 @@ namespace BugTracker.App.Models
     {
         [Key]
         public Guid Id { get; set; }
-        public string Firstname { get; set; }
-        public string Lastname { get; set; }
+        public string Name { get; set; }
+
+        internal static UserModel FromUser(User user)
+        {
+            var model = new UserModel
+            {
+                Id = user.Id,
+                Name = user.Name
+            };
+
+            return model;
+        }
     }
 }

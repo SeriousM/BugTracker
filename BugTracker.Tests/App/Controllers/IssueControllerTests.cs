@@ -54,7 +54,7 @@ namespace BugTracker.Tests.App.Controllers
             // arrange
             this.commandRepositoryMock
                 .Setup(x => x.CreateNewIssue(It.IsNotNull<IssueModel>()))
-                .Returns(this.CreateCommandMock(new CommandResult<Issue>(true, new Issue())));
+                .Returns(this.CreateCommandMock(new CommandResult<IssueModel>(true, new IssueModel())));
             IssueModel issueModel = new IssueModel();
 
             // act
@@ -62,7 +62,7 @@ namespace BugTracker.Tests.App.Controllers
 
             // assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Issue createdIssue;
+            IssueModel createdIssue;
             Assert.IsTrue(response.TryGetContentValue(out createdIssue));
         }
 
