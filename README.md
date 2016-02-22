@@ -2,9 +2,19 @@
 
 ## Getting started
 
+### Visual Studio
+Make sure that your environment `path` has only one reference to typescript and that it's the last one.
+To verify that, run `tsc --version` and check if you have the latest one.
+The latest typescript version is located here `C:\Program Files (x86)\Microsoft SDKs\TypeScript\1.7` (or above).
+
+Also make sure that the file `\BugTracker.App\BugTracker.App.csproj`'s xml property `TypeScriptToolsVersion` also reffers to the same version.
+
+Sadly there is no support yet to do all that in visual studio.
+
+### Typescript / VSCode in `BugTracker.App`
+
 ```
 cd BugTracker.App
-npm install
 npm run start-dev
 ```
 
