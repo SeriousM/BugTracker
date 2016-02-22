@@ -78,6 +78,6 @@ $Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name == "AppState")[ex
 }
 
 export class $Name {
-    $Properties[$getImplementType public $name: $getModelTypeRepresentation = null;][
+    $Properties[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
 }]

@@ -9,7 +9,7 @@ export interface IReducerAppState {
 }
 
 export class AppState {
-    @ModelMeta.ImplementsModels(Immutable.List, () => Models.UserModel) public users: Immutable.List<Models.UserModel> = null;
-    @ModelMeta.ImplementsModels(Immutable.List, () => Models.IssueModel) public issues: Immutable.List<Models.IssueModel> = null;
-    @ModelMeta.ImplementsModel(() => Models.CurrentUserState) public currentUser: Models.CurrentUserState = null;
+    @ModelMeta.ImplementsModels(Immutable.List, () => Models.UserModel) public users: Immutable.List<Models.UserModel>;
+    @ModelMeta.ImplementsModels(Immutable.List, () => Models.IssueModel) public issues: Immutable.List<Models.IssueModel>;
+    @ModelMeta.ImplementsModel(() => Models.CurrentUserState) public currentUser: Models.CurrentUserState;
 }
