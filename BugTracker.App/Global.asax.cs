@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using BugTracker.Shared.Infrastructure;

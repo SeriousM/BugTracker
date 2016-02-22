@@ -26,8 +26,6 @@ export class WebService {
 
     public registerIfUnknown(registerUserModel: Models.RegisterUserModel): IPromise<Models.UserModel> {
         var bodyContent = JSON.stringify(registerUserModel);
-        console.log("JSON: " + bodyContent);
-        bodyContent = "{ \"Username\": \"Bob\" }";
 
         return this.http
             .put("http://localhost:16449/api/User/RegisterIfUnknown", bodyContent)
