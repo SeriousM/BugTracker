@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Web;
 using System.Web.Http;
-
+using System.Web.Http.Cors;
 using BugTracker.Shared.Infrastructure;
+using Newtonsoft.Json.Serialization;
 
 namespace BugTracker.App
 {
@@ -14,6 +16,12 @@ namespace BugTracker.App
 
         private void ConfigurationCallback(HttpConfiguration configuration)
         {
+            var cors = new EnableCorsAttribute("http://127.0.0.1:8080/", "*", "*");
+            configuration.EnableCors(cors);
+
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
             WebApiConfig.Register(configuration);
             WebBootstrapper.Instance.Start(configuration);
         }

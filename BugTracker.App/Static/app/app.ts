@@ -1,7 +1,9 @@
 ﻿import { Component, provide } from "angular2/core";
+import { HTTP_PROVIDERS, RequestOptions  } from 'angular2/http';
 import { bootstrap } from "angular2/platform/browser";
-import { WebService } from "./webservice/webservice";
+import { WebService, DefaultRequestOptions } from "./webservice/webservice";
 import { AppStore, appStoreFactory } from "./store/appStore";
+
 
 import { CurrentUserState } from "./store/storeModels";
 
@@ -33,6 +35,8 @@ export class App {
 }
 
 bootstrap(App, [
+    HTTP_PROVIDERS,
+    provide(RequestOptions, { useClass: DefaultRequestOptions }),
     WebService,
     provide(AppStore, { useFactory: appStoreFactory })
 ]);
