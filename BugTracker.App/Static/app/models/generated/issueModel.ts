@@ -1,5 +1,5 @@
 import * as Immutable from 'immutable';
-import { ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from '../../utils/model/meta';
+import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
 
 interface IIssueModel {
@@ -20,12 +20,12 @@ const IssueModelRecord = Immutable.Record(<IIssueModel>{
     content: <string>null
 });
 
-@ImplementsClass(IssueModelRecord)
+@ModelMeta.ImplementsClass(IssueModelRecord)
 export class IssueModel extends IssueModelRecord implements IIssueModel {
-    @ImplementsPoco() public id: string;
-    @ImplementsPoco() public userId: string;
-    @ImplementsPoco() public title: string;
-    @ImplementsPoco() public content: string;
+    @ModelMeta.ImplementsPoco() public id: string;
+    @ModelMeta.ImplementsPoco() public userId: string;
+    @ModelMeta.ImplementsPoco() public title: string;
+    @ModelMeta.ImplementsPoco() public content: string;
     public setId(id: string): IssueModel {
         return <IssueModel>this.set("id", id);
     }
