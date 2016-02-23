@@ -1,3 +1,4 @@
+import * as Immutable from 'immutable';
 import { Injectable } from "angular2/core";
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -10,35 +11,19 @@ import * as ServiceBase from '../service.base';
 export class IssueService {
     constructor(private http: Http) { 
     }
-    public create(issueModel: TODO List?<Model.?>): ServiceBase.ITypedPromise<TODO List?<Model.?>> {
+    public create(issueModel: Models.IssueModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
         return this.http
             .request(`api/issue/`, {
                 method: "post",
-                body: issueModel
-            })
-            .map<TODO List?<Model.?>>(response => {
-                var model = Parser.createModelFromPoco<TODO List?<Model.?>>(TODO Model.?, response.json());
-                return model;
-            })
-            .map<TODO List?<Model.?>>(response => {
-                var models = Parser.createModelsFromPoco<TODO List?<Model.?>>(TODO List!, TODO Model.?, response.json());
-                return models;
+                body: ServiceBase.stringifyBody(issueModel)
             })
             .toPromise();
     }
-    public getAllByUser(userId: TODO List?<Model.?>): ServiceBase.ITypedPromise<TODO List?<Model.?>> {
+    public getAllByUser(userId: string): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
         return this.http
             .request(`api/issue/?userId=${userId}`, {
                 method: "get",
-                body: null
-            })
-            .map<TODO List?<Model.?>>(response => {
-                var model = Parser.createModelFromPoco<TODO List?<Model.?>>(TODO Model.?, response.json());
-                return model;
-            })
-            .map<TODO List?<Model.?>>(response => {
-                var models = Parser.createModelsFromPoco<TODO List?<Model.?>>(TODO List!, TODO Model.?, response.json());
-                return models;
+                body: ServiceBase.stringifyBody(null)
             })
             .toPromise();
     }

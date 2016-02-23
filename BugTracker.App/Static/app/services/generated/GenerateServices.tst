@@ -15,28 +15,86 @@
 
         return camelCasedName;
     }
+    Attribute getAttributeByName(AttributeCollection attributes, string name) { return attributes.FirstOrDefault(a => a.Name == name); }
+    string extractIterableFromValue(string value)
+    {
+        // input: BugTracker.App.Attributes.TypescriptIterable.List, "UserModel"
+        // wanted: List
+        return System.Text.RegularExpressions.Regex.Match(value, @"BugTracker\.App.Attributes\.TypescriptIterable\.(.*),.*").Groups[1].Value;
+    }
+    string extractIterableFromTypescriptIterableTypeValue(string value)
+    {
+        // input: BugTracker.App.Attributes.TypescriptIterable.List
+        // wanted: List
+        return value.Substring("BugTracker.App.Attributes.TypescriptIterable.".Length);
+    }
+    string extractTypeFromValue(string value)
+    {
+        // input: BugTracker.App.Attributes.TypescriptIterable.List, "UserModel"
+        // input: UserModel
+        // wanted: UserModel
+        var found = System.Text.RegularExpressions.Regex.Match(value, @".*""(.*)""").Groups[1].Value;
+        return !string.IsNullOrEmpty(found) ? found : value;
+    }
+    string getInnerType(Type type)
+    {
+        if (type.IsEnumerable) type = type.TypeArguments.First();
+        if (type.IsPrimitive) return type.name;
+        return "Models." + type.Name;
+    }
 
-    string serviceName(Class c)
+    string serviceName(Class c) { return c.Name.Replace("Controller", "Service"); }
+    string fullType(Method m)
     {
-        return c.Name.Replace("Controller", "Service");
+        var attribute = getReturnsPocoAttribute(m);
+        if (attribute != null) return attribute.Value;
+        attribute = getReturnsPocosAttribute(m);
+        if (attribute != null) return "Immutable." + extractIterableFromValue(attribute.Value) + "<" + extractTypeFromValue(attribute.Value) + ">";
+        attribute = getReturnsModelAttribute(m);
+        if (attribute != null) return "Models." + extractTypeFromValue(attribute.Value);
+        attribute = getReturnsModelsAttribute(m);
+        if (attribute != null) return "Immutable." + extractIterableFromValue(attribute.Value) + "<Models." + extractTypeFromValue(attribute.Value) + ">";
+        return "<NOT FOUND! List?<Model.?>>";
     }
-    string fullType(Method p)
+    string iterableType(Method m)
     {
-        return "TODO List?<Model.?>";
+        var attribute = getReturnsPocosAttribute(m);
+        if (attribute != null) return "Immutable." + extractIterableFromValue(attribute.Value);
+        attribute = getReturnsModelsAttribute(m);
+        if (attribute != null) return "Immutable." + extractIterableFromValue(attribute.Value);
+        return "<NOT FOUND! List!?>";
     }
-    string iterableType(Method p)
-    {
-        return "TODO List!";
-    }
+    
     string fullType(Parameter p)
     {
-        return "TODO List?<Model.?>";
+        var typeString = getInnerType(p.Type);
+        var attribute = getTypescriptIterableAttribute(p);
+        if (attribute != null) typeString = extractIterableFromTypescriptIterableTypeValue(attribute.Value) + "<" + typeString + ">";
+        return typeString;
     }
-    string innerType(Method p)
+    string innerType(Method m)
     {
-        return "TODO Model.?";
+        var attribute = getReturnsPocoAttribute(m);
+        if (attribute != null) return attribute.Value;
+        attribute = getReturnsPocosAttribute(m);
+        if (attribute != null) return extractTypeFromValue(attribute.Value);
+        attribute = getReturnsModelAttribute(m);
+        if (attribute != null) return "Models." + extractTypeFromValue(attribute.Value);
+        attribute = getReturnsModelsAttribute(m);
+        if (attribute != null) return "Models." + extractTypeFromValue(attribute.Value);
+        return "<NOT FOUND! Model.?>";
     }
-}$Classes(c => c.Namespace == "BugTracker.App.Controllers" && c.Name.EndsWith("Controller"))[import { Injectable } from "angular2/core";
+    Attribute getTypescriptIterableAttribute(Parameter p) { return getAttributeByName(p.Attributes, "TypescriptIterable"); }
+    Attribute getReturnsPocoAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsPoco"); }
+    Attribute getReturnsPocosAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsPocos"); }
+    Attribute getReturnsModelAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsModel"); }
+    Attribute getReturnsModelsAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsModels"); }
+    bool returnsPoco(Method m) { return getReturnsPocoAttribute(m) != null; }
+    bool returnsPocos(Method m) { return getReturnsPocosAttribute(m) != null; }
+    bool returnsModel(Method m) { return getReturnsModelAttribute(m) != null; }
+    bool returnsModels(Method m) { return getReturnsModelsAttribute(m) != null; }
+}$Classes(c => c.Namespace == "BugTracker.App.Controllers" && c.Name.EndsWith("Controller"))[import * as Immutable from 'immutable';
+import { Injectable } from "angular2/core";
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 import { Http } from 'angular2/http';
@@ -52,16 +110,20 @@ export class $serviceName {
         return this.http
             .request(`$Url`, {
                 method: "$HttpMethod",
-                body: $RequestData
-            })
+                body: ServiceBase.stringifyBody($RequestData)
+            })$returnsPoco[][$returnsPocos[
+            .map<$fullType>(response => {
+                var models = $fullType(response.json());
+                return model;
+            })]$returnsModel[
             .map<$fullType>(response => {
                 var model = Parser.createModelFromPoco<$fullType>($innerType, response.json());
                 return model;
-            })
+            })]$returnsModels[
             .map<$fullType>(response => {
-                var models = Parser.createModelsFromPoco<$fullType>($iterableType, $innerType, response.json());
+                var models = Parser.createModelsFromPoco<$fullType, $innerType>($iterableType, $innerType, response.json());
                 return models;
-            })
+            })]]
             .toPromise();
     }][
     ]

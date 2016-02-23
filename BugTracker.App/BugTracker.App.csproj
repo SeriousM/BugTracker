@@ -202,6 +202,10 @@
       <DependentUpon>GenerateServices.tst</DependentUpon>
       <CustomToolNamespace>Controllers\IssueController.cs</CustomToolNamespace>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\services\generated\typewriterTestController.ts">
+      <DependentUpon>GenerateServices.tst</DependentUpon>
+      <CustomToolNamespace>Controllers\TypewriterTestController.cs</CustomToolNamespace>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="Static\app\services\generated\userController.ts">
       <DependentUpon>GenerateServices.tst</DependentUpon>
       <CustomToolNamespace>Controllers\UserController.cs</CustomToolNamespace>
