@@ -13,7 +13,7 @@ export class TypewriterTestService {
     }
     public getSimpleStringMessage(): ServiceBase.ITypedPromise<string> {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/GetSimpleStringMessage`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
             })
@@ -24,7 +24,7 @@ export class TypewriterTestService {
     }
     public getSimpleStringMessageFromCustomRoute(message: string): ServiceBase.ITypedPromise<string> {
         return this.http
-            .request(`api/messages/getMessage/${message}`, {
+            .request(`api/typewriter/api/messages/getMessage/${message}`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
             })
@@ -35,7 +35,7 @@ export class TypewriterTestService {
     }
     public getMessageList(messages: Immutable.List<string>): ServiceBase.ITypedPromise<Immutable.List<string>> {
         return this.http
-            .request(`api/typewriterTest/?messages=${messages}`, {
+            .request(`api/typewriter/GetMessageList?messages=${messages}`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
             })
@@ -47,7 +47,7 @@ export class TypewriterTestService {
     }
     public getFilteredUserModels(searchString: string): ServiceBase.ITypedPromise<Immutable.List<Models.UserModel>> {
         return this.http
-            .request(`api/messages/getFilteredMessage/{searchString=User 1}?searchString=${searchString}`, {
+            .request(`api/typewriter/api/messages/getFilteredMessage/{searchString=User 1}?searchString=${searchString}`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
             })
@@ -59,7 +59,7 @@ export class TypewriterTestService {
     }
     public getUserModel(): ServiceBase.ITypedPromise<Models.UserModel> {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/GetUserModel`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
             })
@@ -71,7 +71,7 @@ export class TypewriterTestService {
     }
     public getUserModels(): ServiceBase.ITypedPromise<Immutable.List<Models.UserModel>> {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/GetUserModels`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
             })
@@ -83,7 +83,7 @@ export class TypewriterTestService {
     }
     public createNewUser(user: Models.RegisterUserModel): ServiceBase.ITypedPromise<Models.UserModel> {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/CreateNewUser`, {
                 method: "put",
                 body: ServiceBase.stringifyBody(user)
             })
@@ -95,7 +95,7 @@ export class TypewriterTestService {
     }
     public setUserId(user: Models.UserModel, newId: string): ServiceBase.ITypedPromise<Models.UserModel> {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/SetUserId`, {
                 method: "post",
                 body: ServiceBase.stringifyBody({ user: user, newId: newId })
             })
@@ -107,7 +107,7 @@ export class TypewriterTestService {
     }
     public modifyUserWithoutResult(user: Models.UserModel): ServiceBase.IPromise {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/ModifyUserWithoutResult`, {
                 method: "post",
                 body: ServiceBase.stringifyBody(user)
             })
@@ -129,7 +129,7 @@ export class TypewriterTestService {
     }
     public deleteUser(userId: string): ServiceBase.IPromise {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/DeleteUser`, {
                 method: "delete",
                 body: ServiceBase.stringifyBody(userId)
             })
@@ -140,20 +140,12 @@ export class TypewriterTestService {
     }
     public getCreationDate(): ServiceBase.ITypedPromise<Headers> {
         return this.http
-            .request(`api/typewriterTest/`, {
+            .request(`api/typewriter/GetCreationDate`, {
                 method: "head",
                 body: ServiceBase.stringifyBody(null)
             })
             .map<Headers>(response => {
                 return response.headers;
-            })
-            .toPromise();
-    }
-    public methodeWithoutHttpVerb(): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
-        return this.http
-            .request(`api/typewriterTest/`, {
-                method: "post",
-                body: ServiceBase.stringifyBody(null)
             })
             .toPromise();
     }

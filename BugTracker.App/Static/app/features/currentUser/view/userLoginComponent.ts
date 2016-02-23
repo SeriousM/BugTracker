@@ -3,6 +3,7 @@ import { AppStore } from "../../../store/appStore";
 
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 import { UserModel, RegisterUserModel } from '../../../models/models';
+import { UserService } from '../../../services/services';
 
 @Component({
     selector: "user-login",
@@ -17,7 +18,7 @@ import { UserModel, RegisterUserModel } from '../../../models/models';
 })
 
 export class UserLogin {
-    constructor(private appStore: AppStore) {//, private webservice : WebService) {
+    constructor(private appStore: AppStore, private userService : UserService) {//, private webservice : WebService) {
     }
     
     login(input: HTMLInputElement) {
@@ -29,11 +30,12 @@ export class UserLogin {
         
         var model = new RegisterUserModel().setUsername(username);
         
-        // this.webservice.registerIfUnknown(model).then(
-        //     model => {
-        //         this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(model));
-        //         input.value = '';
-        //     },
-        //     error => console.error("error", error));
+        
+        this.userService.registerIfUnknown(model).then(
+            model => {
+                this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(model));
+                input.value = '';
+            },
+            error => console.error("error", error));
     }
 }
