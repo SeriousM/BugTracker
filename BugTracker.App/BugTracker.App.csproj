@@ -148,6 +148,7 @@
     <Content Include="tsconfig.json" />
     <Content Include="Static\app\models\generated\GernateModels.tst" />
     <Content Include="Static\app\models\generated\GenerateAppState.tst" />
+    <Content Include="Static\app\services\generated\GenerateServices.tst" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -192,6 +193,14 @@
     <TypeScriptCompile Include="Static\app\models\generated\userModel.ts">
       <DependentUpon>GernateModels.tst</DependentUpon>
       <CustomToolNamespace>Models\UserModel.cs</CustomToolNamespace>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\services\generated\issueController.ts">
+      <DependentUpon>GenerateServices.tst</DependentUpon>
+      <CustomToolNamespace>Controllers\IssueController.cs</CustomToolNamespace>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\services\generated\userController.ts">
+      <DependentUpon>GenerateServices.tst</DependentUpon>
+      <CustomToolNamespace>Controllers\UserController.cs</CustomToolNamespace>
     </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup>
