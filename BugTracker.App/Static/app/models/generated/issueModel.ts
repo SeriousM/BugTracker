@@ -1,6 +1,16 @@
 import * as Immutable from 'immutable';
 import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
+import * as ModelBase from '../models.base';
+
+export interface IIssueModelUpdate {
+    id?: string;
+    userId?: string;
+    title?: string;
+    content?: string;
+    reportDate?: Date;
+    isClosed?: boolean;
+}
 
 interface IIssueModel {
     id: string;
@@ -34,6 +44,9 @@ export class IssueModel extends IssueModelRecord implements IIssueModel, ModelMe
     @ModelMeta.ImplementsPoco() public content: string;
     @ModelMeta.ImplementsPoco() public reportDate: Date;
     @ModelMeta.ImplementsPoco() public isClosed: boolean;
+    public updateFromModel(updateObject: IIssueModelUpdate): IssueModel {
+        return <IssueModel>this.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+    }
     public setId(id: string): IssueModel {
         return <IssueModel>this.set("id", id);
     }

@@ -102,11 +102,19 @@
     bool isNonPrimitiveList(Property p){return !p.Type.IsPrimitive && p.Type.IsEnumerable;}
     string singularCamelCase(Property p) { return p.Type.IsEnumerable ? p.name.Substring(0, p.name.Length -1) : p.name; }
     string singularPascalCase(Property p) { return p.Type.IsEnumerable ? p.Name.Substring(0, p.Name.Length -1) : p.Name; }
+    string getIModelUpdateName(Class c) { return getIModelName(c) + "Update"; }
+    string getIModelName(Class c) { return "I" + c.Name; }
 }import * as Immutable from 'immutable';
 import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
+import * as ModelBase from '../models.base';
 
-$Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name != "AppState")[interface I$Name {
+$Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name != "AppState")[export interface $getIModelUpdateName {
+    $Properties(p => p.HasSetter)[$name?: $getModelTypeRepresentation;][
+    ]
+}
+
+interface $getIModelName {
     $Properties(p => p.HasSetter)[$name: $getModelTypeRepresentation;][
     ]
     $Properties(p => p.HasSetter)[set$Name($name: $getModelTypeRepresentation): $getParentClassName;$isNonPrimitiveList[
@@ -121,9 +129,12 @@ const $getRecordClassName = Immutable.Record(<I$Name>{
 });
 
 @ModelMeta.ImplementsClass($getRecordClassName)
-export class $Name extends $getRecordClassName implements I$Name, ModelMeta.IClassHasMetaImplements {
+export class $Name extends $getRecordClassName implements $getIModelName, ModelMeta.IClassHasMetaImplements {
     $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
+    public updateFromModel(updateObject: $getIModelUpdateName): $Name {
+        return <$Name>this.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+    }
     $Properties(p => p.HasSetter)[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
         return <$getParentClassName>this.set("$name", $name);
     }$isNonPrimitiveList[
