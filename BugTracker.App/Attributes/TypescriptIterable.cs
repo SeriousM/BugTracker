@@ -1,12 +1,14 @@
-﻿namespace BugTracker.App.Attributes
+﻿using System;
+
+namespace BugTracker.App.Attributes
 {
     public enum TypescriptIterable
     {
         List,
         Stack,
-        Map,
-        OrderedMap,
         Set,
-        OrderedSet
+        OrderedSet,
+        [Obsolete("Not implemented yet.")] Map,
+        [Obsolete("Not implemented yet.")] OrderedMap
     }
 }
