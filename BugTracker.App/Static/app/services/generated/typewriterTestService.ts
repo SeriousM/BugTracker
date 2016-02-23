@@ -9,9 +9,10 @@ import * as ServiceBase from '../service.base';
 
 @Injectable()
 export class TypewriterTestService {
-    constructor(private http: Http) { 
+    constructor(private http: Http) {
     }
     public getSimpleStringMessage(): ServiceBase.ITypedPromise<string> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "get",
@@ -23,6 +24,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public getSimpleStringMessageFromCustomRoute(message: string): ServiceBase.ITypedPromise<string> {
+        
         return this.http
             .request(`api/messages/getMessage/${message}`, {
                 method: "get",
@@ -34,6 +36,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public getMessageList(messages: Immutable.List<string>): ServiceBase.ITypedPromise<Immutable.List<string>> {
+        
         return this.http
             .request(`api/typewriterTest/?messages=${messages}`, {
                 method: "get",
@@ -46,6 +49,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public getFilteredUserModels(searchString: string): ServiceBase.ITypedPromise<Immutable.List<Models.UserModel>> {
+        
         return this.http
             .request(`api/messages/getFilteredMessage/{searchString=User 1}?searchString=${searchString}`, {
                 method: "get",
@@ -58,6 +62,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public getUserModel(): ServiceBase.ITypedPromise<Models.UserModel> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "get",
@@ -70,6 +75,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public getUserModels(): ServiceBase.ITypedPromise<Immutable.List<Models.UserModel>> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "get",
@@ -82,6 +88,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public createNewUser(user: Models.RegisterUserModel): ServiceBase.ITypedPromise<Models.UserModel> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "put",
@@ -94,6 +101,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public setUserId(user: Models.UserModel, newId: string): ServiceBase.ITypedPromise<Models.UserModel> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "post",
@@ -106,6 +114,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public modifyUserWithoutResult(user: Models.UserModel): ServiceBase.IPromise {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "post",
@@ -117,6 +126,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public addUsers(user: Immutable.Stack<Models.UserModel>): ServiceBase.IPromise {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "post",
@@ -128,6 +138,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public deleteUser(userId: string): ServiceBase.IPromise {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "delete",
@@ -139,6 +150,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public getCreationDate(): ServiceBase.ITypedPromise<Headers> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "head",
@@ -150,6 +162,7 @@ export class TypewriterTestService {
             .toPromise();
     }
     public methodeWithoutHttpVerb(): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+        
         return this.http
             .request(`api/typewriterTest/`, {
                 method: "post",

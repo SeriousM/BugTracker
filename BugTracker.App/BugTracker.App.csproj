@@ -201,15 +201,15 @@
       <DependentUpon>GernateModels.tst</DependentUpon>
       <CustomToolNamespace>Models\UserModel.cs</CustomToolNamespace>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\services\generated\issueController.ts">
+    <TypeScriptCompile Include="Static\app\services\generated\issueService.ts">
       <DependentUpon>GenerateServices.tst</DependentUpon>
       <CustomToolNamespace>Controllers\IssueController.cs</CustomToolNamespace>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\services\generated\typewriterTestController.ts">
+    <TypeScriptCompile Include="Static\app\services\generated\typewriterTestService.ts">
       <DependentUpon>GenerateServices.tst</DependentUpon>
       <CustomToolNamespace>Controllers\TypewriterTestController.cs</CustomToolNamespace>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="Static\app\services\generated\userController.ts">
+    <TypeScriptCompile Include="Static\app\services\generated\userService.ts">
       <DependentUpon>GenerateServices.tst</DependentUpon>
       <CustomToolNamespace>Controllers\UserController.cs</CustomToolNamespace>
     </TypeScriptCompile>

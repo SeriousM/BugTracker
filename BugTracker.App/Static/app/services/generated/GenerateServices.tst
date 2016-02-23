@@ -12,9 +12,11 @@
     }
     string GetCamelCaseFileName(string name)
     {
-        // input "abc.cs"
+        // input: "abcController.cs"
+        // output: "abcService.ts"
         var camelCasedName = name.Substring(0,1).ToLower() + name.Substring(1);
         camelCasedName = camelCasedName.Substring(0, camelCasedName.Length - 3);
+        camelCasedName = camelCasedName.Replace("Controller", "Service");
         camelCasedName += ".ts";
 
         return camelCasedName;

@@ -9,9 +9,10 @@ import * as ServiceBase from '../service.base';
 
 @Injectable()
 export class UserService {
-    constructor(private http: Http) { 
+    constructor(private http: Http) {
     }
     public register(registrationModel: Models.RegisterUserModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+        
         return this.http
             .request(`api/user/`, {
                 method: "post",
@@ -20,6 +21,7 @@ export class UserService {
             .toPromise();
     }
     public registerIfUnknown(registrationModel: Models.RegisterUserModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+        
         return this.http
             .request(`api/user/`, {
                 method: "put",
@@ -28,6 +30,7 @@ export class UserService {
             .toPromise();
     }
     public get(id: string): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+        
         return this.http
             .request(`api/user/${id}`, {
                 method: "get",

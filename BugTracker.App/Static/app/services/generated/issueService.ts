@@ -9,9 +9,10 @@ import * as ServiceBase from '../service.base';
 
 @Injectable()
 export class IssueService {
-    constructor(private http: Http) { 
+    constructor(private http: Http) {
     }
     public create(issueModel: Models.IssueModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+        
         return this.http
             .request(`api/issue/`, {
                 method: "post",
@@ -20,6 +21,7 @@ export class IssueService {
             .toPromise();
     }
     public getAllByUser(userId: string): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+        
         return this.http
             .request(`api/issue/?userId=${userId}`, {
                 method: "get",
