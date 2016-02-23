@@ -5,6 +5,7 @@ import { DefaultRequestOptions } from "./services/service.base";
 import { AppStore, appStoreFactory } from "./store/appStore";
 
 import { CurrentUserState } from "./models/models";
+import { APP_WEBSERVICES } from "./services/services"
 
 import { UserLogin } from "./features/currentUser/view/userLoginComponent";
 import { UserAvatar } from "./features/currentUser/view/userAvatarComponent";
@@ -35,6 +36,7 @@ export class App {
 
 bootstrap(App, [
     HTTP_PROVIDERS,
+    APP_WEBSERVICES,
     provide(RequestOptions, { useClass: DefaultRequestOptions }),
     provide(AppStore, { useFactory: appStoreFactory })
 ]);

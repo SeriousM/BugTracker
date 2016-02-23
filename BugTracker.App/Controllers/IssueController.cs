@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-
+using BugTracker.App.Attributes;
 using BugTracker.App.Commands.Repository.Abstract;
 using BugTracker.App.Controllers.Abstract;
 using BugTracker.App.Models;
@@ -12,6 +14,7 @@ using BugTracker.Shared.Command.Utils.Abstract;
 
 namespace BugTracker.App.Controllers
 {
+    [RoutePrefix("api/issue")]
     public class IssueController : ApiControllerBase
     {
         private readonly ICommandRepository commandRepository;
@@ -31,7 +34,8 @@ namespace BugTracker.App.Controllers
             this.issueAccess = issueAccess;
         }
 
-        [HttpPost]
+        [ReturnsModel(nameof(IssueModel))]
+        [HttpPost, Route("Create")]
         public async Task<HttpResponseMessage> Create(IssueModel issueModel)
         {
             HttpResponseMessage response;
@@ -48,7 +52,8 @@ namespace BugTracker.App.Controllers
             return response;
         }
 
-        [HttpGet]
+        [ReturnsModels(TypescriptIterable.List, nameof(IssueModel))]
+        [HttpGet, Route("GetAllByUser")]
         public HttpResponseMessage GetAllByUser(Guid userId)
         {
             HttpResponseMessage response;
@@ -67,7 +72,13 @@ namespace BugTracker.App.Controllers
 
             var issues = this.issueAccess.GetAllByUserId(userId);
 
-            response = this.CreateResponse(issues);
+            // transform Issue Entity to Issue Model
+            var result = issues.Select(issue => new IssueModel
+            {
+                Id = issue.Id, UserId = issue.UserId, Content = issue.Content, IsClosed = issue.IsClosed, ReportDate = issue.ReportDate, Title = issue.Title
+            }).ToList();
+
+            response = this.CreateResponse(result);
             return response;
         }
     }

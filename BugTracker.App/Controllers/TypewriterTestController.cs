@@ -10,12 +10,12 @@ using BugTracker.App.Models;
 
 namespace BugTracker.App.Controllers
 {
-    //[RoutePrefix("api/items")]
+    [RoutePrefix("api/typewriter")]
     public class TypewriterTestController : ApiControllerBase
     {
         // api/TypewriterTest/GetSimpleStringMessage
         [ReturnsPoco("string")]
-        [HttpGet]
+        [HttpGet, Route("GetSimpleStringMessage")]
         public HttpResponseMessage GetSimpleStringMessage()
         {
             return this.CreateResponse("Hello World");
@@ -24,16 +24,15 @@ namespace BugTracker.App.Controllers
         // api/messages/getFilteredMessage/Hello Api
         [Route("api/messages/getMessage/{message}")]
         [ReturnsPoco("string")]
-        [HttpGet]
+        [HttpGet, Route("GetSimpleStringMessageFromCustomRoute")]
         public HttpResponseMessage GetSimpleStringMessageFromCustomRoute(string message)
         {
             return this.CreateResponse($"Received: '{message}'");
         }
 
-
         // api/TypewriterTest/GetMessageList?messages[]=Hello&messages[]=WebApi
         [ReturnsPocos(TypescriptIterable.List, "string")]
-        [HttpGet]
+        [HttpGet, Route("GetMessageList")]
         public HttpResponseMessage GetMessageList([FromUri][TypescriptIterableType(TypescriptIterable.List)] List<string> messages)
         {
             return this.CreateResponse(messages);
@@ -43,7 +42,7 @@ namespace BugTracker.App.Controllers
         // or api/messages/getFilteredMessage
         [Route("api/messages/getFilteredMessage/{searchString=User 1}")]
         [ReturnsModels(TypescriptIterable.List, nameof(UserModel))]
-        [HttpGet]
+        [HttpGet, Route("GetFilteredUserModels")]
         public HttpResponseMessage GetFilteredUserModels(string searchString = "User 1")
         {
             var users = new List<UserModel>()
@@ -65,7 +64,7 @@ namespace BugTracker.App.Controllers
 
         // api/TypewriterTest/GetUserModel
         [ReturnsModel(nameof(UserModel))]
-        [HttpGet]
+        [HttpGet, Route("GetUserModel")]
         public HttpResponseMessage GetUserModel()
         {
             var result = this.CreateUserModel("Sample User");
@@ -74,7 +73,7 @@ namespace BugTracker.App.Controllers
 
         // api/TypewriterTest/GetUserModels
         [ReturnsModels(TypescriptIterable.List, nameof(UserModel))]
-        [HttpGet]
+        [HttpGet, Route("GetUserModels")]
         public HttpResponseMessage GetUserModels()
         {
             var result = new List<UserModel>
@@ -87,7 +86,7 @@ namespace BugTracker.App.Controllers
 
         // api/TypewriterTest/CreateNewUser/?Username=Bob
         [ReturnsModel(nameof(UserModel))]
-        [HttpPut]
+        [HttpPut, Route("CreateNewUser")]
         public HttpResponseMessage CreateNewUser([FromUri] RegisterUserModel user)
         {
             // ... adding user ...
@@ -100,7 +99,7 @@ namespace BugTracker.App.Controllers
         // api/TypewriterTest/ChangeUserId/?Name=Bob
         // Body: "a384ed18-2036-4581-a3f5-feb95f1c4c11"
         [ReturnsModel(nameof(UserModel))]
-        [HttpPost]
+        [HttpPost, Route("SetUserId")]
         public HttpResponseMessage SetUserId([FromUri] UserModel user, [FromBody] string newId)
         {
             //return this.CreateResponse();
@@ -111,7 +110,7 @@ namespace BugTracker.App.Controllers
         // api/TypewriterTest/ModifyUserWithoutResult
         // Body: { "name": "Bob"}
         [ReturnsVoid]
-        [HttpPost]
+        [HttpPost, Route("ModifyUserWithoutResult")]
         public HttpResponseMessage ModifyUserWithoutResult(UserModel user)
         {
             // ... modifing user
@@ -132,7 +131,7 @@ namespace BugTracker.App.Controllers
 
         // api/TypewriterTest/DeleteUser?userId=a384ed18-2036-4581-a3f5-feb95f1c4c11
         [ReturnsVoid]
-        [HttpDelete]
+        [HttpDelete, Route("DeleteUser")]
         public HttpResponseMessage DeleteUser(Guid userId)
         {
             // ... removing user
@@ -142,7 +141,7 @@ namespace BugTracker.App.Controllers
 
         // api/TypewriterTest/GetCreationDate
         [ReturnsHeaderOnly]
-        [HttpHead]
+        [HttpHead, Route("GetCreationDate")]
         public HttpResponseMessage GetCreationDate()
         {
             var response = this.CreateResponse();
@@ -150,10 +149,10 @@ namespace BugTracker.App.Controllers
             return response;
         }
 
-        public HttpResponseMessage MethodeWithoutHttpVerb()
+        /*public HttpResponseMessage MethodeWithoutHttpVerb()
         {
             return this.CreateResponse();
-        }
+        }*/
 
         private UserModel CreateUserModel(string name)
         {

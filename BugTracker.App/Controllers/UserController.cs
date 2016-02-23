@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-
+using BugTracker.App.Attributes;
 using BugTracker.App.Commands.Repository.Abstract;
 using BugTracker.App.Controllers.Abstract;
 using BugTracker.App.Models;
@@ -12,6 +12,7 @@ using BugTracker.Shared.Command.Utils.Abstract;
 
 namespace BugTracker.App.Controllers
 {
+    [RoutePrefix("api/user")]
     public class UserController : ApiControllerBase
     {
         private readonly ICommandRepository commandRepository;
@@ -25,7 +26,8 @@ namespace BugTracker.App.Controllers
             this.userAccess = userAccess;
         }
 
-        [HttpPost]
+        [ReturnsModel(nameof(UserModel))]
+        [HttpPost, Route("Register")]
         public async Task<HttpResponseMessage> Register(RegisterUserModel registrationModel)
         {
             HttpResponseMessage response;
@@ -42,7 +44,8 @@ namespace BugTracker.App.Controllers
             return response;
         }
 
-        [HttpPut]
+        [ReturnsModel(nameof(UserModel))]
+        [HttpPut, Route("RegisterIfUnknown")]
         public async Task<HttpResponseMessage> RegisterIfUnknown(RegisterUserModel registrationModel)
         {
             HttpResponseMessage response;
@@ -59,7 +62,8 @@ namespace BugTracker.App.Controllers
             return response;
         }
 
-        [HttpGet]
+        [ReturnsModel(nameof(UserModel))]
+        [HttpGet, Route("Get")]
         public HttpResponseMessage Get(Guid id)
         {
             HttpResponseMessage response;
@@ -77,7 +81,13 @@ namespace BugTracker.App.Controllers
                 return response;
             }
 
-            return this.CreateResponse(maybeUser.Value);
+            var result = new UserModel
+            {
+                Id = maybeUser.Value.Id,
+                Name = maybeUser.Value.Name
+            };
+            
+            return this.CreateResponse(result);
         }
     }
 }
