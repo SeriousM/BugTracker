@@ -11,21 +11,29 @@ import * as ServiceBase from '../service.base';
 export class IssueService {
     constructor(private http: Http) {
     }
-    public create(issueModel: Models.IssueModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+    public create(issueModel: Models.IssueModel): ServiceBase.ITypedPromise<Models.IssueModel> {
         
         return this.http
-            .request(`api/issue/`, {
+            .request(`api/issue/Create`, {
                 method: "post",
                 body: ServiceBase.stringifyBody(issueModel)
             })
+            .map<Models.IssueModel>(response => {
+                var model = Parser.createModelFromPoco<Models.IssueModel>(Models.IssueModel, response.json());
+                return model;
+            })
             .toPromise();
     }
-    public getAllByUser(userId: string): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+    public getAllByUser(userId: string): ServiceBase.ITypedPromise<Immutable.List<Models.IssueModel>> {
         
         return this.http
-            .request(`api/issue/?userId=${userId}`, {
+            .request(`api/issue/GetAllByUser?userId=${userId}`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
+            })
+            .map<Immutable.List<Models.IssueModel>>(response => {
+                var models = Parser.createModelsFromPoco<Immutable.List<Models.IssueModel>, Models.IssueModel>(Immutable.List, Models.IssueModel, response.json());
+                return models;
             })
             .toPromise();
     }

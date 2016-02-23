@@ -11,30 +11,42 @@ import * as ServiceBase from '../service.base';
 export class UserService {
     constructor(private http: Http) {
     }
-    public register(registrationModel: Models.RegisterUserModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+    public register(registrationModel: Models.RegisterUserModel): ServiceBase.ITypedPromise<Models.UserModel> {
         
         return this.http
-            .request(`api/user/`, {
+            .request(`api/user/Register`, {
                 method: "post",
                 body: ServiceBase.stringifyBody(registrationModel)
             })
-            .toPromise();
-    }
-    public registerIfUnknown(registrationModel: Models.RegisterUserModel): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
-        
-        return this.http
-            .request(`api/user/`, {
-                method: "put",
-                body: ServiceBase.stringifyBody(registrationModel)
+            .map<Models.UserModel>(response => {
+                var model = Parser.createModelFromPoco<Models.UserModel>(Models.UserModel, response.json());
+                return model;
             })
             .toPromise();
     }
-    public get(id: string): ServiceBase.ITypedPromise<<NOT FOUND! List?<Model.?>>> {
+    public registerIfUnknown(registrationModel: Models.RegisterUserModel): ServiceBase.ITypedPromise<Models.UserModel> {
         
         return this.http
-            .request(`api/user/${id}`, {
+            .request(`api/user/RegisterIfUnknown`, {
+                method: "put",
+                body: ServiceBase.stringifyBody(registrationModel)
+            })
+            .map<Models.UserModel>(response => {
+                var model = Parser.createModelFromPoco<Models.UserModel>(Models.UserModel, response.json());
+                return model;
+            })
+            .toPromise();
+    }
+    public get(id: string): ServiceBase.ITypedPromise<Models.UserModel> {
+        
+        return this.http
+            .request(`api/user/Get?id=${id}`, {
                 method: "get",
                 body: ServiceBase.stringifyBody(null)
+            })
+            .map<Models.UserModel>(response => {
+                var model = Parser.createModelFromPoco<Models.UserModel>(Models.UserModel, response.json());
+                return model;
             })
             .toPromise();
     }
