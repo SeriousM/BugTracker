@@ -8,7 +8,7 @@ export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(b
     return model;
 }
 
-export function createModelsFromPoco<T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: IMetaImplementsClassConstructor, currentArray: Object[]): T {
+export function createModelsFromPoco<U extends Iterable<any, IMetaImplementsClassConstructor>, T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: IMetaImplementsClassConstructor, currentArray: Object[]): U {
     var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, iterableFunction);
     var model = createModelOrModels(currentArray, propMeta);
     return model;
