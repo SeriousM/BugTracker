@@ -10,9 +10,10 @@ using BugTracker.App.Models;
 
 namespace BugTracker.App.Controllers
 {
-    [RoutePrefix("api/typewriter")]
+    //[RoutePrefix("api/items")]
     public class TypewriterTestController : ApiControllerBase
     {
+        // api/TypewriterTest/GetSimpleStringMessage
         [ReturnsPoco("string")]
         [HttpGet]
         public HttpResponseMessage GetSimpleStringMessage()
@@ -20,7 +21,8 @@ namespace BugTracker.App.Controllers
             return this.CreateResponse("Hello World");
         }
 
-        [Route("api/messages/{message:string}")]
+        // api/messages/getFilteredMessage/Hello Api
+        [Route("api/messages/getMessage/{message}")]
         [ReturnsPoco("string")]
         [HttpGet]
         public HttpResponseMessage GetSimpleStringMessageFromCustomRoute(string message)
@@ -28,16 +30,27 @@ namespace BugTracker.App.Controllers
             return this.CreateResponse($"Received: '{message}'");
         }
 
-        [Route("api/messages/{searchString:string=\"\"}")]
+
+        // api/TypewriterTest/GetMessageList?messages[]=Hello&messages[]=WebApi
+        [ReturnsPocos(TypescriptIterable.List, "string")]
+        [HttpGet]
+        public HttpResponseMessage GetMessageList([FromUri][TypescriptIterableType(TypescriptIterable.List)] List<string> messages)
+        {
+            return this.CreateResponse(messages);
+        }
+
+        // api/messages/getFilteredMessage/User 2
+        // or api/messages/getFilteredMessage
+        [Route("api/messages/getFilteredMessage/{searchString=User 1}")]
         [ReturnsModels(TypescriptIterable.List, nameof(UserModel))]
         [HttpGet]
-        public HttpResponseMessage GetFilteredUserModels(string searchString = "")
+        public HttpResponseMessage GetFilteredUserModels(string searchString = "User 1")
         {
             var users = new List<UserModel>()
             {
-                this.createUserModel("Sample User 1"),
-                this.createUserModel("Sample User 2"),
-                this.createUserModel("Sample User 3")
+                this.CreateUserModel("Sample User 1"),
+                this.CreateUserModel("Sample User 2"),
+                this.CreateUserModel("Sample User 3")
             };
 
             var result = new List<UserModel>(users);
@@ -49,66 +62,86 @@ namespace BugTracker.App.Controllers
 
             return this.CreateResponse(result);
         }
-        
+
+        // api/TypewriterTest/GetUserModel
         [ReturnsModel(nameof(UserModel))]
         [HttpGet]
         public HttpResponseMessage GetUserModel()
         {
-            var result = this.createUserModel("Sample User");
+            var result = this.CreateUserModel("Sample User");
             return this.CreateResponse(result);
         }
 
+        // api/TypewriterTest/GetUserModels
         [ReturnsModels(TypescriptIterable.List, nameof(UserModel))]
         [HttpGet]
         public HttpResponseMessage GetUserModels()
         {
-            var result = new List<UserModel>()
+            var result = new List<UserModel>
             {
-                this.createUserModel("Sample User 1"), this.createUserModel("Sample User 2"), this.createUserModel("Sample User 3")
+                this.CreateUserModel("Sample User 1"), this.CreateUserModel("Sample User 2"), this.CreateUserModel("Sample User 3")
             };
 
             return this.CreateResponse(result);
         }
 
-
-
+        // api/TypewriterTest/CreateNewUser/?Username=Bob
         [ReturnsModel(nameof(UserModel))]
         [HttpPut]
-        public HttpResponseMessage CreateNewUser(RegisterUserModel user)
+        public HttpResponseMessage CreateNewUser([FromUri] RegisterUserModel user)
         {
             // ... adding user ...
 
-            var result = this.createUserModel(user.Username);
+            var result = this.CreateUserModel(user.Username);
             return this.CreateResponse(result);
 
         }
 
-        [ReturnsModels(TypescriptIterable.List, nameof(UserModel))]
+        // api/TypewriterTest/ChangeUserId/?Name=Bob
+        // Body: "a384ed18-2036-4581-a3f5-feb95f1c4c11"
+        [ReturnsModel(nameof(UserModel))]
         [HttpPost]
-        public HttpResponseMessage ChangeUserId(List<UserModel> users, [FromBody] int index)
+        public HttpResponseMessage SetUserId([FromUri] UserModel user, [FromBody] string newId)
         {
-            users[index].Id = Guid.NewGuid();
-
-            return this.CreateResponse(users);
+            //return this.CreateResponse();
+            user.Id = new Guid(newId);
+            return this.CreateResponse(user);
         }
 
+        // api/TypewriterTest/ModifyUserWithoutResult
+        // Body: { "name": "Bob"}
+        [ReturnsVoid]
         [HttpPost]
-        public HttpResponseMessage ModifyUserWithoutResult([FromBody] UserModel user)
+        public HttpResponseMessage ModifyUserWithoutResult(UserModel user)
         {
             // ... modifing user
 
             return this.CreateResponse();
         }
 
+        // api/TypewriterTest/AddUsers
+        // Body: [ { "name": "Bob" }, { "name": "Sally" } ]
+        [ReturnsVoid]
+        [HttpPost]
+        public HttpResponseMessage AddUsers([TypescriptIterableType(TypescriptIterable.OrderedMap)] List<UserModel> user)
+        {
+            // ... modifing user
+
+            return this.CreateResponse();
+        }
+
+        // api/TypewriterTest/DeleteUser?userId=a384ed18-2036-4581-a3f5-feb95f1c4c11
+        [ReturnsVoid]
         [HttpDelete]
-        public HttpResponseMessage DeleteUser([FromUri] Guid userId)
+        public HttpResponseMessage DeleteUser(Guid userId)
         {
             // ... removing user
 
             return this.CreateResponse();
         }
 
-        [ReturnsModel(nameof(UserModel))]
+        // api/TypewriterTest/GetCreationDate
+        [ReturnsVoid]
         [HttpHead]
         public HttpResponseMessage GetCreationDate()
         {
@@ -116,8 +149,13 @@ namespace BugTracker.App.Controllers
             response.Headers.Add("CreationDate", DateTime.Now.ToString(CultureInfo.InvariantCulture));
             return response;
         }
-        
-        private UserModel createUserModel(string name)
+
+        public HttpResponseMessage MethodeWithoutHttpVerb()
+        {
+            return this.CreateResponse();
+        }
+
+        private UserModel CreateUserModel(string name)
         {
             return new UserModel()
             {
