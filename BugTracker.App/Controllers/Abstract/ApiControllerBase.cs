@@ -18,7 +18,13 @@ namespace BugTracker.App.Controllers.Abstract
 
         protected HttpResponseMessage CreateResponse<T>(T value, HttpStatusCode httpStatusCode = HttpStatusCode.OK)
         {
-            var response = this.Request.CreateResponse(value);
+            var response = this.Request.CreateResponse(httpStatusCode,value);
+            return response;
+        }
+
+        protected HttpResponseMessage CreateResponse(HttpStatusCode httpStatusCode = HttpStatusCode.OK)
+        {
+            var response = this.Request.CreateResponse(httpStatusCode);
             return response;
         }
 

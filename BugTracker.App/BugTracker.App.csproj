@@ -121,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attributes\ReturnsModelAttribute.cs" />
+    <Compile Include="Attributes\ReturnsModelsAttribute.cs" />
+    <Compile Include="Attributes\ReturnsPocoAttribute.cs" />
     <Compile Include="Attributes\TypescriptIterable.cs" />
     <Compile Include="Attributes\TypescriptIterableTypeAttribute.cs" />
     <Compile Include="Commands\CreateNewIssueCommand.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Commands\Repository\CommandRepository.cs" />
     <Compile Include="Commands\Repository\Abstract\ICommandRepository.cs" />
     <Compile Include="Controllers\Abstract\ApiControllerBase.cs" />
+    <Compile Include="Controllers\TypewriterTestController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DependencyModules\CommandDependencyModule.cs" />
