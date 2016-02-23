@@ -10,6 +10,7 @@ using BugTracker.App.Models;
 
 namespace BugTracker.App.Controllers
 {
+    [RoutePrefix("api/typewriter")]
     public class TypewriterTestController : ApiControllerBase
     {
         [ReturnsPoco("string")]
@@ -48,7 +49,7 @@ namespace BugTracker.App.Controllers
 
             return this.CreateResponse(result);
         }
-
+        
         [ReturnsModel(nameof(UserModel))]
         [HttpGet]
         public HttpResponseMessage GetUserModel()
@@ -69,6 +70,8 @@ namespace BugTracker.App.Controllers
             return this.CreateResponse(result);
         }
 
+
+
         [ReturnsModel(nameof(UserModel))]
         [HttpPut]
         public HttpResponseMessage CreateNewUser(RegisterUserModel user)
@@ -80,8 +83,17 @@ namespace BugTracker.App.Controllers
 
         }
 
+        [ReturnsModels(TypescriptIterable.List, nameof(UserModel))]
         [HttpPost]
-        public HttpResponseMessage ModifyUserWithoutResult(UserModel user)
+        public HttpResponseMessage ChangeUserId(List<UserModel> users, [FromBody] int index)
+        {
+            users[index].Id = Guid.NewGuid();
+
+            return this.CreateResponse(users);
+        }
+
+        [HttpPost]
+        public HttpResponseMessage ModifyUserWithoutResult([FromBody] UserModel user)
         {
             // ... modifing user
 
@@ -89,7 +101,7 @@ namespace BugTracker.App.Controllers
         }
 
         [HttpDelete]
-        public HttpResponseMessage DeleteUser(Guid userId)
+        public HttpResponseMessage DeleteUser([FromUri] Guid userId)
         {
             // ... removing user
 
@@ -104,7 +116,7 @@ namespace BugTracker.App.Controllers
             response.Headers.Add("CreationDate", DateTime.Now.ToString(CultureInfo.InvariantCulture));
             return response;
         }
-
+        
         private UserModel createUserModel(string name)
         {
             return new UserModel()
