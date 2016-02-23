@@ -30,7 +30,6 @@ namespace BugTracker.App.Controllers
             return this.CreateResponse($"Received: '{message}'");
         }
 
-
         // api/TypewriterTest/GetMessageList?messages[]=Hello&messages[]=WebApi
         [ReturnsPocos(TypescriptIterable.List, "string")]
         [HttpGet, Route("GetMessageList")]
