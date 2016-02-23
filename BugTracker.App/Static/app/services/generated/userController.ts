@@ -2,7 +2,7 @@ import * as Immutable from 'immutable';
 import { Injectable } from "angular2/core";
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
-import { Http } from 'angular2/http';
+import { Http, Headers } from 'angular2/http';
 import * as Parser from '../../utils/model/parser';
 import * as Models from '../../models/models';
 import * as ServiceBase from '../service.base';
