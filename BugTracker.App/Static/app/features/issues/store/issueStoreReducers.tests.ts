@@ -12,7 +12,7 @@ export class IssueStoreReducersTests extends TestRunnerBase {
     @Test addNewIssue_works() {
         var beforeState = List<IssueModel>();
         var afterState = List<IssueModel>()
-            .push(new IssueModel().setTitle("A Problem"));
+            .push(new IssueModel({ title: "A Problem" }));
 
         var action = IssueStoreActions.AddIssue("A Problem");
 

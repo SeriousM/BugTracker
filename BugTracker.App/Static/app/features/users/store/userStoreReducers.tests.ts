@@ -12,7 +12,7 @@ export class UserStoreReducersTests extends TestRunnerBase {
     @Test addNewUser_works() {
         var beforeState = List<UserModel>();
         var afterState = List<UserModel>()
-            .push(new UserModel().setName("Bob"));
+            .push(new UserModel({ name: "Bob" }));
 
         var action = UserStoreActions.AddUser("Bob");
 
@@ -22,13 +22,15 @@ export class UserStoreReducersTests extends TestRunnerBase {
         expect(userStoreReducer(beforeState, action)).toEqual(afterState);
     }
     @Test removeUser_works() {
-        var beforeState = List<UserModel>()
-            .push(new UserModel().setName("A"))
-            .push(new UserModel().setName("B"))
-            .push(new UserModel().setName("C"));
-        var afterState = List<UserModel>()
-            .push(new UserModel().setName("A"))
-            .push(new UserModel().setName("C"));
+        var beforeState = List<UserModel>([
+            new UserModel({ name: "A" }),
+            new UserModel({ name: "B" }),
+            new UserModel({ name: "C" })
+        ]);
+        var afterState = List<UserModel>([
+            new UserModel({ name: "A" }),
+            new UserModel({ name: "C" })
+        ]);
 
         var action = UserStoreActions.RemoveUser(1 /* user "B" */);
 

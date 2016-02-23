@@ -33,7 +33,7 @@ export class UserModel extends UserModelRecord implements IUserModel, ModelMeta.
     public setName(name: string): UserModel {
         return <UserModel>this.set("name", name);
     }
-    constructor() {
-        super({});
+    constructor(initialObject?: IUserModelUpdate = {}) {
+        super(initialObject);
     }
 }

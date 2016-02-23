@@ -151,7 +151,7 @@ export class $Name extends $getRecordClassName implements $getIModelName, ModelM
         return <$getParentClassName>this.set$Name(newSet.to$getRawListType());
     }]]][
     ]
-    constructor() {
-        super({});
+    constructor(initialObject?: $getIModelUpdateName = {}) {
+        super(initialObject);
     }
 }]

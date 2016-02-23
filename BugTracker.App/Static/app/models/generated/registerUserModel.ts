@@ -25,7 +25,7 @@ export class RegisterUserModel extends RegisterUserModelRecord implements IRegis
     public setUsername(username: string): RegisterUserModel {
         return <RegisterUserModel>this.set("username", username);
     }
-    constructor() {
-        super({});
+    constructor(initialObject?: IRegisterUserModelUpdate = {}) {
+        super(initialObject);
     }
 }
