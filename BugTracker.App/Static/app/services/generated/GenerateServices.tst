@@ -5,7 +5,11 @@
     {
         settings.OutputFilenameFactory = file => GetCamelCaseFileName(file.Name);
     }
-
+    string debug(Func<string> action)
+    {
+        try{return action();}
+        catch (Exception ex) {return ex.ToString();}
+    }
     string GetCamelCaseFileName(string name)
     {
         // input "abc.cs"
@@ -35,6 +39,15 @@
         // wanted: UserModel
         var found = System.Text.RegularExpressions.Regex.Match(value, @".*""(.*)""").Groups[1].Value;
         return !string.IsNullOrEmpty(found) ? found : value;
+    }
+    string extractObsoleteMessage(string value, string name)
+    {
+        // input: 
+        // input: Do not use it!
+        // input: "Do not use it!", true
+        var match = System.Text.RegularExpressions.Regex.Match(value, @"^(?:""(.*?)""|(.*))");
+        var found = match.Groups[1].Success ? match.Groups[1].Value : match.Groups[2].Value;
+        return !string.IsNullOrEmpty(found) ? found : $"Attention: '{name}' is marked as obsolete!";
     }
     string getInnerType(Type type)
     {
@@ -84,6 +97,18 @@
         if (attribute != null) return "Models." + extractTypeFromValue(attribute.Value);
         return "<NOT FOUND! Model.?>";
     }
+    string getObsoleteWarning(Class c)
+    {
+        var attribute = getObsoleteAttribute(c);
+        if (attribute == null) return string.Empty;
+        return "console.warn(`" + extractObsoleteMessage(attribute.Value ?? "", serviceName(c)) + "`);";
+    }
+    string getObsoleteWarning(Method m)
+    {
+        var attribute = getObsoleteAttribute(m);
+        if (attribute == null) return string.Empty;
+        return "console.warn(`" + extractObsoleteMessage(attribute.Value ?? "", m.name) + "`);";
+    }
     Attribute getTypescriptIterableAttribute(Parameter p) { return getAttributeByName(p.Attributes, "TypescriptIterableType"); }
     Attribute getReturnsVoidAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsVoid"); }
     Attribute getReturnsPocoAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsPoco"); }
@@ -91,12 +116,16 @@
     Attribute getReturnsPocosAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsPocos"); }
     Attribute getReturnsModelAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsModel"); }
     Attribute getReturnsModelsAttribute(Method m) { return getAttributeByName(m.Attributes, "ReturnsModels"); }
+    Attribute getObsoleteAttribute(Class c) { return getAttributeByName(c.Attributes, "Obsolete"); }
+    Attribute getObsoleteAttribute(Method m) { return getAttributeByName(m.Attributes, "Obsolete"); }
     bool returnsVoid(Method m) { return getReturnsVoidAttribute(m) != null; }
     bool returnsPoco(Method m) { return getReturnsPocoAttribute(m) != null; }
     bool returnsHeaderOnly(Method m) { return getReturnsHeaderOnlyAttribute(m) != null; }
     bool returnsPocos(Method m) { return getReturnsPocosAttribute(m) != null; }
     bool returnsModel(Method m) { return getReturnsModelAttribute(m) != null; }
     bool returnsModels(Method m) { return getReturnsModelsAttribute(m) != null; }
+    bool isObsolete(Class c) { return getObsoleteAttribute(c) != null; }
+    bool isObsolete(Method m) { return getObsoleteAttribute(m) != null; }
 }$Classes(c => c.Namespace == "BugTracker.App.Controllers" && c.Name.EndsWith("Controller"))[import * as Immutable from 'immutable';
 import { Injectable } from "angular2/core";
 import 'rxjs/add/operator/toPromise';
@@ -108,9 +137,14 @@ import * as ServiceBase from '../service.base';
 
 @Injectable()
 export class $serviceName {
-    constructor(private http: Http) { 
-    }
-    $Methods[public $name($Parameters[$name: $fullType][, ]): $returnsVoid[ServiceBase.IPromise][$returnsHeaderOnly[ServiceBase.ITypedPromise<Headers>][ServiceBase.ITypedPromise<$fullType>]] {
+    constructor(private http: Http) {$isObsolete[
+        $getObsoleteWarning
+    ][
+    ]}
+    $Methods[public $name($Parameters[$name: $fullType][, ]): $returnsVoid[ServiceBase.IPromise][$returnsHeaderOnly[ServiceBase.ITypedPromise<Headers>][ServiceBase.ITypedPromise<$fullType>]] {$isObsolete[
+        $getObsoleteWarning
+        ][
+        ]
         return this.http
             .request(`$Url`, {
                 method: "$HttpMethod",
