@@ -2,7 +2,7 @@ import { List, Record, Stack } from 'immutable';
 
 import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../test/tests.base";
 
-import { IClassHasMetaImplements, ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco } from "./meta";
+import { IClassHasMetaImplements, ImplementsClass, ImplementsModel, ImplementsModels, ImplementsPoco, ImplementsPocos } from "./meta";
 import { manipulateModel, createModelFromPoco, createModelsFromPoco } from "./parser";
 
 @TestFixture
@@ -170,9 +170,16 @@ export class ModelParserTests extends TestRunnerBase {
         var userResponsePoco = JSON.parse(json);
         var expectedUserModel = List<UserModel>([new UserModel("Bob"),new UserModel("Sally")]);
         
-        var modifiedUserPoco = createModelsFromPoco<UserModel>(List, UserModel, userResponsePoco);
+        var modifiedUserPoco = createModelsFromPoco<List<UserModel>, UserModel>(List, UserModel, userResponsePoco);
         
         expect(modifiedUserPoco).toEqual(expectedUserModel);
+    }
+    @Test listOfPocos(){
+        var localStorageState = { aliases: ["Good Boy", "Bad Boy"] };
+        var expectedCorrectedState = new PetModel(null, List<string>(["Good Boy", "Bad Boy"]));
+        
+        var modifiedLocalStorageState = createModelFromPoco<PetModel>(PetModel, localStorageState);
+        expect(modifiedLocalStorageState).toEqual(expectedCorrectedState);
     }
 }
 
@@ -233,16 +240,19 @@ class UserModel extends UserModelRecord implements IUserModel, IClassHasMetaImpl
 }
 
 interface IPetModel{
-    name:string,
-    transform(name:string):PetModel,
-    bark():string
+    name:string;
+    transform(name:string):PetModel;
+    bark():string;
+    aliases:List<string>;
 }
 const PetModelRecord = Record(<IPetModel>{
-    name:<string>null
+    name:<string>null,
+    aliases:<List<string>>null
 })
 @ImplementsClass(PetModelRecord)
 class PetModel extends PetModelRecord implements IPetModel, IClassHasMetaImplements{
     @ImplementsPoco() public name:string;
+    @ImplementsPocos(List) public aliases:List<string>;
     public bark(){
         return this.name;
     }
@@ -251,9 +261,10 @@ class PetModel extends PetModelRecord implements IPetModel, IClassHasMetaImpleme
             map.set("name", name);
         });
     }
-    constructor(name:string=null){
+    constructor(name:string=null, aliases:List<string>=null){
         super({
-            name
+            name,
+            aliases
         })
     }
 }

@@ -88,6 +88,23 @@ export function ImplementsPoco() {
         args);
 }
 
+export function ImplementsPocos(iterableFunction: IterableFunction) {
+    return (...args: any[]) => getDecorator(
+        null,
+        (prototype: Function, propertyKey: string, descriptor?: TypedPropertyDescriptor<any>): void => {
+            // property
+        
+            var hasMetaImplements: IHasMetaImplements = prototype;
+            setMetaDataIfMissing(hasMetaImplements);
+            hasMetaImplements.__metaImplements.properties[propertyKey] = getIMetaImplementsProperty(null, true, iterableFunction);
+
+            return;
+        },
+        null,
+        null,
+        args);
+}
+
 function InternalImplementsModel(getClass: ClassConstructorGetter, iterableFunction: IterableFunction = null) {
     return (...args: any[]) => getDecorator(
         null,

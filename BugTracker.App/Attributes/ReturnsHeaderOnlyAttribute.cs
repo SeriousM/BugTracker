@@ -4,10 +4,10 @@
 namespace BugTracker.App.Attributes
 {
     /// <summary>
-    /// This attribute is used to annotate a controller method to return no value.
+    /// This attribute is used to annotate a controller method to return only header information.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public class ReturnsVoidAttribute : Attribute
+    public class ReturnsHeaderOnlyAttribute : Attribute
     {
     }
 }

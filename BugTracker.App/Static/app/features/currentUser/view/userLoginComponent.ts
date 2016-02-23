@@ -1,13 +1,12 @@
 import { Component, Inject } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
-import { WebService } from "../../../webservice/webService";
 
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 import { UserModel, RegisterUserModel } from '../../../models/models';
 
 @Component({
     selector: "user-login",
-    providers: [WebService],
+    // providers: [WebService],
     template: `
         <div>
             <form (ngSubmit)="login(input)">
@@ -18,7 +17,7 @@ import { UserModel, RegisterUserModel } from '../../../models/models';
 })
 
 export class UserLogin {
-    constructor(private appStore: AppStore, private webservice : WebService) {
+    constructor(private appStore: AppStore) {//, private webservice : WebService) {
     }
     
     login(input: HTMLInputElement) {
@@ -30,11 +29,11 @@ export class UserLogin {
         
         var model = new RegisterUserModel().setUsername(username);
         
-        this.webservice.registerIfUnknown(model).then(
-            model => {
-                this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(model));
-                input.value = '';
-            },
-            error => console.error("error", error));
+        // this.webservice.registerIfUnknown(model).then(
+        //     model => {
+        //         this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(model));
+        //         input.value = '';
+        //     },
+        //     error => console.error("error", error));
     }
 }

@@ -123,7 +123,7 @@ namespace BugTracker.App.Controllers
         // Body: [ { "name": "Bob" }, { "name": "Sally" } ]
         [ReturnsVoid]
         [HttpPost]
-        public HttpResponseMessage AddUsers([TypescriptIterableType(TypescriptIterable.OrderedMap)] List<UserModel> user)
+        public HttpResponseMessage AddUsers([TypescriptIterableType(TypescriptIterable.Stack)] List<UserModel> user)
         {
             // ... modifing user
 
@@ -141,7 +141,7 @@ namespace BugTracker.App.Controllers
         }
 
         // api/TypewriterTest/GetCreationDate
-        [ReturnsVoid]
+        [ReturnsHeaderOnly]
         [HttpHead]
         public HttpResponseMessage GetCreationDate()
         {
