@@ -10,7 +10,7 @@ using BugTracker.App.Models;
 
 namespace BugTracker.App.Controllers
 {
-    [RoutePrefix("/api/typewriter")]
+    [RoutePrefix("api/typewriter")]
     public class TypewriterTestController : ApiControllerBase
     {
         // api/TypewriterTest/GetSimpleStringMessage

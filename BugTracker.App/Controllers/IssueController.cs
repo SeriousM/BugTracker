@@ -14,7 +14,7 @@ using BugTracker.Shared.Command.Utils.Abstract;
 
 namespace BugTracker.App.Controllers
 {
-    [RoutePrefix("/api/issue")]
+    [RoutePrefix("api/issue")]
     public class IssueController : ApiControllerBase
     {
         private readonly ICommandRepository commandRepository;
