@@ -107,7 +107,7 @@ namespace BugTracker.Tests.App.Controllers
 
             // assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            List<Issue> issues;
+            List<IssueModel> issues;
             Assert.IsTrue(response.TryGetContentValue(out issues));
         }
     }

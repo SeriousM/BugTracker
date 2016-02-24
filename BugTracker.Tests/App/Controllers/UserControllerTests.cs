@@ -133,7 +133,7 @@ namespace BugTracker.Tests.App.Controllers
 
             // assert
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            User user;
+            UserModel user;
             Assert.IsTrue(response.TryGetContentValue(out user));
             Assert.AreEqual(id, user.Id);
         }
