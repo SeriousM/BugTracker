@@ -11,33 +11,33 @@
   "scripts": {
     "npm-install": "npm install",
     "pwd": "echo %cd%",
-    "tsc": "tsc | findstr /C:\"Static\/\"",
+    "tsc": "tsc | findstr /C:\"Static/\"",
     "tscw": "tsc -w",
     "typings": "typings install",
     "liveserver": "live-server --open=static --ignorePattern=\".*\\.(ts|map)\"",
     "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\""
   },
   "engines": {
-      "node" : ">=4.0.0",
-      "npm" : ">=2.14.2"
+    "node": ">=4.0.0",
+    "npm": ">=2.14.2"
   },
   "dependencies": {
-    "jquery": "2.2.0",
-    "bootstrap": "3.3.6",
     "angular2": "2.0.0-beta.6",
-    "systemjs": "0.19.20",
+    "angular2-redux-store": "1.2.0",
+    "bootstrap": "3.3.6",
+    "crypto": "0.0.3",
     "es6-promise": "3.0.2",
     "es6-shim": "0.33.3",
-    "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.0",
-    "zone.js": "0.5.14",
-    "redux": "3.3.1",
-    "redux-thunk": "1.0.3",
-    "angular2-redux-store": "1.2.0",
-    "redux-logger": "2.5.2",
     "immutable": "3.7.6",
+    "jquery": "2.2.0",
+    "redux": "3.3.1",
+    "redux-logger": "2.5.2",
+    "redux-thunk": "1.0.3",
+    "reflect-metadata": "0.1.2",
     "reselect": "2.0.3",
-    "crypto": "0.0.3"
+    "rxjs": "5.0.0-beta.0",
+    "systemjs": "0.19.20",
+    "zone.js": "0.5.14"
   },
   "devDependencies": {
     "concurrently": "1.0.0",
@@ -45,7 +45,8 @@
     "expect": "1.14.0",
     "live-server": "0.9.1",
     "normalize.css": "3.0.3",
-    "typescript": "1.7.5",
+    "systemjs-builder": "0.15.9",
+    "typescript": "1.8.2",
     "typings": "0.6.8"
   }
 }
