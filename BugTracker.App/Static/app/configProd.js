@@ -1,3 +1,3 @@
 appConfiguration = {    
-    apiBaseUrl: 'http://localhost:3564'    
+    apiBaseUrl: 'http://localhost:16449/'    
 }
