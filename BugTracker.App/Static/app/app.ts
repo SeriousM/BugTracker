@@ -3,6 +3,7 @@ import { HTTP_PROVIDERS, RequestOptions  } from 'angular2/http';
 import { bootstrap } from "angular2/platform/browser";
 import { DefaultRequestOptions } from "./services/service.base";
 import { AppStore, appStoreFactory } from "./store/appStore";
+import { AppConfiguration } from './config/config.base';
 
 import { CurrentUserState } from "./models/models";
 import { APP_WEBSERVICES } from "./services/services"
@@ -34,9 +35,12 @@ export class App {
     }
 }
 
+var appConfiguration = new AppConfiguration((<any>window).appConfiguration);
+
 bootstrap(App, [
     HTTP_PROVIDERS,
     APP_WEBSERVICES,
+    provide(AppConfiguration, { useValue: appConfiguration }),
     provide(RequestOptions, { useClass: DefaultRequestOptions }),
     provide(AppStore, { useFactory: appStoreFactory })
 ]);

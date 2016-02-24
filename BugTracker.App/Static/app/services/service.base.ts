@@ -1,6 +1,7 @@
 import { Iterable } from 'immutable';
 import { Injectable } from "angular2/core";
 import { Headers, BaseRequestOptions, RequestOptionsArgs, RequestOptions } from 'angular2/http';
+import { AppConfiguration } from '../config/config.base';
 
 export interface ITypedPromise<T> {
     then(success: (data: T) => void, failure?: (error: any) => void): ITypedPromise<T>;
@@ -25,12 +26,18 @@ export function stringifyBody(value: Iterable<any, any> | any): string {
 
 @Injectable()
 export class DefaultRequestOptions extends BaseRequestOptions {
+    
+    constructor (private config : AppConfiguration)
+    {   
+        super();   
+    }
+    
     headers = new Headers({
         'Content-Type': 'application/json'
     });
 
     merge(options?: RequestOptionsArgs): RequestOptions {
-        options.url = 'http://localhost:16449/' + options.url;
+        options.url = this.config.baseApiUrl + options.url;
         return super.merge(options);
     }
 }
