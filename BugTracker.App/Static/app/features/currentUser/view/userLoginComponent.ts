@@ -22,7 +22,7 @@ export class UserLogin {
     }
     
     login(input: HTMLInputElement) {
-        var username = input.value;
+        var username = input.value;        
         
         if (username == null || !username.length) {
             return;
