@@ -13,6 +13,7 @@ export class CurrentUserStoreReducersTests extends TestRunnerBase {
 
         var action = CurrentUserStoreActions.SetCurrentUser(new UserModel({ name: "Bob" }));
 
+        deepFreeze(beforeState);
         deepFreeze(action);
 
         expect(currentUserStoreReducer(beforeState, action)).toEqual(afterState);
