@@ -14,13 +14,22 @@ export function createModelsFromPoco<U extends Iterable<any, IMetaImplementsClas
     return model;
 }
 
-function createModelOrModels(propValue: any, propMeta: IMetaImplementsProperty) {
-    var propClass = <IClassHasMetaImplements>propMeta.getClassConstructor();
-    var propClassProto = <IHasMetaImplements>propClass.prototype;
+function createModelOrModels(propValue: any | any[], propMeta: IMetaImplementsProperty) {
+    if (propMeta.isPoco){
+        if (propMeta.isList) {
+            var newList = propMeta.iterableFunction(propValue);
+            return newList;
+        }
+        else{
+            return propValue;
+        }
+    }
+    
+    var propClassProto = propMeta.getClassConstructor().prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
     if (propMeta.isList) {
-        var newArray = (<any[]>propValue).map(currentArrayValue => {
+        var newArray = propValue.map((currentArrayValue: any) => {
             return createModel(currentArrayValue, propMeta);
         });
         var newList = propMeta.iterableFunction(newArray);
@@ -33,8 +42,7 @@ function createModelOrModels(propValue: any, propMeta: IMetaImplementsProperty) 
 }
 
 function createModel(propValue: any, propMeta: IMetaImplementsProperty) {
-    var propClass = <IClassHasMetaImplements>propMeta.getClassConstructor();
-    var propClassProto = <IHasMetaImplements>propClass.prototype;
+    var propClassProto = propMeta.getClassConstructor().prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
     
     // create for each property on the object a propper model if possible
@@ -63,10 +71,6 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
         var propMeta = <IMetaImplementsProperty>blueprintMeta.properties[currentProp];
         if (propMeta == null) {
             throw new Error(`Property '${currentProp}' was not found in the blueprint.`);
-        }
-
-        if (propMeta.isPoco) {
-            continue;
         }
 
         var currentPropValue = currentObject[currentProp];
