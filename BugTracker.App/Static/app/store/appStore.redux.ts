@@ -29,7 +29,7 @@ export function wrapMiddlewareWithRedux(...storeEnhancers: Function[]) {
     return storeEnhancers;
 }
 
-type ReducerFunction = (state: any, action: IAction<any>) => ReducerFunction;
+type ReducerFunction = (state: any, action: IAction) => ReducerFunction;
 
 function fixReduxDevToolsState(blueprintObject: IClassHasMetaImplements) { 
     return (next: Function) => (reducer: ReducerFunction, initialState: any, enhancer: any) => {
@@ -37,7 +37,7 @@ function fixReduxDevToolsState(blueprintObject: IClassHasMetaImplements) {
         const reduxInit: string = "@@redux/INIT";
         const reduxDevToolsInit: string = "@@INIT";
 
-        function newReducer(state: any, action: IAction<any>) {
+        function newReducer(state: any, action: IAction) {
             // reduxDevTools will send the init-action multiple times depending on the session setup and during session reset
             // therefore we need to correct the state as often as needed
             

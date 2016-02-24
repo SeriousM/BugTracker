@@ -1,4 +1,4 @@
-import { IAction } from "../../../store/appStore.base";
+import { IAction, createAction } from "../../../store/appStore.base";
 
 const actionPrefix = "USERS.";
 export class UserStoreActionTypes {
@@ -7,15 +7,15 @@ export class UserStoreActionTypes {
 }
 export class UserStoreActions {
     public static AddUser = (name: string): IAddUserAction => {
-        return { type: UserStoreActionTypes.ADD_USER, userName: name };
+        return createAction<IAddUserAction>(UserStoreActionTypes.ADD_USER, { userName: name });
     }
     public static RemoveUser = (indexOfUserToRemove: number): IRemoveUserAction => {
-        return { type: UserStoreActionTypes.REMOVE_USER, indexOfUserToRemove: indexOfUserToRemove };
+        return createAction<IRemoveUserAction>(UserStoreActionTypes.REMOVE_USER, { indexOfUserToRemove: indexOfUserToRemove });
     }
 }
-export interface IAddUserAction extends IAction<UserStoreActionTypes> {
-    userName: string;
+export interface IAddUserAction extends IAction {
+    payload: { userName: string };
 }
-export interface IRemoveUserAction extends IAction<UserStoreActionTypes> {
-    indexOfUserToRemove: number;
+export interface IRemoveUserAction extends IAction {
+    payload: { indexOfUserToRemove: number };
 }

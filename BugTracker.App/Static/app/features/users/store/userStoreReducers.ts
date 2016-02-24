@@ -5,15 +5,15 @@ import { AppState, UserModel } from "../../../models/models";
 import { UserStoreActionTypes, IAddUserAction, IRemoveUserAction } from "./userStoreActions";
 
 function addUser(state: List<UserModel>, action: IAddUserAction): List<UserModel> {
-    var newState = state.push(new UserModel().setName(action.userName))
+    var newState = state.push(new UserModel().setName(action.payload.userName))
     return newState;
 }
 function removeUser(state: List<UserModel>, action: IRemoveUserAction): List<UserModel> {
-    var newState = state.slice(0, action.indexOfUserToRemove).concat(state.slice(action.indexOfUserToRemove + 1)).toList();
+    var newState = state.slice(0, action.payload.indexOfUserToRemove).concat(state.slice(action.payload.indexOfUserToRemove + 1)).toList();
     return newState;
 }
 
-export function userStoreReducer(state: List<UserModel> = List<UserModel>(), action: IAction<UserStoreActionTypes>): List<UserModel> {
+export function userStoreReducer(state: List<UserModel> = List<UserModel>(), action: IAction): List<UserModel> {
     switch (action.type) {
         case UserStoreActionTypes.ADD_USER:
             return addUser(state, <IAddUserAction>action);

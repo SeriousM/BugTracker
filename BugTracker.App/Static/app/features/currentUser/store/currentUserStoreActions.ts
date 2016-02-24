@@ -1,4 +1,4 @@
-import { IAction } from "../../../store/appStore.base";
+import { IAction, createAction } from "../../../store/appStore.base";
 import { UserModel } from "../../../models/models";
 
 const actionPrefix = "CURRENT_USER.";
@@ -11,14 +11,14 @@ export class CurrentUserStoreActions {
         if (user == null) {
             user = <UserModel>{};
         }
-        return { type: CurrentUserStoreActionTypes.SET_CURRENT_USER, user: user };
+        return createAction<ISetCurrentUserAction>(CurrentUserStoreActionTypes.SET_CURRENT_USER, { user: user });
     }
-    public static RemoveCurrentUser = (): IAction<CurrentUserStoreActionTypes> => {
-        return { type: CurrentUserStoreActionTypes.REMOVE_CURRENT_USER };
+    public static RemoveCurrentUser = (): IRemoveCurrentUserAction => {
+        return createAction<IRemoveCurrentUserAction>(CurrentUserStoreActionTypes.REMOVE_CURRENT_USER);
     }
 }
-export interface ISetCurrentUserAction extends IAction<CurrentUserStoreActionTypes> {
-    user: UserModel;
+export interface ISetCurrentUserAction extends IAction {
+    payload: { user: UserModel };
 }
-export interface IRemoveCurrentUserAction extends IAction<CurrentUserStoreActionTypes> {
+export interface IRemoveCurrentUserAction extends IAction {
 }
