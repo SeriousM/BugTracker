@@ -1,6 +1,6 @@
 import { Iterable } from 'immutable';
 import { Injectable } from "angular2/core";
-import { Headers, BaseRequestOptions } from 'angular2/http';
+import { Headers, BaseRequestOptions, RequestOptionsArgs, RequestOptions } from 'angular2/http';
 
 export interface ITypedPromise<T> {
     then(success: (data: T) => void, failure?: (error: any) => void): ITypedPromise<T>;
@@ -28,4 +28,9 @@ export class DefaultRequestOptions extends BaseRequestOptions {
     headers = new Headers({
         'Content-Type': 'application/json'
     });
+
+    merge(options?: RequestOptionsArgs): RequestOptions {
+        options.url = 'http://localhost:16449/' + options.url;
+        return super.merge(options);
+    }
 }
