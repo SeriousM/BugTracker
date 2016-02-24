@@ -1,4 +1,5 @@
 System.config({
+    defaultJSExtensions: true,
     packages: {
         "appbuild": {
             defaultExtension: "js",
@@ -7,7 +8,9 @@ System.config({
         }
     },
     paths: {
-        "npm:*": "/node_modules/*"
+        "npm:*": "/node_modules/*",
+        'angular2/*': '../node_modules/angular2/*',
+        'rxjs/*': '../node_modules/rxjs/*'
     },
     map: {
         // add mappings only for packages which does not register themself with system.js (like angular2)
