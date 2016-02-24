@@ -10,6 +10,7 @@ System.config({
         "npm:*": "/node_modules/*"
     },
     map: {
+        // add mappings only for packages which does not register themself with system.js (like angular2)
         "immutable": "npm:immutable/dist/immutable.js",
         "redux": "npm:redux/dist/redux.js",
         "redux-logger": "npm:redux-logger/dist/index.js",
