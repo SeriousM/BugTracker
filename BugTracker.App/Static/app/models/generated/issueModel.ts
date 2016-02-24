@@ -65,7 +65,7 @@ export class IssueModel extends IssueModelRecord implements IIssueModel, ModelMe
     public setIsClosed(isClosed: boolean): IssueModel {
         return <IssueModel>this.set("isClosed", isClosed);
     }
-    constructor(initialObject?: IIssueModelUpdate = {}) {
+    constructor(initialObject: IIssueModelUpdate = {}) {
         super(initialObject);
     }
 }

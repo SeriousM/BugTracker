@@ -25,7 +25,7 @@ export class CurrentUserState extends CurrentUserStateRecord implements ICurrent
     public setUser(user: Models.UserModel): CurrentUserState {
         return <CurrentUserState>this.set("user", user);
     }
-    constructor(initialObject?: ICurrentUserStateUpdate = {}) {
+    constructor(initialObject: ICurrentUserStateUpdate = {}) {
         super(initialObject);
     }
 }
