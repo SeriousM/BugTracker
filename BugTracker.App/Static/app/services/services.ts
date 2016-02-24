@@ -1,11 +1,9 @@
 import { provide } from "angular2/core";
-import { IssueService } from './generated/issueController';
-import { UserService } from './generated/userController';
-import { TypewriterTestService } from './generated/typewriterTestController';
+import { IssueService } from './generated/issueService';
+import { UserService } from './generated/userService';
+import { TypewriterTestService } from './generated/typewriterTestService';
 
-export { IssueService } from './generated/issueController';
-export { UserService } from './generated/userController';
-export { TypewriterTestService } from './generated/typewriterTestController';
+export { IssueService, UserService, TypewriterTestService };
 
 export const APP_WEBSERVICES: any[] = [
     provide(IssueService, { useClass: IssueService }),
