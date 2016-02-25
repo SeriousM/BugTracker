@@ -8,14 +8,14 @@ export class IssueStoreActionTypes {
 }
 export class IssueStoreActions {
     public static AddIssue = (issueModel: IssueModel): IAddIssueAction => {
-        return createAction<IAddIssueAction>(IssueStoreActionTypes.ADD_ISSUE, issueModel);
+        return createAction<IAddIssueAction>(IssueStoreActionTypes.ADD_ISSUE, { issue: issueModel });
     }
     public static ChangeTitle = (title: string): IChangeTitleAction => {
         return createAction<IChangeTitleAction>(IssueStoreActionTypes.CHANGE_TITLE, { title: title });
     }
 }
 export interface IAddIssueAction extends IAction {
-    payload: IssueModel;
+    payload: { issue: IssueModel };
 }
 export interface IChangeTitleAction extends IAction {
     payload: { title: string };

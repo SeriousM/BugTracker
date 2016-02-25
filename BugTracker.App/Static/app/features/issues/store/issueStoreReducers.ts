@@ -5,7 +5,7 @@ import { AppState, IssueModel } from "../../../models/models";
 import { IssueStoreActionTypes, IAddIssueAction, IChangeTitleAction } from "./issueStoreActions";
 
 function addIssue(state: List<IssueModel>, action: IAddIssueAction): List<IssueModel> {
-    var newState = state.push(action.payload);
+    var newState = state.push(action.payload.issue);
     return newState;
 }
 function changeTitle(state: List<IssueModel>, action: IChangeTitleAction): List<IssueModel> {
