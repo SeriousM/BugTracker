@@ -16,6 +16,8 @@ namespace BugTracker.Data.Repositories
         public UserAccess(IMemoryDatabase database)
         {
             this.database = database;
+
+            this.CreateSampleUser();
         }
 
         public User GetById(Guid id)
@@ -55,6 +57,13 @@ namespace BugTracker.Data.Repositories
             this.database.Add(id, user);
 
             return user;
+        }
+
+        private void CreateSampleUser()
+        {
+            var id = new Guid("a64a7395-0a29-4847-837d-10bc291df6c8");
+            var user = new User { Name = "bob", Id = id };
+            this.database.Add(id, user);
         }
     }
 }

@@ -14,7 +14,7 @@ export class IssueStoreReducersTests extends TestRunnerBase {
         var afterState = List<IssueModel>()
             .push(new IssueModel({ title: "A Problem" }));
 
-        var action = IssueStoreActions.AddIssue("A Problem");
+        var action = IssueStoreActions.AddIssue(new IssueModel({ title: "A Problem" }));
 
         deepFreeze(beforeState);
         deepFreeze(action);
