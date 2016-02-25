@@ -124,6 +124,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
+    <Compile Include="App_Start\SampleData.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\ReturnsHeaderOnlyAttribute.cs" />
     <Compile Include="Attributes\ReturnsModelAttribute.cs" />

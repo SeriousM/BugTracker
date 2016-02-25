@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Net.Http;
 using System.Web.Http;
-
+using AutoMapper;
+using BugTracker.App;
+using BugTracker.App.Models;
+using BugTracker.Data.Entities;
 using BugTracker.Shared.Command.Abstract;
 using BugTracker.Shared.Command.Entities;
 using BugTracker.Shared.Command.Utils;
@@ -63,6 +66,8 @@ namespace BugTracker.Tests
             this.RegisterInstanceForDI<ILog>(this.Logger);
             this.RegisterInstanceForDI<ICommandExecutor>(this.CommandExecutor);
             this.RegisterInstanceForDI<ICommandFactory>(this.CommandFactory);
+
+            AutoMapperConfig.Initialize();
         }
 
         /// <summary>

@@ -2,6 +2,7 @@
 using System.Web.Http;
 using System.Web.Http.Cors;
 using BugTracker.Shared.Infrastructure;
+using Microsoft.Practices.ServiceLocation;
 using Newtonsoft.Json.Serialization;
 
 namespace BugTracker.App
@@ -23,6 +24,9 @@ namespace BugTracker.App
 
             WebApiConfig.Register(configuration);
             WebBootstrapper.Instance.Start(configuration);
+
+            AutoMapperConfig.Initialize();
+            ServiceLocator.Current.GetInstance<SampleData>().Seed();
         }
 
         protected void Session_Start(object sender, EventArgs e)
