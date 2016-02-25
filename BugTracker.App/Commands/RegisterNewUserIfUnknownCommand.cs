@@ -55,7 +55,10 @@ namespace BugTracker.App.Commands
             }
 
             registeredUser = this.userAccess.Add(usernameToRegister);
-            model = UserModel.FromUser(registeredUser);
+
+            model = AutoMapper.Mapper.Map<UserModel>(registeredUser);
+
+            //model = UserModel.FromUser(registeredUser);
 
             return this.SuccessExecution(model).ToTaskResult();
         }
