@@ -6,37 +6,62 @@ import { IssueModel } from "../../../models/models";
 
 import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
+import { IssueService } from "../../../services/services"
 
 @Component({
     selector: "issue-list",
     changeDetection: ChangeDetectionStrategy.Detached,
     directives: [Issue],
     template: `
-        <ul>
-            <li *ngFor="#issue of issues">
-                <issue [issue]="issue" (issueChanged)="issueChanged($event)"></issue>
-            </li>
-        </ul>
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Reported Date</th>
+                <th>Closed</th>
+            </tr>
+            <tr *ngFor="#issue of issues">
+                <td><button class="glyphicon glyphicon-edit"></button></td>
+                <td><button class="glyphicon glyphicon-trash"></button></td>
+                <td>{{ issue.title }}</td>
+                <td>{{ issue.content }}</td>
+                <td>{{ issue.reportDate }}</td>
+                <td>{{ issue.isClosed }}</td>
+            </tr>
+        </table>
     `
 })
 
 export class IssuesList implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
     private issues: List<IssueModel>;
-    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef) {
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService) {
     }
     onAppStoreUpdate() {
         this.issues = this.appStore.getState().issues;
         this.changeDetectorRef.markForCheck();
     }
-    ngOnInit(){
+    ngOnInit() {
         this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         this.onAppStoreUpdate();
+
+        this.loadIssues();
     }
+
+    private loadIssues() {
+       var currentUserId = this.appStore.getState().currentUser.user.id;
+
+        this.issueService.getAllByUser(currentUserId).then(
+            models => {
+                models.forEach(issue => this.appStore.dispatch(IssueStoreActions.AddIssue(issue)));
+            },
+            error => console.error("error", error));
+    }
+
     ngOnDestroy() {
         this.appStoreUnsubscribe();
     }
     issueChanged(issueModel: IssueModel) {
-        this.appStore.dispatch(IssueStoreActions.ChangeTitle(issueModel.title));   
+        this.appStore.dispatch(IssueStoreActions.ChangeTitle(issueModel.title));
     }
 }

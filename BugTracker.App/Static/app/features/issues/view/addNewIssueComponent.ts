@@ -26,7 +26,7 @@ export class AddNewIssue {
             return;
         }
 
-        this.appStore.dispatch(IssueStoreActions.AddIssue(title));
+        //this.appStore.dispatch(IssueStoreActions.AddIssue(title));
         input.value = '';
     }
 }
