@@ -1,6 +1,6 @@
 import { List } from 'immutable';
 
-import { Component, OnDestroy } from "angular2/core";
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../models/models";
 
@@ -9,6 +9,7 @@ import { IssueStoreActions } from "../store/issueStoreActions";
 
 @Component({
     selector: "issue-list",
+    changeDetection: ChangeDetectionStrategy.Detached,
     directives: [Issue],
     template: `
         <ul>
@@ -19,15 +20,18 @@ import { IssueStoreActions } from "../store/issueStoreActions";
     `
 })
 
-export class IssuesList implements OnDestroy {
+export class IssuesList implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
     private issues: List<IssueModel>;
-    constructor(private appStore: AppStore) {
-        this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
-        this.onAppStoreUpdate();
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef) {
     }
     onAppStoreUpdate() {
         this.issues = this.appStore.getState().issues;
+        this.changeDetectorRef.markForCheck();
+    }
+    ngOnInit(){
+        this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
+        this.onAppStoreUpdate();
     }
     ngOnDestroy() {
         this.appStoreUnsubscribe();

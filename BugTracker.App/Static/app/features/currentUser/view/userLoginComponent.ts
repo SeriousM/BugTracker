@@ -7,7 +7,6 @@ import { UserService } from '../../../services/services';
 
 @Component({
     selector: "user-login",
-    // providers: [WebService],
     template: `
         <div>
             <form (ngSubmit)="login(input)">
@@ -18,7 +17,7 @@ import { UserService } from '../../../services/services';
 })
 
 export class UserLogin {
-    constructor(private appStore: AppStore, private userService : UserService) {//, private webservice : WebService) {
+    constructor(private appStore: AppStore, private userService : UserService) {
     }
     
     login(input: HTMLInputElement) {

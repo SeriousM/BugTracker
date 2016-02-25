@@ -1,10 +1,11 @@
-import { Component } from "angular2/core";
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "angular2/core";
 import { AppStore } from "../../../store/appStore";
 
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 
 @Component({
     selector: "user-avatar",
+    changeDetection: ChangeDetectionStrategy.Detached,
     template: `
         <div>
             <p>Welcome {{appStore.getState().currentUser.user.name}}! <Button (click)="logout()">Logout</Button></p>
@@ -12,9 +13,19 @@ import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStor
     `
 })
 
-export class UserAvatar {
-    constructor(private appStore: AppStore) {
-
+export class UserAvatar implements OnInit, OnDestroy {
+    private appStoreUnsubscribe: Function;
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef) {
+    }
+    onAppStoreUpdate() {
+        this.changeDetectorRef.markForCheck();
+    }
+    ngOnInit(){
+        this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
+        this.onAppStoreUpdate();
+    }
+    ngOnDestroy() {
+        this.appStoreUnsubscribe();
     }
     logout() {
         this.appStore.dispatch(CurrentUserStoreActions.RemoveCurrentUser());
