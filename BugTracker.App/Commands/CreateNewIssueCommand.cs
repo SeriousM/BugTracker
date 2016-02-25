@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using AutoMapper;
 using BugTracker.App.Models;
 using BugTracker.Data.Repositories.Abstract;
 using BugTracker.Shared.Command.Abstract;
@@ -54,7 +54,7 @@ namespace BugTracker.App.Commands
         protected override Task<CommandResult<IssueModel>> ExecuteAsync()
         {
             var newIssue = this.issueAccess.Add(this.issueModel.UserId, this.issueModel.Title, this.issueModel.Content);
-            var model = IssueModel.FromIssue(newIssue);
+            var model = Mapper.Map<IssueModel>(newIssue);
             return this.SuccessExecution(model).ToTaskResult();
         }
     }

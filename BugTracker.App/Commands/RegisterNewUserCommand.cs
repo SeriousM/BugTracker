@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using AutoMapper;
 using BugTracker.App.Models;
 using BugTracker.Data.Repositories.Abstract;
 using BugTracker.Shared.Command.Abstract;
@@ -49,7 +49,7 @@ namespace BugTracker.App.Commands
             }
 
             var registeredUser = this.userAccess.Add(usernameToRegister);
-            var model = UserModel.FromUser(registeredUser);
+            var model = Mapper.Map<UserModel>(registeredUser);
 
             return this.SuccessExecution(model).ToTaskResult();
         }
