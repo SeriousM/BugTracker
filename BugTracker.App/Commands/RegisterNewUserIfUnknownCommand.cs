@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-
+using AutoMapper;
 using BugTracker.App.Models;
 using BugTracker.Data.Entities;
 using BugTracker.Data.Repositories.Abstract;
@@ -50,15 +50,13 @@ namespace BugTracker.App.Commands
             if (maybeExistingUser.HasValue)
             {
                 registeredUser = maybeExistingUser.Value;
-                model = UserModel.FromUser(registeredUser);
+                model = Mapper.Map<UserModel>(registeredUser);
                 return this.SuccessExecution(model).ToTaskResult();
             }
 
             registeredUser = this.userAccess.Add(usernameToRegister);
 
-            model = AutoMapper.Mapper.Map<UserModel>(registeredUser);
-
-            //model = UserModel.FromUser(registeredUser);
+            model = Mapper.Map<UserModel>(registeredUser);
 
             return this.SuccessExecution(model).ToTaskResult();
         }

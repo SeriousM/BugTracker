@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using BugTracker.Data.Entities;
 
 namespace BugTracker.App.Models
 {
@@ -13,19 +12,5 @@ namespace BugTracker.App.Models
         public string Content { get; set; }
         public DateTime ReportDate { get; set; }
         public bool IsClosed { get; set; }
-
-        public static IssueModel FromIssue(Issue issue)
-        {
-            var model = new IssueModel
-            {
-                Id = issue.Id,
-                Content = issue.Content,
-                IsClosed = issue.IsClosed,
-                ReportDate = issue.ReportDate,
-                Title = issue.Title,
-                UserId = issue.UserId
-            };
-            return model;
-        }
     }
 }

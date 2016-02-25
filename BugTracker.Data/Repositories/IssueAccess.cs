@@ -16,8 +16,6 @@ namespace BugTracker.Data.Repositories
         public IssueAccess(IMemoryDatabase database)
         {
             this.database = database;
-
-            this.CreateSampleIssues();
         }
 
         public Issue Add(Guid userId, string title, string content)
@@ -46,13 +44,6 @@ namespace BugTracker.Data.Repositories
                 .Select(pair => pair.Value).ToList();
 
             return issues;
-        }
-
-        private void CreateSampleIssues()
-        {
-            this.Add(new Guid("a64a7395-0a29-4847-837d-10bc291df6c8"), "Sample1", "This is the sample issue1");
-            this.Add(new Guid("a64a7395-0a29-4847-837d-10bc291df6c8"), "Sample2", "This is the sample issue2");
-            this.Add(new Guid("a64a7395-0a29-4847-837d-10bc291df6c8"), "Sample3", "This is the sample issue3");
         }
     }
 }
