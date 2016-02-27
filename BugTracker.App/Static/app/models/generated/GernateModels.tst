@@ -44,8 +44,7 @@
     {
         var t = getGroundlyingModelType(p.Type);
         var typescriptType = t.Name;
-        if (t.IsPrimitive) { return typescriptType; }
-        typescriptType = "Models." + typescriptType;
+        if (!t.IsPrimitive) { typescriptType = "Models." + typescriptType; }
         if (p.Type.IsEnumerable) { typescriptType = getListType(p) + "<" + typescriptType + ">"; }
         return typescriptType;
     }
@@ -54,7 +53,14 @@
     {
         if (property.Type.IsPrimitive)
         {
-            return "@ModelMeta.ImplementsPoco()";
+            if (property.Type.IsEnumerable)
+            {
+                return "@ModelMeta.ImplementsPocos("+getListType(property)+")";
+            }
+            else
+            {
+                return "@ModelMeta.ImplementsPoco()";
+            }
         }
         else
         {
@@ -129,18 +135,22 @@ const $getRecordClassName = Immutable.Record(<I$Name>{
 });
 
 @ModelMeta.ImplementsClass($getRecordClassName)
-export class $Name extends $getRecordClassName implements $getIModelName, ModelMeta.IClassHasMetaImplements {
-    $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
+export class $Name implements $getIModelName, ModelMeta.IClassHasMetaImplements {
+    private _record: Immutable.Map<string, any>;
+    $Properties(p => p.HasSetter)[$getImplementType public get $name(): $getModelTypeRepresentation {
+        return this._record.get('$name');
+    }][
     ]
     public updateFromModel(updateObject: $getIModelUpdateName): $Name {
-        return <$Name>this.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+        var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+        return new $Name(newRecord);
     }
     $Properties(p => p.HasSetter)[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
-        return <$getParentClassName>this.set("$name", $name);
+        return new $getParentClassName(this._record.set('$name', $name));
     }$isNonPrimitiveList[
     public add$singularPascalCase($singularCamelCase: $getModelName): $getParentClassName {
         var newSet = this.$name.concat($singularCamelCase);
-        return <$getParentClassName>this.set$Name(newSet.to$getRawListType());
+        return new $getParentClassName(this._record.set('$name', newSet.to$getRawListType()));
     }$hasKeyedPropertiesFromModel[
     public remove$singularPascalCase($getKeysParameterFromModel): $getParentClassName {
         var index = this.$name.findIndex(item => $getKeysQueryFromModel);
@@ -148,10 +158,27 @@ export class $Name extends $getRecordClassName implements $getIModelName, ModelM
             return this;
         }
         var newSet = this.$name.remove(index);
-        return <$getParentClassName>this.set$Name(newSet.to$getRawListType());
+        return new $getParentClassName(this._record.set("$name", newSet.to$getRawListType()));
     }]]][
     ]
-    constructor(initialObject: $getIModelUpdateName = {}) {
-        super(initialObject);
+    
+    constructor(initialObject?: $getIModelUpdateName) {
+        if (initialObject === null || initialObject === void 0) {
+            initialObject = {};
+        }
+        else {
+            if (initialObject instanceof $getRecordClassName) {
+                ModelBase.extendModelWithRecord(this, initialObject);
+                return;
+            }
+            if (!ModelBase.isPlainObject(initialObject)) {
+                ModelBase.riseModelInitializationWithNonPlainObjectError('$Name');
+            }
+        }
+        ModelBase.extendModelWithRecord(this, initialObject, $getRecordClassName);
     }
+
+    $Properties(p => p.HasSetter)[/** Getter of the property. Setting this property will throw an error because the model is immutable. Use set$Name(...) instead. */
+    public set $name(value: $getModelTypeRepresentation) { ModelBase.riseImmutableModelError('$getParentClassName', '$name', 'set$Name'); }][
+    ]
 }]

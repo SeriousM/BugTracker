@@ -2,6 +2,7 @@ import { Iterable } from 'immutable';
 import { Injectable } from "angular2/core";
 import { Headers, BaseRequestOptions, RequestOptionsArgs, RequestOptions } from 'angular2/http';
 import { AppConfiguration } from '../config/config.base';
+import { IModelWithRecord } from '../utils/model/meta';
 
 export interface ITypedPromise<T> {
     then(success: (data: T) => void, failure?: (error: any) => void): ITypedPromise<T>;
@@ -15,10 +16,13 @@ export interface IPromise {
     finally(always: () => void): IPromise;
 }
 
-export function stringifyBody(value: Iterable<any, any> | any): string {
+export function stringifyBody(value: Iterable<any, any> | IModelWithRecord | any): string {
     if (value == null) return null;
     if (Iterable.isIterable(value)) {
         value = (<Iterable<any, any>>value).toJS()
+    }
+    else if ((<IModelWithRecord>value)._record !== void 0) {
+        value = (<IModelWithRecord>value)._record.toJS()
     }
     var stringified = JSON.stringify(value);
     return stringified;
