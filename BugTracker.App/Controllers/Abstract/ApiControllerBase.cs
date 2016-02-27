@@ -12,7 +12,7 @@ namespace BugTracker.App.Controllers.Abstract
         protected HttpResponseMessage CreateErrorResponse(string message, HttpStatusCode httpStatusCode)
         {
             var httpError = new HttpError(message);
-            var errorResponse = this.Request.CreateResponse(httpStatusCode, httpError);
+            var errorResponse = this.Request.CreateErrorResponse(httpStatusCode, httpError);
             return errorResponse;
         }
 
