@@ -3,7 +3,7 @@ import {RouteParams} from 'angular2/router';
 import {NgForm, Control, ControlGroup, FormBuilder, Validators } from 'angular2/common';
 
 import { AppStore } from "../../../store/appStore";
-import { IssueModel } from "../../../models/models";
+import { IssueModel, IIssueModelUpdate } from "../../../models/models";
 
 @Component(
     {
@@ -13,7 +13,7 @@ import { IssueModel } from "../../../models/models";
             <form (ngSubmit)="onSubmit()" [ngFormModel]="issueForm">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input required type="title" class="form-control" id="title" [ngModel]="issue.title" ngControl="title"  #title="ngForm">
+                    <input required type="title" class="form-control" id="title" [(ngModel)]="editModel.title" ngControl="title"  #title="ngForm">
                 </div>
                 
                 <div [hidden]="title.control.valid" class="alert alert-danger">
@@ -22,7 +22,7 @@ import { IssueModel } from "../../../models/models";
                 
                 <div class="form-group">
                     <label for="content">Content</label>
-                    <textarea class="form-control" rows="5" id="content" [ngModel]="issue.content" ngControl="content" #content="ngForm"></textarea>
+                    <textarea class="form-control" rows="5" id="content" [(ngModel)]="editModel.content" ngControl="content" #content="ngForm"></textarea>
                 </div>
                 <div [hidden]="!content.control.hasError('startWithPlatos')" class="alert alert-danger">
                     Content must start with 'Platos'
@@ -40,16 +40,17 @@ import { IssueModel } from "../../../models/models";
 
 export class EditIussue implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
+    private editModel: IIssueModelUpdate;
     @Input() issue = new IssueModel({ title: "Test1", content: "Testcontent 1" });
     @Input() simpleModel = new SimpleModel("Test1", "Test Content 1");
     issueForm: ControlGroup;
-    
+
     constructor(private appStore: AppStore, private fb: FormBuilder, private changeDetectorRef: ChangeDetectorRef /*, private routeParams: RouteParams*/) {
-        
-         this.issueForm = fb.group({
-             'title': ['', Validators.required],
-             'content':  ['', CustomValidators.startWithPlatos]  
-         }); 
+
+        this.issueForm = fb.group({
+            'title': ['', Validators.required],
+            'content': ['', CustomValidators.startWithPlatos]
+        }); 
     
         /*this.issue.
         this.issue.setTitle("");
@@ -71,6 +72,7 @@ export class EditIussue implements OnInit, OnDestroy {
         }*/
     }
     ngOnInit() {
+        this.editModel = <IIssueModelUpdate> this.issue.toJS();
         // this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         // this.onAppStoreUpdate();
     }
@@ -86,16 +88,15 @@ export class EditIussue implements OnInit, OnDestroy {
         
         // change route to issues list
         
-        console.log("Changed object: " + this.issue);
+        console.log("Changed object: ", new IssueModel(this.editModel));
     }
 }
 
 export class SimpleModel {
     title: string;
     content: string;
-    
-    constructor (title: string, content: string)
-    {
+
+    constructor(title: string, content: string) {
         this.title = title;
         this.content = content;
     }
@@ -103,12 +104,12 @@ export class SimpleModel {
 
 
 
-export class CustomValidators {  
-  static startWithPlatos(c: Control): ValidationResult  {  
-    return !c.value.match(/^Platos/) ? {"startWithPlatos": true} : null;  
-  }
+export class CustomValidators {
+    static startWithPlatos(c: Control): ValidationResult {
+        return !c.value.match(/^Platos/) ? { "startWithPlatos": true } : null;
+    }
 }
 
 interface ValidationResult {
- [key:string]:boolean;
+    [key: string]: boolean;
 }
