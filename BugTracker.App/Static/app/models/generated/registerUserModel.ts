@@ -17,15 +17,35 @@ const RegisterUserModelRecord = Immutable.Record(<IRegisterUserModel>{
 });
 
 @ModelMeta.ImplementsClass(RegisterUserModelRecord)
-export class RegisterUserModel extends RegisterUserModelRecord implements IRegisterUserModel, ModelMeta.IClassHasMetaImplements {
-    @ModelMeta.ImplementsPoco() public username: string;
+export class RegisterUserModel implements IRegisterUserModel, ModelMeta.IClassHasMetaImplements {
+    private _record: Immutable.Map<string, any>;
+    @ModelMeta.ImplementsPoco() public get username(): string {
+        return this._record.get('username');
+    }
     public updateFromModel(updateObject: IRegisterUserModelUpdate): RegisterUserModel {
-        return <RegisterUserModel>this.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+        var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+        return new RegisterUserModel(newRecord);
     }
     public setUsername(username: string): RegisterUserModel {
-        return <RegisterUserModel>this.set("username", username);
+        return new RegisterUserModel(this._record.set('username', username));
     }
-    constructor(initialObject: IRegisterUserModelUpdate = {}) {
-        super(initialObject);
+    
+    constructor(initialObject?: IRegisterUserModelUpdate) {
+        if (initialObject === null || initialObject === void 0) {
+            initialObject = {};
+        }
+        else {
+            if (initialObject instanceof RegisterUserModelRecord) {
+                ModelBase.extendModelWithRecord(this, initialObject);
+                return;
+            }
+            if (!ModelBase.isPlainObject(initialObject)) {
+                ModelBase.riseModelInitializationWithNonPlainObjectError('RegisterUserModel');
+            }
+        }
+        ModelBase.extendModelWithRecord(this, initialObject, RegisterUserModelRecord);
     }
+
+    /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setUsername(...) instead. */
+    public set username(value: string) { ModelBase.riseImmutableModelError('RegisterUserModel', 'username', 'setUsername'); }
 }

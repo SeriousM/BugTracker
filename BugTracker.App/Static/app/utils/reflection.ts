@@ -48,3 +48,38 @@ export function getVariableName<TResult>(name: () => TResult) {
     if (m == null) throw new Error("The function does not contain a statement matching 'return variableName;'");
     return m[1];
 }
+
+export function isArray(arr: any) {
+    return toString.call(arr) == '[object Array]';
+};
+
+export function isObject(obj: any) {
+    return obj != null && typeof obj === 'object' && !isArray(obj);
+};
+
+export function isObjectObject(obj: any) {
+    return isObject(obj) === true
+        && Object.prototype.toString.call(obj) === '[object Object]';
+}
+
+export function isPlainObject(obj: any) {
+    var ctor: any, prot: any;
+
+    if (isObjectObject(obj) === false) return false;
+  
+    // If has modified constructor
+    ctor = obj.constructor;
+    if (typeof ctor !== 'function') return false;
+  
+    // If has modified prototype
+    prot = ctor.prototype;
+    if (isObjectObject(prot) === false) return false;
+  
+    // If constructor does not have an Object-specific method
+    if (prot.hasOwnProperty('isPrototypeOf') === false) {
+        return false;
+    }
+  
+    // Most likely a plain Object
+    return true;
+};

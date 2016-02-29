@@ -1,20 +1,20 @@
 import { Iterable, Record } from 'immutable';
-import { IClassHasMetaImplements, IHasMetaImplements, IMetaImplements, IMetaImplementsClassConstructor, IMetaImplementsProperty, IterableFunction, ClassConstructorGetter, getIMetaImplementsProperty } from "./meta";
+import * as Meta from "./meta";
 import { IObjectIndex } from "../reflection";
 
-export function createModelFromPoco<T extends IMetaImplementsClassConstructor>(blueprintConstructor: IMetaImplementsClassConstructor, currentObject: Object): T {
-    var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, null);
+export function createModelFromPoco<T extends Meta.IMetaImplementsClassConstructor>(blueprintConstructor: Meta.IMetaImplementsClassConstructor, currentObject: Object): T {
+    var propMeta = Meta.getIMetaImplementsProperty(() => blueprintConstructor, false, null);
     var model = createModelOrModels(currentObject, propMeta);
     return model;
 }
 
-export function createModelsFromPoco<U extends Iterable<any, IMetaImplementsClassConstructor>, T extends IMetaImplementsClassConstructor>(iterableFunction: IterableFunction, blueprintConstructor: IMetaImplementsClassConstructor, currentArray: Object[]): U {
-    var propMeta = getIMetaImplementsProperty(() => blueprintConstructor, false, iterableFunction);
+export function createModelsFromPoco<U extends Iterable<any, Meta.IMetaImplementsClassConstructor>, T extends Meta.IMetaImplementsClassConstructor>(iterableFunction: Meta.IterableFunction, blueprintConstructor: Meta.IMetaImplementsClassConstructor, currentArray: Object[]): U {
+    var propMeta = Meta.getIMetaImplementsProperty(() => blueprintConstructor, false, iterableFunction);
     var model = createModelOrModels(currentArray, propMeta);
     return model;
 }
 
-function createModelOrModels(propValue: any | any[], propMeta: IMetaImplementsProperty) {
+function createModelOrModels(propValue: any | any[], propMeta: Meta.IMetaImplementsProperty) {
     if (propMeta.isPoco){
         if (propMeta.isList) {
             var newList = propMeta.iterableFunction(propValue);
@@ -41,7 +41,7 @@ function createModelOrModels(propValue: any | any[], propMeta: IMetaImplementsPr
     }
 }
 
-function createModel(propValue: any, propMeta: IMetaImplementsProperty) {
+function createModel(propValue: any, propMeta: Meta.IMetaImplementsProperty) {
     var propClassProto = propMeta.getClassConstructor().prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
     
@@ -51,14 +51,14 @@ function createModel(propValue: any, propMeta: IMetaImplementsProperty) {
     // create an instance of the target model
     var model = Object.create(propClassProto);
     // run the record-method on the model to populate it with the existing values from the poco
-    propRecord.call(model, propValue);
-
+    Meta.extendModelWithRecord(model, propValue, propRecord);
+    
     return model;
 }
 
-export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: IClassHasMetaImplements): void {
+export function manipulateModel(currentObject: IObjectIndex, blueprintConstructor: Meta.IClassHasMetaImplements): void {
 
-    var blueprintMeta: IMetaImplements = blueprintConstructor.prototype.__metaImplements;
+    var blueprintMeta: Meta.IMetaImplements = blueprintConstructor.prototype.__metaImplements;
 
     if (blueprintMeta == null) {
         return;
@@ -68,7 +68,7 @@ export function manipulateModel(currentObject: IObjectIndex, blueprintConstructo
     for (var index = 0; index < currentProps.length; index++) {
         var currentProp = currentProps[index];
 
-        var propMeta = <IMetaImplementsProperty>blueprintMeta.properties[currentProp];
+        var propMeta = <Meta.IMetaImplementsProperty>blueprintMeta.properties[currentProp];
         if (propMeta == null) {
             throw new Error(`Property '${currentProp}' was not found in the blueprint.`);
         }

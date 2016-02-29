@@ -17,15 +17,35 @@ const CurrentUserStateRecord = Immutable.Record(<ICurrentUserState>{
 });
 
 @ModelMeta.ImplementsClass(CurrentUserStateRecord)
-export class CurrentUserState extends CurrentUserStateRecord implements ICurrentUserState, ModelMeta.IClassHasMetaImplements {
-    @ModelMeta.ImplementsModel(() => Models.UserModel) public user: Models.UserModel;
+export class CurrentUserState implements ICurrentUserState, ModelMeta.IClassHasMetaImplements {
+    private _record: Immutable.Map<string, any>;
+    @ModelMeta.ImplementsModel(() => Models.UserModel) public get user(): Models.UserModel {
+        return this._record.get('user');
+    }
     public updateFromModel(updateObject: ICurrentUserStateUpdate): CurrentUserState {
-        return <CurrentUserState>this.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+        var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
+        return new CurrentUserState(newRecord);
     }
     public setUser(user: Models.UserModel): CurrentUserState {
-        return <CurrentUserState>this.set("user", user);
+        return new CurrentUserState(this._record.set('user', user));
     }
-    constructor(initialObject: ICurrentUserStateUpdate = {}) {
-        super(initialObject);
+    
+    constructor(initialObject?: ICurrentUserStateUpdate) {
+        if (initialObject === null || initialObject === void 0) {
+            initialObject = {};
+        }
+        else {
+            if (initialObject instanceof CurrentUserStateRecord) {
+                ModelBase.extendModelWithRecord(this, initialObject);
+                return;
+            }
+            if (!ModelBase.isPlainObject(initialObject)) {
+                ModelBase.riseModelInitializationWithNonPlainObjectError('CurrentUserState');
+            }
+        }
+        ModelBase.extendModelWithRecord(this, initialObject, CurrentUserStateRecord);
     }
+
+    /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setUser(...) instead. */
+    public set user(value: Models.UserModel) { ModelBase.riseImmutableModelError('CurrentUserState', 'user', 'setUser'); }
 }
