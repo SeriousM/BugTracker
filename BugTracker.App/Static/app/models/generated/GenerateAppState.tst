@@ -43,8 +43,7 @@
     {
         var t = getGroundlyingModelType(p.Type);
         var typescriptType = t.Name;
-        if (t.IsPrimitive) { return typescriptType; }
-        typescriptType = "Models." + typescriptType;
+        if (!t.IsPrimitive) { typescriptType = "Models." + typescriptType; }
         if (p.Type.IsEnumerable) { typescriptType = getListType(p) + "<" + typescriptType + ">"; }
         return typescriptType;
     }
@@ -54,7 +53,14 @@
     {
         if (property.Type.IsPrimitive)
         {
-            return "@ModelMeta.ImplementsPoco()";
+            if (property.Type.IsEnumerable)
+            {
+                return "@ModelMeta.ImplementsPocos("+getListType(property)+")";
+            }
+            else
+            {
+                return "@ModelMeta.ImplementsPoco()";
+            }
         }
         else
         {

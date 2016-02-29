@@ -1,4 +1,4 @@
-import { Iterable } from 'immutable';
+import { Iterable, Map, Record } from 'immutable';
 import { getDecorator, ITypedObjectIndex } from '../reflection';
 
 export interface IClassHasMetaImplements {
@@ -123,4 +123,21 @@ function InternalImplementsModel(getClass: ClassConstructorGetter, iterableFunct
             // parameter
             return;
         }, args);
+}
+
+export interface IModelWithRecord {
+    _record: Map<string, any>;
+}
+
+export function extendModelWithRecord(model: any, initialObject: any, recordConstructor?: Record.Class) {
+    if (model._record !== void 0) {
+        throw new Error("The model is already extended with record.");
+    }
+    var record = recordConstructor ? new recordConstructor(initialObject) : initialObject;
+    Object.defineProperties(model, {
+        "_record": {
+            value: record,
+            writable: false
+        }
+    })
 }
