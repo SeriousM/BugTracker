@@ -26,6 +26,9 @@ export class RegisterUserModel implements IRegisterUserModel, ModelMeta.IClassHa
         var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
         return new RegisterUserModel(newRecord);
     }
+    public getIRegisterUserModelUpdateObject(): IRegisterUserModelUpdate {
+        return <IRegisterUserModelUpdate> this._record.toJS();
+    }
     public setUsername(username: string): RegisterUserModel {
         return new RegisterUserModel(this._record.set('username', username));
     }

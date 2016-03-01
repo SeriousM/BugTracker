@@ -33,6 +33,9 @@ export class UserModel implements IUserModel, ModelMeta.IClassHasMetaImplements 
         var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
         return new UserModel(newRecord);
     }
+    public getIUserModelUpdateObject(): IUserModelUpdate {
+        return <IUserModelUpdate> this._record.toJS();
+    }
     public setId(id: string): UserModel {
         return new UserModel(this._record.set('id', id));
     }
