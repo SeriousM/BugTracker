@@ -14,7 +14,7 @@
     "tsc": "tsc | findstr /C:\"Static/\"",
     "tscw": "tsc -w",
     "typings": "typings install",
-    "liveserver": "live-server --open=static --ignorePattern=\".*\\.(ts|map)\"",
+    "liveserver": "live-server --open=static --entry-file=\"static/index.html\" --ignorePattern=\".*\\.(ts|map)\"",
     "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\""
   },
   "engines": {

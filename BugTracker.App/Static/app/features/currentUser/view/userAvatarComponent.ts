@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "angular2/core";
+import { Router } from "angular2/router";
 import { AppStore } from "../../../store/appStore";
 
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
@@ -15,7 +16,7 @@ import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStor
 
 export class UserAvatar implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
-    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef) {
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private router : Router) {
     }
     onAppStoreUpdate() {
         this.changeDetectorRef.markForCheck();
@@ -29,5 +30,6 @@ export class UserAvatar implements OnInit, OnDestroy {
     }
     logout() {
         this.appStore.dispatch(CurrentUserStoreActions.RemoveCurrentUser());
+        this.router.navigate(['Login']);
     }
 }

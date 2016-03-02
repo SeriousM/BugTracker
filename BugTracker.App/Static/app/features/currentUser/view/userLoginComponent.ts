@@ -1,6 +1,7 @@
 import { Component, Inject } from "angular2/core";
-import { AppStore } from "../../../store/appStore";
+import { Router } from "angular2/router";
 
+import { AppStore } from "../../../store/appStore";
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 import { UserModel, RegisterUserModel } from '../../../models/models';
 import { UserService } from '../../../services/services';
@@ -17,7 +18,7 @@ import { UserService } from '../../../services/services';
 })
 
 export class UserLogin {
-    constructor(private appStore: AppStore, private userService : UserService) {
+    constructor(private appStore: AppStore, private userService : UserService, private router : Router) {
     }
     
     login(input: HTMLInputElement) {
@@ -28,12 +29,11 @@ export class UserLogin {
         }
         
         var model = new RegisterUserModel().setUsername(username);
-        
-        
+               
         this.userService.registerIfUnknown(model).then(
             model => {
                 this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(model));
-                input.value = '';
+                this.router.navigate(['Issues']);
             },
             error => console.error("error", error));
     }
