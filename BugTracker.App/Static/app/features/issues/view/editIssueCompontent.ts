@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit} from "angular2/core";
-import { RouteParams } from 'angular2/router';
+import { Router, RouteParams } from 'angular2/router';
 import { NgForm, Control, ControlGroup, FormBuilder, Validators } from 'angular2/common';
 
 import { AppStore } from "../../../store/appStore";
@@ -18,8 +18,11 @@ import { IssueStoreActions } from "../store/issueStoreActions";
                     <input type="title" class="form-control" id="title" [(ngModel)]="editModel.title" ngControl="title"  #title="ngForm">
                 </div>
                 
-                <div [hidden]="title.control.valid" class="alert alert-danger">
+                <div [hidden]="!title.control.hasError('required')" class="alert alert-danger">
                     Title is required
+                </div> 
+                 <div [hidden]="!title.control.hasError('startsWithoutNumber')" class="alert alert-danger">
+                    Title should not start with a number
                 </div> 
                 
                 <div class="form-group">
@@ -28,77 +31,89 @@ import { IssueStoreActions } from "../store/issueStoreActions";
                 </div>
                 <div [hidden]="!content.control.hasError('startWithUpperCase')" class="alert alert-danger">
                     Content must start with upper case
-                </div>                 
+                </div>      
+                           
                 <button type="submit" class="btn btn-default" [disabled]="!issueForm.form.valid">Save</button>
             </form>
         `
     })
 
 
-export class EditIussue implements OnInit, OnDestroy {
+export class EditIussue {
 
     private appStoreUnsubscribe: Function;
     private editModel: IIssueModelUpdate;
+    private issueModel: IssueModel;
     private issueFormModel: ControlGroup;
     private isNewItem: boolean;
 
-    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private routeParams: RouteParams) {
+    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router : Router, private routeParams: RouteParams) {
 
+        this.setInputModel();
+        this.setFormValidation();
+    }
+
+    private setInputModel ()
+    {
         var issueId = this.routeParams.get('id')
         if (issueId != null) {
-            this.editModel = this.appStore.getState().issues.find(x => x.id == issueId).getUpdateModel();
-            this.editModel.userId = this.appStore.getState().currentUser.user.id;
+            this.issueModel = this.appStore.getState().issues.find(x => x.id == issueId);
+            if (this.issueModel == null) {
+                console.error("Could not find issues with the id '" + issueId + "' in the AppStore.");
+                return;
+            }
+
+            this.editModel = this.issueModel.getUpdateModel();
             this.isNewItem = false;
         }
         else {
             this.isNewItem = true;
         }
-
-        this.setFormValidation();
     }
 
     private setFormValidation() {
         this.issueFormModel = this.formBuilder.group({
-            'title': ['', Validators.required],
+            'title': ['', Validators.compose([Validators.required, CustomValidators.startsWithoutNumber])],
             'content': ['', CustomValidators.startWithUpperCase]
         });
     }
 
     private saveChanges() {
-
-        var issueModel = new IssueModel(this.editModel);
+        var newIssuesModel = new IssueModel(this.editModel);
         
         // call webApi
         if (this.isNewItem) {
-            this.issueService.create(issueModel).then(
-                model => { this.appStore.dispatch(IssueStoreActions.AddIssue); },
-                error => { console.error("Could not create new issue", error); }
-            );
+            // set userId
+            this.editModel.userId = this.appStore.getState().currentUser.user.id;
+            
+            // create the issues 
+            this.issueService.create(newIssuesModel).then(
+                model => { 
+                    console.log("Add Issue to Store");
+                    // store dispatch
+                    this.appStore.dispatch(IssueStoreActions.AddIssue(newIssuesModel));
+                    this.router.navigate(['Issues']);
+                 },
+                error => {
+                     console.error("Could not create new issue", error);
+                });
         }
-        else {
-
+        else {           
+             
+            // update the issues 
+            this.issueService.update(newIssuesModel).then(
+                () => { 
+                    console.log("Update Issue in Store");
+                    // store dispatch
+                    this.appStore.dispatch(IssueStoreActions.UpdateIssue(newIssuesModel));
+                    this.router.navigate(['Issues']);
+                 },
+                error => { 
+                    console.error("Could not update the issue", error); 
+                });
         }
-        // store dispatch
         
-        // change route to issues list
-                
+        // change route to issues list                
         console.log("Changed object: ", new IssueModel(this.editModel));
-    }
-
-    public onAppStoreUpdate() {
-        /*this.issue = this.appStore.getState().issues.first();
-        if (this.issue != null) {
-            console.log("TITEL: " + this.issue.title);
-            this.changeDetectorRef.markForCheck();
-        }*/
-    }
-    public ngOnInit() {
-        //this.editModel = <IIssueModelUpdate> this.issue.toJS();
-        // this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
-        // this.onAppStoreUpdate();
-    }
-
-    public ngOnDestroy() {
-        // this.appStoreUnsubscribe();
     }
 }

@@ -2,9 +2,9 @@ import { Control } from 'angular2/common';
 
 export class CustomValidators {
     
-    static startsWithNumber(control: Control): ValidationResult {
+    static startsWithoutNumber(control: Control): ValidationResult {
         if (control.value !="" && !isNaN(control.value.charAt(0)) ){
-            return { "startsWithNumber": true };
+            return { "startsWithoutNumber": true };
         }
         return null;
     }
