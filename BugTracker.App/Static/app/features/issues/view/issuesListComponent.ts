@@ -1,6 +1,8 @@
 import { List } from 'immutable';
 
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "angular2/core";
+import { Router } from "angular2/router";
+
 import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../models/models";
 
@@ -21,7 +23,7 @@ import { IssueService } from "../../../services/services"
                 <th>Closed</th>
             </tr>
             <tr *ngFor="#issue of issues">
-                <td><button class="glyphicon glyphicon-edit"></button></td>
+                <td><button class="glyphicon glyphicon-edit" (click)="editIssue(issue.id)"></button></td>
                 <td><button class="glyphicon glyphicon-trash"></button></td>
                 <td>{{ issue.title }}</td>
                 <td>{{ issue.content }}</td>
@@ -35,17 +37,25 @@ import { IssueService } from "../../../services/services"
 export class IssuesList implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
     private issues: List<IssueModel>;
-    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService) {
+    
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService, private router : Router) {
     }
+    
     onAppStoreUpdate() {
         this.issues = this.appStore.getState().issues;
-        this.changeDetectorRef.markForCheck();
+        this.changeDetectorRef.markForCheck();        
     }
+    
     ngOnInit() {
         this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         this.onAppStoreUpdate();
 
         this.loadIssues();
+    }
+    
+    private editIssue (issueId : string)
+    {
+        this.router.navigate(['EditIssues', {id: issueId}]);       
     }
 
     private loadIssues() {
@@ -61,6 +71,7 @@ export class IssuesList implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.appStoreUnsubscribe();
     }
+    
     issueChanged(issueModel: IssueModel) {
         this.appStore.dispatch(IssueStoreActions.ChangeTitle(issueModel.title));
     }
