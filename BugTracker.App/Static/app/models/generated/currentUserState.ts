@@ -26,7 +26,7 @@ export class CurrentUserState implements ICurrentUserState, ModelMeta.IClassHasM
         var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
         return new CurrentUserState(newRecord);
     }
-    public getICurrentUserStateUpdateObject(): ICurrentUserStateUpdate {
+    public getUpdateModel(): ICurrentUserStateUpdate {
         return <ICurrentUserStateUpdate> this._record.toJS();
     }
     public setUser(user: Models.UserModel): CurrentUserState {

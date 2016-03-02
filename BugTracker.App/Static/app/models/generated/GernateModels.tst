@@ -146,7 +146,7 @@ export class $Name implements $getIModelName, ModelMeta.IClassHasMetaImplements 
         var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
         return new $Name(newRecord);
     }
-    public $getIModelUpdateMethodeName(): $getIModelUpdateName {
+    public getUpdateModel(): $getIModelUpdateName {
         return <$getIModelUpdateName> this._record.toJS();
     }
     $Properties(p => p.HasSetter)[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
