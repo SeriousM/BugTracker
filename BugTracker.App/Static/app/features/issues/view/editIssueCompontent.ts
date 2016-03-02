@@ -48,7 +48,6 @@ export class EditIussue {
     private isNewItem: boolean;
 
     constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router : Router, private routeParams: RouteParams) {
-
         this.setInputModel();
         this.setFormValidation();
     }
