@@ -3,6 +3,7 @@ import { Router } from "angular2/router";
 import { AppStore } from "../../../store/appStore";
 
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
+import { AuthService } from "../../../services/authService"
 
 @Component({
     selector: "user-avatar",
@@ -16,7 +17,7 @@ import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStor
 
 export class UserAvatar implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
-    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private router : Router) {
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private router : Router, private authService : AuthService) {
     }
     onAppStoreUpdate() {
         this.changeDetectorRef.markForCheck();
@@ -29,6 +30,7 @@ export class UserAvatar implements OnInit, OnDestroy {
         this.appStoreUnsubscribe();
     }
     logout() {
+        this.authService.removeUserFromLocalStorage();
         this.appStore.dispatch(CurrentUserStoreActions.RemoveCurrentUser());
         this.router.navigate(['Login']);
     }
