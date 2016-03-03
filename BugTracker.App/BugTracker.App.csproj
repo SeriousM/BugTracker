@@ -160,7 +160,6 @@
     <Content Include="package.json" />
     <Content Include="tsconfig.json" />
     <Content Include="Static\app\models\generated\GernateModels.tst" />
-    <Content Include="Static\app\models\generated\GenerateAppState.tst" />
     <Content Include="Static\app\services\generated\GenerateServices.tst" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -187,7 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Static\app\models\generated\appState.ts">
-      <DependentUpon>GenerateAppState.tst</DependentUpon>
+      <DependentUpon>GernateModels.tst</DependentUpon>
       <CustomToolNamespace>Models\AppState.cs</CustomToolNamespace>
     </TypeScriptCompile>
     <TypeScriptCompile Include="Static\app\models\generated\currentUserState.ts">

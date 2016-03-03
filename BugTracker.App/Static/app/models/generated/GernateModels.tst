@@ -110,12 +110,21 @@
     string singularPascalCase(Property p) { return p.Type.IsEnumerable ? p.Name.Substring(0, p.Name.Length -1) : p.Name; }
     string getIModelUpdateName(Class c) { return getIModelName(c) + "Update"; }
     string getIModelName(Class c) { return "I" + c.Name; }
+    bool isAppState(Class c) { return c.Name == "AppState"; }
 }import * as Immutable from 'immutable';
 import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
 import * as ModelBase from '../models.base';
 
-$Classes(c => c.Namespace == "BugTracker.App.Models" && c.Name != "AppState")[export interface $getIModelUpdateName {
+$Classes(c => c.Namespace == "BugTracker.App.Models")[$isAppState[export interface IReducer$Name {
+    $Properties(p => p.HasSetter)[$name: (state: any, action: any) => any;][
+    ]
+}
+
+export class $Name implements ModelMeta.IClassHasMetaImplements {
+    $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
+    ]
+}][export interface $getIModelUpdateName {
     $Properties(p => p.HasSetter)[$name?: $getModelTypeRepresentation;][
     ]
 }
@@ -187,4 +196,4 @@ export class $Name implements $getIModelName, ModelMeta.IClassHasMetaImplements 
             ]
         }
     }
-}]
+}]]

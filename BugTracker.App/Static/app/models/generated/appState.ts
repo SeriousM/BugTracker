@@ -1,6 +1,7 @@
 import * as Immutable from 'immutable';
 import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
+import * as ModelBase from '../models.base';
 
 export interface IReducerAppState {
     users: (state: any, action: any) => any;
