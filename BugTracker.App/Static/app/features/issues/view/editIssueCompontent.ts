@@ -58,6 +58,7 @@ export class EditIussue {
         if (issueId != null) {
             this.issueModel = this.appStore.getState().issues.find(x => x.id == issueId);
             if (this.issueModel == null) {
+                this.editModel = new IssueModel().getUpdateModel();
                 console.error("Could not find issues with the id '" + issueId + "' in the AppStore.");
                 return;
             }
