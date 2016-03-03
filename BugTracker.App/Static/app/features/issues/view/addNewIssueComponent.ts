@@ -3,11 +3,8 @@ import { AppStore } from "../../../store/appStore";
 
 import { IssueStoreActions } from "../../issues/store/issueStoreActions";
 
-import { Issue } from "./IssueComponent";
-
 @Component({
     selector: "add-new-issue",
-    directives: [Issue],
     template: `
         <form (ngSubmit)="createNewIssue(input)">
             <input type="text" placeholder="New Issue Title" autocomplete="off" #input><button>Create</button>

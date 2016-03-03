@@ -1,7 +1,7 @@
-import { Component, Inject } from "angular2/core";
-import { Router } from "angular2/router";
+import { Component } from "angular2/core";
 
 import { AppStore } from "../../../store/appStore";
+import { Navigator } from "../../../utils/routing";
 import { CurrentUserStoreActions } from "../../currentUser/store/currentUserStoreActions";
 import { UserModel, IUserModelUpdate, RegisterUserModel } from '../../../models/models';
 import { UserService } from '../../../services/services';
@@ -20,11 +20,11 @@ import { AuthService } from '../../../services/authService';
 
 export class UserLogin {
 
-    constructor(private appStore: AppStore, private userService: UserService, private router: Router, private authService: AuthService) {
+    constructor(private appStore: AppStore, private userService: UserService, private navigator: Navigator, private authService: AuthService) {
         var currentUser = this.authService.getUserFromLocalStorage();
         if (currentUser != null) {
             this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(currentUser));
-            this.router.navigate(['Issues']);
+            this.navigator.navigateToIssues();
         }
     }
 
@@ -41,7 +41,7 @@ export class UserLogin {
             model => {
                 this.authService.setUserToLocalStorage(model);
                 this.appStore.dispatch(CurrentUserStoreActions.SetCurrentUser(model));
-                this.router.navigate(['Issues']);
+                this.navigator.navigateToIssues();
             },
             error => console.error("error", error));
     }

@@ -1,5 +1,5 @@
 import { Component } from "angular2/core";
-import { Location } from "angular2/router";
+import { Navigator } from "../../../utils/routing";
 
 import { AppStore } from "../../../store/appStore";
 import { IssuesList } from "./issuesListComponent";
@@ -19,12 +19,11 @@ import { AddNewIssue } from "./addNewIssueComponent";
 })
 
 export class IssuesContainer {
-    constructor(private appStore: AppStore, private location : Location) {
+    constructor(private appStore: AppStore, private navigator: Navigator) {
 
     }
-    
-    private newIssue()
-    {
-        this.location.go('/editLocation');
+
+    private newIssue() {
+        this.navigator.navigateToNewIssue();
     }
 }

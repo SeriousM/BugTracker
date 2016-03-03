@@ -1,11 +1,11 @@
-import { Component, Input, OnDestroy, OnInit} from "angular2/core";
-import { Router, RouteParams } from 'angular2/router';
+import { Component, Input, OnDestroy, OnInit } from "angular2/core";
+import { Navigator } from "../../../utils/routing";
 import { NgForm, Control, ControlGroup, FormBuilder, Validators } from 'angular2/common';
 
 import { AppStore } from "../../../store/appStore";
 import { IssueModel, IIssueModelUpdate } from "../../../models/models";
-import { CustomValidators } from "../../../validations/customValidators"
-import { IssueService } from "../../../services/services"
+import { CustomValidators } from "../../../validations/customValidators";
+import { IssueService } from "../../../services/services";
 import { IssueStoreActions } from "../store/issueStoreActions";
 
 @Component(
@@ -47,13 +47,13 @@ export class EditIussue {
     private issueFormModel: ControlGroup;
     private isNewItem: boolean;
 
-    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router: Router, private routeParams: RouteParams) {
+    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private navigator: Navigator) {
         this.setInputModel();
         this.setFormValidation();
     }
 
     private setInputModel() {
-        var issueId = this.routeParams.get('id')
+        var issueId = this.navigator.paramsForEditIssue().id
         if (issueId != null) {
             this.issueModel = this.appStore.getState().issues.find(x => x.id == issueId);
             if (this.issueModel == null) {
@@ -91,7 +91,7 @@ export class EditIussue {
                     console.log("Add Issue to Store");
                     // store dispatch
                     this.appStore.dispatch(IssueStoreActions.AddIssue(newIssuesModel));
-                    this.router.navigate(['Issues']);
+                    this.navigator.navigateToIssues();
                 },
                 error => {
                     console.error("Could not create new issue", error);
@@ -104,7 +104,7 @@ export class EditIussue {
                     console.log("Update Issue in Store");
                     // store dispatch
                     this.appStore.dispatch(IssueStoreActions.UpdateIssue(newIssuesModel));
-                    this.router.navigate(['Issues']);
+                    this.navigator.navigateToIssues();
                 },
                 error => {
                     console.error("Could not update the issue", error);

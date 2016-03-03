@@ -1,19 +1,17 @@
 import { List } from 'immutable';
 
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from "angular2/core";
-import { Router } from "angular2/router";
+import { Navigator } from "../../../utils/routing";
 
 import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../models/models";
 
-import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
 import { IssueService } from "../../../services/services"
 
 @Component({
     selector: "issue-list",
     changeDetection: ChangeDetectionStrategy.Detached,
-    directives: [Issue],
     template: `
         <table class="table table-striped">
             <tr>
@@ -38,7 +36,7 @@ export class IssuesList implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
     private issues: List<IssueModel>;
 
-    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService, private router: Router) {
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService, private navigator: Navigator) {
     }
 
     onAppStoreUpdate() {
@@ -54,7 +52,7 @@ export class IssuesList implements OnInit, OnDestroy {
     }
 
     private editIssue(issueId: string) {
-        this.router.navigate(['EditIssues', { id: issueId }]);
+        this.navigator.navigateToEditIssue(issueId);
     }
 
     private loadIssues() {
