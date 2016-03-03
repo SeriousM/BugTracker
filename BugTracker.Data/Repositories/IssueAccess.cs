@@ -37,6 +37,26 @@ namespace BugTracker.Data.Repositories
             return issue;
         }
 
+        public void Update(Guid issueId, string title, string content, bool isClosed)
+        {
+            Check.IsNotNull(nameof(title), title);
+            Check.IsNotNull(nameof(content), content);
+
+            var existingEntity = this.database.Get<Issue>(issueId);
+
+            if (existingEntity == null)
+            {
+                throw new Exception($"Could not found issue with the Id {issueId}.");
+            }
+
+            existingEntity.Content = content;
+            existingEntity.Title = title;
+            existingEntity.IsClosed = isClosed;
+
+            this.database.Remove<Issue>(issueId);
+            this.database.Add<Issue>(issueId, existingEntity);
+        }
+
         public List<Issue> GetAllByUserId(Guid userId)
         {
             var issues = this.database.GetAll<Issue>()
