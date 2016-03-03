@@ -60,4 +60,10 @@ export class UserModel implements IUserModel, ModelMeta.IClassHasMetaImplements 
     public set id(value: string) { ModelBase.riseImmutableModelError('UserModel', 'id', 'setId'); }
     /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setName(...) instead. */
     public set name(value: string) { ModelBase.riseImmutableModelError('UserModel', 'name', 'setName'); }
+    public toJSON() {
+        return {
+            id: this.id,
+            name: this.name
+        }
+    }
 }
