@@ -34,5 +34,12 @@ namespace BugTracker.App.Commands.Repository
             command.Initialize(issueModel);
             return command;
         }
+
+        public CommandBase UpdateIssue(IssueModel issueModel)
+        {
+            var command = this.commandFactory.CreateCommand<UpdateIssueCommand>();
+            command.Initialize(issueModel);
+            return command;
+        }
     }
 }

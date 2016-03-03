@@ -25,16 +25,36 @@ namespace BugTracker.Data.Repositories
 
             var issueId = Guid.NewGuid();
             var issue = new Issue
-                        {
-                            Id = issueId,
-                            UserId = userId,
-                            Title = title,
-                            Content = content,
-                            IsClosed = false,
-                            ReportDate = DateTime.UtcNow
-                        };
+            {
+                Id = issueId,
+                UserId = userId,
+                Title = title,
+                Content = content,
+                IsClosed = false,
+                ReportDate = DateTime.UtcNow
+            };
             this.database.Add(issueId, issue);
             return issue;
+        }
+
+        public void Update(Guid issueId, string title, string content, bool isClosed)
+        {
+            Check.IsNotNull(nameof(title), title);
+            Check.IsNotNull(nameof(content), content);
+
+            var existingEntity = this.database.Get<Issue>(issueId);
+
+            if (existingEntity == null)
+            {
+                throw new Exception($"Could not found issue with the Id {issueId}.");
+            }
+
+            existingEntity.Content = content;
+            existingEntity.Title = title;
+            existingEntity.IsClosed = isClosed;
+
+            this.database.Remove<Issue>(issueId);
+            this.database.Add<Issue>(issueId, existingEntity);
         }
 
         public List<Issue> GetAllByUserId(Guid userId)

@@ -61,6 +61,9 @@ export class IssueModel implements IIssueModel, ModelMeta.IClassHasMetaImplement
         var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
         return new IssueModel(newRecord);
     }
+    public getUpdateModel(): IIssueModelUpdate {
+        return <IIssueModelUpdate>this._record.toJS();
+    }
     public setId(id: string): IssueModel {
         return new IssueModel(this._record.set('id', id));
     }

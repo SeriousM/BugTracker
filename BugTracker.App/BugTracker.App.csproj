@@ -135,6 +135,7 @@
     <Compile Include="Attributes\ReturnsVoidAttribute.cs" />
     <Compile Include="Attributes\TypescriptIterable.cs" />
     <Compile Include="Attributes\TypescriptIterableTypeAttribute.cs" />
+    <Compile Include="Commands\UpdateIssueCommand.cs" />
     <Compile Include="Commands\CreateNewIssueCommand.cs" />
     <Compile Include="Commands\RegisterNewUserCommand.cs" />
     <Compile Include="Commands\RegisterNewUserIfUnknownCommand.cs" />
@@ -218,6 +219,7 @@
       <DependentUpon>GenerateServices.tst</DependentUpon>
       <CustomToolNamespace>Controllers\UserController.cs</CustomToolNamespace>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="Static\app\services\services.ts" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
