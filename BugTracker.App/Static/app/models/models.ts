@@ -1,4 +1,3 @@
-//export { IReducerGeneratedAppState, GeneratedAppState } from './generated/appState';
 export { IReducerAppState, AppState } from './appState';
 
 export { CurrentUserState, ICurrentUserStateUpdate } from './generated/currentUserState';
