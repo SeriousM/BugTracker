@@ -15,16 +15,16 @@ export function createModelsFromPoco<U extends Iterable<any, Meta.IMetaImplement
 }
 
 function createModelOrModels(propValue: any | any[], propMeta: Meta.IMetaImplementsProperty) {
-    if (propMeta.isPoco){
+    if (propMeta.isPoco) {
         if (propMeta.isList) {
             var newList = propMeta.iterableFunction(propValue);
             return newList;
         }
-        else{
+        else {
             return propValue;
         }
     }
-    
+
     var propClassProto = propMeta.getClassConstructor().prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
 
@@ -44,15 +44,21 @@ function createModelOrModels(propValue: any | any[], propMeta: Meta.IMetaImpleme
 function createModel(propValue: any, propMeta: Meta.IMetaImplementsProperty) {
     var propClassProto = propMeta.getClassConstructor().prototype;
     var propRecord = <Record.Class>propClassProto.__metaImplements.classConstructor;
+
+    if ((<Meta.IModelWithRecord>propValue)._record != void 0) {
+        // on reduxDevTools commit, the propValue is already manipulated and we just return it as the model.
+        return propValue;
+    }
     
     // create for each property on the object a propper model if possible
     manipulateModel(propValue, propMeta.getClassConstructor());
 
     // create an instance of the target model
     var model = Object.create(propClassProto);
+
     // run the record-method on the model to populate it with the existing values from the poco
     Meta.extendModelWithRecord(model, propValue, propRecord);
-    
+
     return model;
 }
 

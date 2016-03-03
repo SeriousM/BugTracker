@@ -48,4 +48,9 @@ export class RegisterUserModel implements IRegisterUserModel, ModelMeta.IClassHa
 
     /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setUsername(...) instead. */
     public set username(value: string) { ModelBase.riseImmutableModelError('RegisterUserModel', 'username', 'setUsername'); }
+    public toJSON() {
+        return {
+            username: this.username
+        }
+    }
 }

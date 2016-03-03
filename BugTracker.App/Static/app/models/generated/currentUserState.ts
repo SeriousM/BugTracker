@@ -48,4 +48,9 @@ export class CurrentUserState implements ICurrentUserState, ModelMeta.IClassHasM
 
     /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setUser(...) instead. */
     public set user(value: Models.UserModel) { ModelBase.riseImmutableModelError('CurrentUserState', 'user', 'setUser'); }
+    public toJSON() {
+        return {
+            user: this.user
+        }
+    }
 }

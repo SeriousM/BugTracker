@@ -181,4 +181,10 @@ export class $Name implements $getIModelName, ModelMeta.IClassHasMetaImplements 
     $Properties(p => p.HasSetter)[/** Getter of the property. Setting this property will throw an error because the model is immutable. Use set$Name(...) instead. */
     public set $name(value: $getModelTypeRepresentation) { ModelBase.riseImmutableModelError('$getParentClassName', '$name', 'set$Name'); }][
     ]
+    public toJSON() {${/*to support the JSON.stringify behaviour: https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#toJSON()_behavior*/}
+        return {
+            $Properties(p => p.HasSetter)[$name: this.$name][,
+            ]
+        }
+    }
 }]

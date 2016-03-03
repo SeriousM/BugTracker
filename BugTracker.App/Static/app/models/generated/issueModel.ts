@@ -108,4 +108,14 @@ export class IssueModel implements IIssueModel, ModelMeta.IClassHasMetaImplement
     public set reportDate(value: Date) { ModelBase.riseImmutableModelError('IssueModel', 'reportDate', 'setReportDate'); }
     /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setIsClosed(...) instead. */
     public set isClosed(value: boolean) { ModelBase.riseImmutableModelError('IssueModel', 'isClosed', 'setIsClosed'); }
+    public toJSON() {
+        return {
+            id: this.id,
+            userId: this.userId,
+            title: this.title,
+            content: this.content,
+            reportDate: this.reportDate,
+            isClosed: this.isClosed
+        }
+    }
 }
