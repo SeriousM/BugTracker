@@ -53,7 +53,7 @@ export class IssuesList implements OnInit, OnDestroy {
         this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         this.onAppStoreUpdate();
 
-        if (!this.appStore.getState().sessionState.hasIssuesLoaded) {
+        if (!this.appStore.getState().sessionState.areIssuesLoaded) {
             this.loadIssues();
         }
     }

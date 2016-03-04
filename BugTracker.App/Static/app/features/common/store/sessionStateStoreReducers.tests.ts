@@ -11,7 +11,7 @@ import { SessionStateActionTypes, SessionStateActions } from "./sessionStateStor
 export class SessionStateStoreReducersTests extends TestRunnerBase {
     @Test changeIssuesLoadedState_works() {
         var beforeState = new SessionStateModel();
-        var afterState = new SessionStateModel().setHasIssuesLoaded(true);       
+        var afterState = new SessionStateModel().setAreIssuesLoaded(true);       
          
         var action = SessionStateActions.ChangeIssueLoadedState(true);
 

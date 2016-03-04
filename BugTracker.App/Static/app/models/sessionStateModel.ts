@@ -4,27 +4,27 @@ import * as Models from './models';
 import * as ModelBase from './models.base';
 
 export interface ISessionStateModelUpdate {
-    hasIssuesLoaded? : boolean;
+    areIssuesLoaded? : boolean;
 }
 
 interface ISessionStateModel {
-    hasIssuesLoaded : boolean;
-    setHasIssuesLoaded(value: boolean): SessionStateModel;   
+    areIssuesLoaded : boolean;
+    setAreIssuesLoaded(value: boolean): SessionStateModel;   
 }
 
 const SessionStateModelRecord = Immutable.Record(<ISessionStateModel>{
-    hasIssuesLoaded: <boolean>false,
+    areIssuesLoaded: <boolean>false,
 });
 
 @ModelMeta.ImplementsClass(SessionStateModelRecord)
 export class SessionStateModel implements ISessionStateModel, ModelMeta.IClassHasMetaImplements {
     private _record: Immutable.Map<string, any>;
-    @ModelMeta.ImplementsPoco() public get hasIssuesLoaded(): boolean {
-        return this._record.get('hasIssuesLoaded');
+    @ModelMeta.ImplementsPoco() public get areIssuesLoaded(): boolean {
+        return this._record.get('areIssuesLoaded');
     }
     
-    public setHasIssuesLoaded(value: boolean): SessionStateModel {
-        return new SessionStateModel(this._record.set('hasIssuesLoaded', value));
+    public setAreIssuesLoaded(value: boolean): SessionStateModel {
+        return new SessionStateModel(this._record.set('areIssuesLoaded', value));
     }
         
     constructor(initialObject?: ISessionStateModelUpdate) {
@@ -43,6 +43,6 @@ export class SessionStateModel implements ISessionStateModel, ModelMeta.IClassHa
         ModelBase.extendModelWithRecord(this, initialObject, SessionStateModelRecord);
     }
 
-    /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setHasIssuesLoaded(...) instead. */
-    public set hasIssuesLoaded(value: boolean) { ModelBase.riseImmutableModelError('SessionStateModel', 'hasIssuesLoaded', 'setHasIssuesLoaded'); }
+    /** Getter of the property. Setting this property will throw an error because the model is immutable. Use setAreIssuesLoaded(...) instead. */
+    public set areIssuesLoaded(value: boolean) { ModelBase.riseImmutableModelError('SessionStateModel', 'areIssuesLoaded', 'setAreIssuesLoaded'); }
 }

@@ -5,7 +5,7 @@ import { AppState, SessionStateModel } from "../../../models/models";
 import { SessionStateActionTypes, IChangeIssuesLoadedStateAction } from "./sessionStateStoreActions";
 
 function changeIssueLoadedState(state: SessionStateModel, action: IChangeIssuesLoadedStateAction): SessionStateModel {
-    var newState = state.setHasIssuesLoaded(action.payload.hasLoaded);
+    var newState = state.setAreIssuesLoaded(action.payload.issuesLoaded);
     return newState;
 }
 
