@@ -8,7 +8,8 @@ import { IssueModel } from "../../../models/models";
 
 import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
-import { IssueService } from "../../../services/services";
+import { SessionStateActions } from "../../common/store/sessionStateStoreActions";
+import { IssueService } from "../../../services/services"
 
 @Component({
     selector: "issue-list",
@@ -17,6 +18,8 @@ import { IssueService } from "../../../services/services";
     template: `
         <table class="table table-striped">
             <tr>
+                <th></th>
+                <th></th>
                 <th>Title</th>
                 <th>Content</th>
                 <th>Reported Date</th>
@@ -37,33 +40,35 @@ import { IssueService } from "../../../services/services";
 export class IssuesList implements OnInit, OnDestroy {
     private appStoreUnsubscribe: Function;
     private issues: List<IssueModel>;
-    
-    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService, private router : Router) {
+
+    constructor(private appStore: AppStore, private changeDetectorRef: ChangeDetectorRef, private issueService: IssueService, private router: Router) {
     }
-    
+
     onAppStoreUpdate() {
         this.issues = this.appStore.getState().issues;
-        this.changeDetectorRef.markForCheck();        
+        this.changeDetectorRef.markForCheck();
     }
-    
+
     ngOnInit() {
         this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         this.onAppStoreUpdate();
 
-        this.loadIssues();
+        if (!this.appStore.getState().sessionState.hasIssuesLoaded) {
+            this.loadIssues();
+        }
     }
-    
-    private editIssue (issueId : string)
-    {
-        this.router.navigate(['EditIssues', {id: issueId}]);       
+
+    private editIssue(issueId: string) {
+        this.router.navigate(['EditIssues', { id: issueId }]);
     }
 
     private loadIssues() {
-       var currentUserId = this.appStore.getState().currentUser.user.id;
+        var currentUserId = this.appStore.getState().currentUser.user.id;
 
         this.issueService.getAllByUser(currentUserId).then(
             models => {
                 models.forEach(issue => this.appStore.dispatch(IssueStoreActions.AddIssue(issue)));
+                this.appStore.dispatch(SessionStateActions.ChangeIssueLoadedState(true));
             },
             error => console.error("error", error));
     }
@@ -71,7 +76,7 @@ export class IssuesList implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.appStoreUnsubscribe();
     }
-    
+
     issueChanged(issueModel: IssueModel) {
         this.appStore.dispatch(IssueStoreActions.ChangeTitle(issueModel.title));
     }

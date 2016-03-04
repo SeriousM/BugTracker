@@ -8,7 +8,7 @@ import { AppStore, appStoreFactory } from "./store/appStore";
 import { AppConfiguration } from './config/config.base';
 
 import { APP_WEBSERVICES, AUTH_SERVICES } from "./services/services"
-import { AuthService } from "./services/authService"
+import { AuthService } from "./services/authService";
 
 import { AppHeaderComponent } from "./features/common/view/appHeaderComponent";
 import { UserLogin } from "./features/currentUser/view/userLoginComponent";
