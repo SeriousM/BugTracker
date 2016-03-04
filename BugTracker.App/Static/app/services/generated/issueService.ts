@@ -24,6 +24,18 @@ export class IssueService {
             })
             .toPromise();
     }
+    public update(issueModel: Models.IssueModel): ServiceBase.IPromise {
+        
+        return this.http
+            .request(`api/issue/Update`, {
+                method: "put",
+                body: ServiceBase.stringifyBody(issueModel)
+            })
+            .map(response => {
+                return null;
+            })
+            .toPromise();
+    }
     public getAllByUser(userId: string): ServiceBase.ITypedPromise<Immutable.List<Models.IssueModel>> {
         
         return this.http

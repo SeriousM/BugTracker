@@ -8,5 +8,6 @@ namespace BugTracker.App.Commands.Repository.Abstract
         CommandBase<UserModel> RegisterNewUser(RegisterUserModel registrationModel);
         CommandBase<UserModel> RegisterNewUserIfUnknown(RegisterUserModel registrationModel);
         CommandBase<IssueModel> CreateNewIssue(IssueModel issueModel);
+        CommandBase UpdateIssue(IssueModel issueModel);
     }
 }

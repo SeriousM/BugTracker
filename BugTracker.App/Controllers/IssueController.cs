@@ -52,6 +52,25 @@ namespace BugTracker.App.Controllers
             return response;
         }
 
+        [ReturnsVoid]
+        [HttpPut, Route("Update")]
+        public async Task<HttpResponseMessage> Update(IssueModel issueModel)
+        {
+            HttpResponseMessage response;
+            if (issueModel == null)
+            {
+                response = this.CreateErrorResponse("The issueModel is not set.", HttpStatusCode.BadRequest);
+                return response;
+            }
+
+            var updateIssueCommand = this.commandRepository.UpdateIssue(issueModel);
+            var commandResult = await this.commandExecutor.ExecuteAsync(updateIssueCommand);
+
+            response = this.CreateResponseFromCommandResult(commandResult);
+            return response;
+        }
+
+
         [ReturnsModels(TypescriptIterable.List, nameof(IssueModel))]
         [HttpGet, Route("GetAllByUser")]
         public HttpResponseMessage GetAllByUser(Guid userId)

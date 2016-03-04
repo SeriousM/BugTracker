@@ -16,6 +16,7 @@ import { UserAvatar } from "../../currentUser/view/userAvatarComponent";
                 <a [routerLink]="['Login']" *ngIf="currentUser.user == null">Login</a>
                 <a [routerLink]="['Issues']" *ngIf="currentUser.user != null">Issues</a>
             </nav>
+            <hr>
         </div>
     `
 })

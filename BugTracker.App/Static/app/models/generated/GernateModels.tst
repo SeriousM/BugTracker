@@ -109,6 +109,7 @@
     string singularCamelCase(Property p) { return p.Type.IsEnumerable ? p.name.Substring(0, p.name.Length -1) : p.name; }
     string singularPascalCase(Property p) { return p.Type.IsEnumerable ? p.Name.Substring(0, p.Name.Length -1) : p.Name; }
     string getIModelUpdateName(Class c) { return getIModelName(c) + "Update"; }
+    string getIModelUpdateMethodeName(Class c) { return "get" + getIModelName(c) + "UpdateObject"; }
     string getIModelName(Class c) { return "I" + c.Name; }
 }import * as Immutable from 'immutable';
 import * as ModelMeta from '../../utils/model/meta';
@@ -144,6 +145,9 @@ export class $Name implements $getIModelName, ModelMeta.IClassHasMetaImplements 
     public updateFromModel(updateObject: $getIModelUpdateName): $Name {
         var newRecord = this._record.withMutations(map => ModelBase.updateFromModel(map, updateObject));
         return new $Name(newRecord);
+    }
+    public getUpdateModel(): $getIModelUpdateName {
+        return <$getIModelUpdateName> this._record.toJS();
     }
     $Properties(p => p.HasSetter)[public set$Name($name: $getModelTypeRepresentation): $getParentClassName {
         return new $getParentClassName(this._record.set('$name', $name));
