@@ -3,6 +3,7 @@ import { default as createLogger } from 'redux-logger';
 import { Injectable } from "angular2/core";
 import { ReduxStore } from "angular2-redux-store";
 
+import { dataStateStoreReducer } from "../features/common/store/sessionStateStoreReducers";
 import { userStoreReducer } from "../features/users/store/userStoreReducers";
 import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
 import { currentUserStoreReducer } from "../features/currentUser/store/currentUserStoreReducers";
@@ -28,8 +29,10 @@ export function appStoreFactory() {
     var reducerAppState: IReducerAppState = {
         currentUser: currentUserStoreReducer,
         users: userStoreReducer,
-        issues: issueStoreReducer
-    }
+        issues: issueStoreReducer,
+        dataState: dataStateStoreReducer
+    }  
+    
     var finalReducer = combineReducers(reducerAppState);
 
     // the object sent as initial state has to be of type Object, not of type AppStore.

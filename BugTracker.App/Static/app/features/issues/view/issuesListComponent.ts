@@ -6,17 +6,18 @@ import { Router } from "angular2/router";
 import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../models/models";
 
-import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
+import { SessionStateActions } from "../../common/store/sessionStateStoreActions";
 import { IssueService } from "../../../services/services"
 
 @Component({
     selector: "issue-list",
     changeDetection: ChangeDetectionStrategy.Detached,
-    directives: [Issue],
     template: `
         <table class="table table-striped">
             <tr>
+                <th></th>
+                <th></th>
                 <th>Title</th>
                 <th>Content</th>
                 <th>Reported Date</th>
@@ -50,7 +51,9 @@ export class IssuesList implements OnInit, OnDestroy {
         this.appStoreUnsubscribe = this.appStore.subscribe(this.onAppStoreUpdate.bind(this));
         this.onAppStoreUpdate();
 
-        this.loadIssues();
+        if (!this.appStore.getState().dataState.areIssuesLoaded) {
+            this.loadIssues();
+        }
     }
 
     private editIssue(issueId: string) {
@@ -63,6 +66,7 @@ export class IssuesList implements OnInit, OnDestroy {
         this.issueService.getAllByUser(currentUserId).then(
             models => {
                 models.forEach(issue => this.appStore.dispatch(IssueStoreActions.AddIssue(issue)));
+                this.appStore.dispatch(SessionStateActions.ChangeIssueLoadedState(true));
             },
             error => console.error("error", error));
     }
