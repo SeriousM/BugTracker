@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit} from "angular2/core";
+import { Component, Input } from "angular2/core";
 import { Router, RouteParams } from 'angular2/router';
 import { NgForm, Control, ControlGroup, FormBuilder, Validators } from 'angular2/common';
 
@@ -7,6 +7,7 @@ import { IssueModel, IIssueModelUpdate } from "../../../models/models";
 import { CustomValidators } from "../../../validations/customValidators"
 import { IssueService } from "../../../services/services"
 import { IssueStoreActions } from "../store/issueStoreActions";
+import { IssueDataAccess } from "../../../dataAccess/issueDataAccess";
 
 @Component(
     {
@@ -40,31 +41,28 @@ import { IssueStoreActions } from "../store/issueStoreActions";
 
 
 export class EditIussue {
-
-    private appStoreUnsubscribe: Function;
     private editModel: IIssueModelUpdate;
-    private issueModel: IssueModel;
     private issueFormModel: ControlGroup;
     private isNewItem: boolean;
 
-    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router : Router, private routeParams: RouteParams) {
+    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router: Router, private routeParams: RouteParams, private issueDataAccess: IssueDataAccess) {
         this.setInputModel();
         this.setFormValidation();
     }
 
-    private setInputModel ()
-    {
+    private setInputModel() {
+        this.editModel = new IssueModel().getUpdateModel();
+
         var issueId = this.routeParams.get('id')
         if (issueId != null) {
-            this.issueModel = this.appStore.getState().issues.find(x => x.id == issueId);
-            if (this.issueModel == null) {
-                this.editModel = new IssueModel().getUpdateModel();
-                console.error("Could not find issues with the id '" + issueId + "' in the AppStore.");
-                return;
-            }
-
-            this.editModel = this.issueModel.getUpdateModel();
-            this.isNewItem = false;
+            this.issueDataAccess.getIssueById(issueId).then(
+                model => {
+                    this.editModel = model.getUpdateModel();
+                    this.isNewItem = false;
+                },
+                error => {
+                    console.error(error)
+                });
         }
         else {
             this.isNewItem = true;
@@ -80,36 +78,34 @@ export class EditIussue {
 
     private saveChanges() {
         var newIssuesModel = new IssueModel(this.editModel);
-        
-        // call webApi
+
         if (this.isNewItem) {
             // set userId
             this.editModel.userId = this.appStore.getState().currentUser.user.id;
             
             // create the issues 
             this.issueService.create(newIssuesModel).then(
-                model => { 
+                model => {
                     console.log("Add Issue to Store");
                     // store dispatch
                     this.appStore.dispatch(IssueStoreActions.AddIssue(newIssuesModel));
                     this.router.navigate(['Issues']);
-                 },
+                },
                 error => {
-                     console.error("Could not create new issue", error);
+                    console.error("Could not create new issue", error);
                 });
         }
-        else {           
-             
+        else {
             // update the issues 
             this.issueService.update(newIssuesModel).then(
-                () => { 
+                () => {
                     console.log("Update Issue in Store");
                     // store dispatch
                     this.appStore.dispatch(IssueStoreActions.UpdateIssue(newIssuesModel));
                     this.router.navigate(['Issues']);
-                 },
-                error => { 
-                    console.error("Could not update the issue", error); 
+                },
+                error => {
+                    console.error("Could not update the issue", error);
                 });
         }
         

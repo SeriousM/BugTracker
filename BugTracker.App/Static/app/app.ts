@@ -15,6 +15,7 @@ import { UserLogin } from "./features/currentUser/view/userLoginComponent";
 import { IssuesContainer } from "./features/issues/view/issuesContainerComponent";
 import { EditIussue } from "./features/issues/view/editIssueCompontent";
 import { CurrentUserStoreActions } from "./features/currentUser/store/currentUserStoreActions";
+import { IssueDataAccess } from './dataAccess/issueDataAccess';
 
 @RouteConfig([
     { path: '/login', name: 'Login', component: UserLogin, useAsDefault: true },
@@ -54,6 +55,7 @@ bootstrap(App, [
     ROUTER_PROVIDERS,
     AUTH_SERVICES,
     provide(APP_BASE_HREF, { useValue: '/static' }),
+    provide(IssueDataAccess, {useClass: IssueDataAccess}),
     provide(AppConfiguration, { useValue: appConfiguration }),
     provide(RequestOptions, { useClass: DefaultRequestOptions }),
     provide(AppStore, { useFactory: appStoreFactory })
