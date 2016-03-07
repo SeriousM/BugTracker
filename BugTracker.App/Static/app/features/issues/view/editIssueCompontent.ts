@@ -65,6 +65,7 @@ export class EditIussue {
                 });
         }
         else {
+            this.editModel.userId = this.appStore.getState().currentUser.user.id;
             this.isNewItem = true;
         }
     }
@@ -77,18 +78,16 @@ export class EditIussue {
     }
 
     private saveChanges() {
+          
         var newIssuesModel = new IssueModel(this.editModel);
 
-        if (this.isNewItem) {
-            // set userId
-            this.editModel.userId = this.appStore.getState().currentUser.user.id;
-            
+        if (this.isNewItem) {                       
             // create the issues 
             this.issueService.create(newIssuesModel).then(
                 model => {
                     console.log("Add Issue to Store");
                     // store dispatch
-                    this.appStore.dispatch(IssueStoreActions.AddIssue(newIssuesModel));
+                    this.appStore.dispatch(IssueStoreActions.AddIssue(model));
                     this.router.navigate(['Issues']);
                 },
                 error => {

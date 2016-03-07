@@ -6,7 +6,6 @@ import { Router } from "angular2/router";
 import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../models/models";
 
-import { Issue } from "./issueComponent";
 import { IssueStoreActions } from "../store/issueStoreActions";
 import { SessionStateActions } from "../../common/store/sessionStateStoreActions";
 import { IssueService } from "../../../services/services"
@@ -14,7 +13,6 @@ import { IssueService } from "../../../services/services"
 @Component({
     selector: "issue-list",
     changeDetection: ChangeDetectionStrategy.Detached,
-    directives: [Issue],
     template: `
         <table class="table table-striped">
             <tr>

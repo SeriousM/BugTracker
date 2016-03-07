@@ -1,6 +1,6 @@
 import { Injectable } from 'angular2/core';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/fromArray';
+import 'rxjs/add/observable/fromArray'; // required for Observable.of()
 
 import { AppStore } from '../store/appStore';
 import { IssueService } from '../services/services';
@@ -14,7 +14,6 @@ export class IssueDataAccess {
     }
 
     public getIssueById(id: string): ITypedPromise<IssueModel> {
-
         if (this.appStore.getState().sessionState.areIssuesLoaded) {
             var issuesFromStore = this.appStore.getState().issues.find(x => x.id == id);
             if (issuesFromStore != null) {
