@@ -35,6 +35,17 @@ namespace BugTracker.App.Controllers
         }
 
         [ReturnsModel(nameof(IssueModel))]
+        [HttpGet, Route("issueId")]
+        public async Task<HttpResponseMessage> GetIssueById(Guid issueId)
+        {
+            var getIssueCommand = this.commandRepository.GetIssueById(issueId);
+            var commandResult = await this.commandExecutor.ExecuteAsync(getIssueCommand);
+
+            var response = this.CreateResponseFromCommandResult(commandResult);
+            return response;
+        }
+
+        [ReturnsModel(nameof(IssueModel))]
         [HttpPost, Route("Create")]
         public async Task<HttpResponseMessage> Create(IssueModel issueModel)
         {

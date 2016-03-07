@@ -135,6 +135,7 @@
     <Compile Include="Attributes\ReturnsVoidAttribute.cs" />
     <Compile Include="Attributes\TypescriptIterable.cs" />
     <Compile Include="Attributes\TypescriptIterableTypeAttribute.cs" />
+    <Compile Include="Commands\GetIssueByIdCommand.cs" />
     <Compile Include="Commands\UpdateIssueCommand.cs" />
     <Compile Include="Commands\CreateNewIssueCommand.cs" />
     <Compile Include="Commands\RegisterNewUserCommand.cs" />

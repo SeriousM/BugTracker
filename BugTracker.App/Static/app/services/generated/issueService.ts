@@ -11,6 +11,19 @@ import * as ServiceBase from '../service.base';
 export class IssueService {
     constructor(private http: Http) {
     }
+    public getIssueById(issueId: string): ServiceBase.ITypedPromise<Models.IssueModel> {
+        
+        return this.http
+            .request(`api/issue/issueId?issueId=${issueId}`, {
+                method: "get",
+                body: ServiceBase.stringifyBody(null)
+            })
+            .map<Models.IssueModel>(response => {
+                var model = Parser.createModelFromPoco<Models.IssueModel>(Models.IssueModel, response.json());
+                return model;
+            })
+            .toPromise();
+    }
     public create(issueModel: Models.IssueModel): ServiceBase.ITypedPromise<Models.IssueModel> {
         
         return this.http

@@ -18,6 +18,11 @@ namespace BugTracker.Data.Repositories
             this.database = database;
         }
 
+        public Issue Get(Guid issueId)
+        {
+            return this.database.Get<Issue>(issueId);
+        }
+
         public Issue Add(Guid userId, string title, string content)
         {
             Check.IsNotNull(nameof(title), title);
