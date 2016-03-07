@@ -90,8 +90,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App\Commands\CreateNewIssueCommandTests.cs" />
+    <Compile Include="App\Commands\GetIssueByIdCommandTest.cs" />
     <Compile Include="App\Commands\RegisterNewUserIfUnknownCommandTests.cs" />
     <Compile Include="App\Commands\RegisterNewUserCommandTests.cs" />
+    <Compile Include="App\Commands\UpdateIssueCommandTest.cs" />
     <Compile Include="App\Controllers\IssueControllerTests.cs" />
     <Compile Include="App\Controllers\UserControllerTests.cs" />
     <Compile Include="AssertCommand.cs" />

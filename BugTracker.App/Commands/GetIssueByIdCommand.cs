@@ -24,6 +24,16 @@ namespace BugTracker.App.Commands
             this.issueId = issueId;
         }
 
+        protected override Task<CanExecuteCommandResult> CanExecuteAsync()
+        {
+            if (this.issueId == Guid.Empty)
+            {
+                return this.CannotExecute("Invalid Issue ID").ToTaskResult();
+            }
+
+            return base.CanExecuteAsync();
+        }
+
         protected override Task<CommandResult<IssueModel>> ExecuteAsync()
         {
             var foundIssue = this.issueAccess.Get(this.issueId);
