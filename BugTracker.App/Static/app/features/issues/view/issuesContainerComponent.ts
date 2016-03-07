@@ -1,13 +1,12 @@
 import { Component } from "angular2/core";
-import { Location } from "angular2/router";
+import { Router } from "angular2/router";
 
 import { AppStore } from "../../../store/appStore";
 import { IssuesList } from "./issuesListComponent";
-import { AddNewIssue } from "./addNewIssueComponent";
 
 @Component({
     selector: "issues-container",
-    directives: [IssuesList, AddNewIssue],
+    directives: [IssuesList],
     template: `
         <Button (click)="newIssue()">New Issue</Button>
         
@@ -19,12 +18,10 @@ import { AddNewIssue } from "./addNewIssueComponent";
 })
 
 export class IssuesContainer {
-    constructor(private appStore: AppStore, private location : Location) {
-
+    constructor(private appStore: AppStore, private router: Router) {
     }
-    
-    private newIssue()
-    {
-        this.location.go('/editLocation');
+
+    private newIssue() {
+        this.router.navigate(['NewIssues']);
     }
 }

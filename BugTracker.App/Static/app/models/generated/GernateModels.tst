@@ -117,12 +117,12 @@ import * as ModelMeta from '../../utils/model/meta';
 import * as Models from '../models';
 import * as ModelBase from '../models.base';
 
-$Classes(c => c.Namespace == "BugTracker.App.Models")[$isAppState[export interface IReducer$Name {
+$Classes(c => c.Namespace == "BugTracker.App.Models")[$isAppState[export interface IReducerGenerated$Name {
     $Properties(p => p.HasSetter)[$name: (state: any, action: any) => any;][
     ]
 }
 
-export class $Name implements ModelMeta.IClassHasMetaImplements {
+export class Generated$Name implements ModelMeta.IClassHasMetaImplements {
     $Properties(p => p.HasSetter)[$getImplementType public $name: $getModelTypeRepresentation;][
     ]
 }][export interface $getIModelUpdateName {

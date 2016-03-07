@@ -5,6 +5,7 @@ using System.Linq;
 using BugTracker.Data.Database.Abstract;
 using BugTracker.Data.Entities;
 using BugTracker.Data.Repositories.Abstract;
+using BugTracker.Shared;
 using BugTracker.Shared.Assertions;
 
 namespace BugTracker.Data.Repositories
@@ -16,6 +17,11 @@ namespace BugTracker.Data.Repositories
         public IssueAccess(IMemoryDatabase database)
         {
             this.database = database;
+        }
+
+        public Maybe<Issue> TryGet(Guid issueId)
+        {
+            return this.database.TryGet<Issue>(issueId);
         }
 
         public Issue Add(Guid userId, string title, string content)

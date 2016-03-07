@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit} from "angular2/core";
+import { Component, Input } from "angular2/core";
 import { Router, RouteParams } from 'angular2/router';
 import { NgForm, Control, ControlGroup, FormBuilder, Validators } from 'angular2/common';
 
@@ -7,6 +7,7 @@ import { IssueModel, IIssueModelUpdate } from "../../../models/models";
 import { CustomValidators } from "../../../validations/customValidators"
 import { IssueService } from "../../../services/services"
 import { IssueStoreActions } from "../store/issueStoreActions";
+import { IssueDataAccess } from "../../../dataAccess/issueDataAccess";
 
 @Component(
     {
@@ -39,33 +40,32 @@ import { IssueStoreActions } from "../store/issueStoreActions";
     })
 
 
-export class EditIussue {
-
-    private appStoreUnsubscribe: Function;
+export class EditIssue {
     private editModel: IIssueModelUpdate;
-    private issueModel: IssueModel;
     private issueFormModel: ControlGroup;
     private isNewItem: boolean;
 
-    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router: Router, private routeParams: RouteParams) {
+    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router: Router, private routeParams: RouteParams, private issueDataAccess: IssueDataAccess) {
         this.setInputModel();
         this.setFormValidation();
     }
 
     private setInputModel() {
+        this.editModel = new IssueModel().getUpdateModel();
+
         var issueId = this.routeParams.get('id')
         if (issueId != null) {
-            this.issueModel = this.appStore.getState().issues.find(x => x.id == issueId);
-            if (this.issueModel == null) {
-                this.editModel = new IssueModel().getUpdateModel();
-                console.error("Could not find issues with the id '" + issueId + "' in the AppStore.");
-                return;
-            }
-
-            this.editModel = this.issueModel.getUpdateModel();
-            this.isNewItem = false;
+            this.issueDataAccess.getIssueById(issueId).then(
+                model => {
+                    this.editModel = model.getUpdateModel();
+                    this.isNewItem = false;
+                },
+                error => {
+                    console.error(error)
+                });
         }
         else {
+            this.editModel.userId = this.appStore.getState().currentUser.user.id;
             this.isNewItem = true;
         }
     }
@@ -78,19 +78,16 @@ export class EditIussue {
     }
 
     private saveChanges() {
+
         var newIssuesModel = new IssueModel(this.editModel);
-        
-        // call webApi
-        if (this.isNewItem) {
-            // set userId
-            this.editModel.userId = this.appStore.getState().currentUser.user.id;
-            
+
+        if (this.isNewItem) {                       
             // create the issues 
             this.issueService.create(newIssuesModel).then(
                 model => {
                     console.log("Add Issue to Store");
                     // store dispatch
-                    this.appStore.dispatch(IssueStoreActions.AddIssue(newIssuesModel));
+                    this.appStore.dispatch(IssueStoreActions.AddIssue(model));
                     this.router.navigate(['Issues']);
                 },
                 error => {
