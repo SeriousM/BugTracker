@@ -40,7 +40,7 @@ import { IssueDataAccess } from "../../../dataAccess/issueDataAccess";
     })
 
 
-export class EditIussue {
+export class EditIssue {
     private editModel: IIssueModelUpdate;
     private issueFormModel: ControlGroup;
     private isNewItem: boolean;

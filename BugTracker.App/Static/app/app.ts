@@ -11,15 +11,15 @@ import { AuthService } from "./services/authService";
 import { AppHeaderComponent } from "./features/common/view/appHeaderComponent";
 import { UserLogin } from "./features/currentUser/view/userLoginComponent";
 import { IssuesContainer } from "./features/issues/view/issuesContainerComponent";
-import { EditIussue } from "./features/issues/view/editIssueCompontent";
+import { EditIssue } from "./features/issues/view/editIssueCompontent";
 import { CurrentUserStoreActions } from "./features/currentUser/store/currentUserStoreActions";
 import { DATA_ACCESS } from './dataAccess/dataAccess';
 
 @RouteConfig([
     { path: '/login', name: 'Login', component: UserLogin, useAsDefault: true },
     { path: '/issues', name: 'Issues', component: IssuesContainer },
-    { path: '/editIssue', name: 'NewIssues', component: EditIussue },
-    { path: '/editIssue/:id', name: 'EditIssues', component: EditIussue }
+    { path: '/editIssue', name: 'NewIssues', component: EditIssue },
+    { path: '/editIssue/:id', name: 'EditIssues', component: EditIssue }
 ])
 
 @Component({
