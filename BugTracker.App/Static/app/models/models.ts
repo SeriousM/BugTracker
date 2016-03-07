@@ -5,4 +5,4 @@ export { IssueModel, IIssueModelUpdate } from './generated/issueModel';
 export { RegisterUserModel, IRegisterUserModelUpdate } from './generated/registerUserModel';
 export { UserModel, IUserModelUpdate } from './generated/userModel';
 
-export { SessionStateModel } from './sessionStateModel';
+export { DataStateModel } from './states/dataState';

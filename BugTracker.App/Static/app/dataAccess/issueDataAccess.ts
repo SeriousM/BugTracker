@@ -14,7 +14,7 @@ export class IssueDataAccess {
     }
 
     public getIssueById(id: string): ITypedPromise<IssueModel> {
-        if (this.appStore.getState().sessionState.areIssuesLoaded) {
+        if (this.appStore.getState().dataState.areIssuesLoaded) {
             var issuesFromStore = this.appStore.getState().issues.find(x => x.id == id);
             if (issuesFromStore != null) {
                 return Observable.of<IssueModel>(issuesFromStore).toPromise();
