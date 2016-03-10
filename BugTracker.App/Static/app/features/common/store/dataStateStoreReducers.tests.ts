@@ -4,16 +4,16 @@ import { expect, deepFreeze, TestRunnerBase, TestFixture, Test } from "../../../
 import { IAction } from "../../../store/appStore.base";
 import { AppState, DataStateModel } from "../../../models/models";
 
-import { dataStateStoreReducer } from "./sessionStateStoreReducers";
-import { DataStateActionTypes, SessionStateActions } from "./sessionStateStoreActions";
+import { dataStateStoreReducer } from "./dataStateStoreReducers";
+import { DataStateActionTypes, DataStateActions } from "./dataStateStoreActions";
 
 @TestFixture
-export class SessionStateStoreReducersTests extends TestRunnerBase {
+export class DataStateStoreReducersTests extends TestRunnerBase {
     @Test changeIssuesLoadedState_works() {
         var beforeState = new DataStateModel();
         var afterState = new DataStateModel().setAreIssuesLoaded(true);
 
-        var action = SessionStateActions.ChangeIssueLoadedState(true);
+        var action = DataStateActions.ChangeIssueLoadedState(true);
 
         deepFreeze(beforeState);
         deepFreeze(action);

@@ -2,7 +2,7 @@ import { List } from 'immutable';
 
 import { IAction } from "../../../store/appStore.base";
 import { AppState, DataStateModel } from "../../../models/models";
-import { DataStateActionTypes, IChangeIssuesLoadedStateAction } from "./sessionStateStoreActions";
+import { DataStateActionTypes, IChangeIssuesLoadedStateAction } from "./dataStateStoreActions";
 
 function changeIssueLoadedState(state: DataStateModel, action: IChangeIssuesLoadedStateAction): DataStateModel {
     var newState = state.setAreIssuesLoaded(action.payload.issuesLoaded);

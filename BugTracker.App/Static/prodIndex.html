@@ -6,25 +6,25 @@
     <title>BugTracker</title>
     
     <!-- Load AppConfig -->
-    <script src="../app/configDev.js"></script>
+    <script src="app/configDev.js"></script>
    
     <!-- SystemJS stuff -->
-    <script src="../../node_modules/systemjs/dist/system.src.js"></script>
-    <script src="../../node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="../node_modules/systemjs/dist/system.src.js"></script>
+    <script src="../node_modules/angular2/bundles/angular2-polyfills.js"></script>
     
     <!-- Bootstrap Styles -->
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
     
     <!-- Bundle which includes all js code -->
-    <script src="out/app.bundle.js"></script>    
+    <script src="bundle/out/app.bundle.js"></script>    
         
     <!--  <script src="app/systemConfig.js"></script> -->
     <script type="text/javascript">
         System.config({
             defaultJSExtensions: true,
             bundles: {
-                "out/app.bundle.js": ['*']
-            },
+                "bundle/out/app.bundle.js": ['*']
+            }
         });    
         System
             .import("appbuild/app/app.js")

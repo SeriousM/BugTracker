@@ -38,7 +38,7 @@ function error(err){
 
 // all in one build
 console.log("Building bundle...");
-builder.bundle('appbuild/app/**/*.js', 'out/app.bundle.js', { minify: false, sourceMaps: true, config: config })
+builder.bundle('appbuild/app/**/*.js', 'out/app.bundle.js', { minify: false, sourceMaps: false, config: config })
     .then(buildDone).catch(error);
 
 // // https://github.com/systemjs/builder
