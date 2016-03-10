@@ -9,15 +9,14 @@
   },
   "version": "1.0.0",
   "scripts": {
-    "deploy-dev": "npm run gulp",
     "npm-install": "npm install",
     "pwd": "echo %cd%",
     "tsc": "tsc | findstr /C:\"Static/\"",
     "tscw": "tsc -w",
     "typings": "typings install",
-    "liveserver": "live-server --open=static --entry-file=\"static/devIndex.html\" --ignorePattern=\".*\\.(ts|map)\"",
-    "liveserver-prod": "live-server --open=static --entry-file=\"static/prodIndex.html\" --ignorePattern=\".*\\.(ts|map)\"",
-    "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\"",
+    "liveserver-dev": "live-server --open=static --entry-file=\"static/index.html\" --ignorePattern=\".*\\.(ts|map)\"",
+    "liveserver-prod": "live-server --open=static/bundle --entry-file=\"static/index.html\" --ignorePattern=\".*\\.(ts|map)\"",
+    "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver-dev\"",
     "start-prod": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver-prod\""
   },
   "engines": {
