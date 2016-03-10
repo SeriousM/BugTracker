@@ -9,13 +9,16 @@
   },
   "version": "1.0.0",
   "scripts": {
+    "deploy-dev": "npm run gulp",
     "npm-install": "npm install",
     "pwd": "echo %cd%",
     "tsc": "tsc | findstr /C:\"Static/\"",
     "tscw": "tsc -w",
     "typings": "typings install",
     "liveserver": "live-server --open=static --entry-file=\"static/index.html\" --ignorePattern=\".*\\.(ts|map)\"",
-    "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\""
+    "liveserver-prod": "live-server --open=static/bundle --entry-file=\"static/bundle/index.html\" --ignorePattern=\".*\\.(ts|map)\"",
+    "start-dev": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver\"",
+    "start-prod": "npm run npm-install && npm run typings && concurrent \"npm run tscw\" \"npm run liveserver-prod\""
   },
   "engines": {
     "node": ">=4.0.0",
@@ -42,7 +45,11 @@
   "devDependencies": {
     "concurrently": "1.0.0",
     "deep-freeze": "0.0.1",
-    "expect": "1.14.0",
+    "expect": "^1.14.0",
+    "gulp": "3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
     "live-server": "0.9.1",
     "normalize.css": "3.0.3",
     "systemjs-builder": "0.15.9",

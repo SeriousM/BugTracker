@@ -5,7 +5,6 @@
 // ${fileDirname}: the current opened file's dirname
 // ${fileExtname}: the current opened file's extension
 // ${cwd}: the current working directory of the spawned process
-
 {
     "version": "0.1.0",
     "name": "npmTask",
@@ -16,17 +15,19 @@
     "suppressTaskName": true,
     "command": "npm",
     "isShellCommand": true,
-    "args": ["run"],
+    "args": [
+        "run"
+    ],
     "echoCommand": true,
-    
     // isBuildCommand = Shift+Ctrl+B
     // isTestCommand = Shift+Ctrl+T
-    
     "tasks": [
         {
             "taskName": "npm-install",
             //npm task name
-            "args": ["npm-install"],
+            "args": [
+                "npm-install"
+            ],
             "isBuildCommand": false,
             "isTestCommand": false,
             "isWatching": false,
@@ -35,14 +36,19 @@
         {
             "taskName": "tsc",
             //npm task name
-            "args": ["tsc"],
+            "args": [
+                "tsc"
+            ],
             "isBuildCommand": true,
             "isTestCommand": false,
             "isWatching": false,
             "showOutput": "silent",
             "problemMatcher": {
                 "base": "$tsc",
-                "fileLocation": ["relative", "${workspaceRoot}\\BugTracker.App"],
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}\\BugTracker.App"
+                ],
                 "pattern": {
                     // The regular expression. Matches HelloWorld.ts(2,10): error TS2339: Property 'logg' does not exist on type 'Console'.
                     // ONLY: "Static/*"!!
@@ -53,14 +59,19 @@
         {
             "taskName": "tscw",
             //npm task name
-            "args": ["tscw"],
+            "args": [
+                "tscw"
+            ],
             "isBuildCommand": false,
             "isTestCommand": false,
             "isWatching": true,
             "showOutput": "silent",
             "problemMatcher": {
                 "base": "$tsc-watch",
-                "fileLocation": ["relative", "${workspaceRoot}\\BugTracker.App"],
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}\\BugTracker.App"
+                ],
                 "pattern": {
                     // The regular expression. Matches HelloWorld.ts(2,10): error TS2339: Property 'logg' does not exist on type 'Console'.
                     // ONLY: "Static/*"!!
@@ -77,7 +88,9 @@
         {
             "taskName": "liveserver",
             //npm task name
-            "args": ["liveserver"],
+            "args": [
+                "liveserver"
+            ],
             "isBuildCommand": false,
             "isTestCommand": false,
             "isWatching": true,
@@ -86,7 +99,9 @@
         {
             "taskName": "typings",
             //npm task name
-            "args": ["typings"],
+            "args": [
+                "typings"
+            ],
             "isBuildCommand": true,
             "isTestCommand": false,
             "isWatching": false,
@@ -95,14 +110,49 @@
         {
             "taskName": "start-dev",
             //npm task name
-            "args": ["start-dev"],
+            "args": [
+                "start-dev"
+            ],
             "isBuildCommand": false,
             "isTestCommand": false,
             "isWatching": true,
             "showOutput": "always",
             "problemMatcher": {
                 "base": "$tsc-watch",
-                "fileLocation": ["relative", "${workspaceRoot}\\BugTracker.App"],
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}\\BugTracker.App"
+                ],
+                "pattern": {
+                    // The regular expression. Matches HelloWorld.ts(2,10): error TS2339: Property 'logg' does not exist on type 'Console'.
+                    // ONLY: "Static/*"!!
+                    // MAY EXPECTS "[1] " prefix (any number) for concurrently-execution with liveserver
+                    "regexp": "^(?:\\[\\d+\\] )?(Static\\/[^\\s].*)\\((\\d+|\\d+,\\d+|\\d+,\\d+,\\d+,\\d+)\\):\\s+(error|warning|info)\\s+(TS\\d+)\\s*:\\s*(.*)$"
+                },
+                "watching": {
+                    "activeOnStart": true,
+                    // MAY EXPECTS "[1] " prefix (any number) for concurrently-execution with liveserver
+                    "beginsPattern": "^(?:\\[\\d+\\] )?\\s*(?:message TS6032:|\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? -) File change detected\\. Starting incremental compilation\\.\\.\\.",
+                    "endsPattern": "^(?:\\[\\d+\\] )?\\s*(?:message TS6042:|\\d{1,2}:\\d{1,2}:\\d{1,2}(?: AM| PM)? -) Compilation complete\\. Watching for file changes\\."
+                }
+            }
+        },
+        {
+            "taskName": "start-prod",
+            //npm task name
+            "args": [
+                "start-prod"
+            ],
+            "isBuildCommand": false,
+            "isTestCommand": false,
+            "isWatching": true,
+            "showOutput": "always",
+            "problemMatcher": {
+                "base": "$tsc-watch",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}\\BugTracker.App"
+                ],
                 "pattern": {
                     // The regular expression. Matches HelloWorld.ts(2,10): error TS2339: Property 'logg' does not exist on type 'Console'.
                     // ONLY: "Static/*"!!
@@ -119,7 +169,6 @@
         }
     ]
 }
-
 // A task runner that calls the Typescript compiler (tsc) and
 // Compiles a HelloWorld.ts program
 /*
@@ -143,7 +192,6 @@
 	"problemMatcher": "$tsc"
 }
 */
-
 // A task runner that calls the Typescript compiler (tsc) and
 // compiles based on a tsconfig.json file that is present in
 // the root of the folder open in VSCode
@@ -168,7 +216,6 @@
 	"problemMatcher": "$tsc"
 }
 */
-
 // A task runner configuration for gulp. Gulp provides a less task
 // which compiles less to css.
 /*
@@ -189,7 +236,6 @@
 	]
 }
 */
-
 // Uncomment the following section to use jake to build a workspace
 // cloned from https://github.com/Microsoft/TypeScript.git
 /*
@@ -216,7 +262,6 @@
 	]
 }
 */
-
 // Uncomment the section below to use msbuild and generate problems
 // for csc, cpp, tsc and vb. The configuration assumes that msbuild
 // is available on the path and a solution file exists in the
@@ -243,7 +288,6 @@
 	]
 }
 */
-
 // Uncomment the following section to use msbuild which compiles Typescript
 // and less files.
 /*
@@ -303,4 +347,4 @@
 		}
 	}
 }
-*/
+*/ 
