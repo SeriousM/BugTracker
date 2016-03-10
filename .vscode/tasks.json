@@ -86,10 +86,21 @@
             }
         },
         {
-            "taskName": "liveserver",
+            "taskName": "liveserver-dev",
             //npm task name
             "args": [
-                "liveserver"
+                "liveserver-dev"
+            ],
+            "isBuildCommand": false,
+            "isTestCommand": false,
+            "isWatching": true,
+            "showOutput": "silent"
+        },
+        {
+            "taskName": "liveserver-prod",
+            //npm task name
+            "args": [
+                "liveserver-prod"
             ],
             "isBuildCommand": false,
             "isTestCommand": false,
