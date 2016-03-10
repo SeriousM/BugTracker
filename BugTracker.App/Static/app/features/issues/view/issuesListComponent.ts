@@ -7,7 +7,7 @@ import { AppStore } from "../../../store/appStore";
 import { IssueModel } from "../../../models/models";
 
 import { IssueStoreActions } from "../store/issueStoreActions";
-import { SessionStateActions } from "../../common/store/sessionStateStoreActions";
+import { DataStateActions } from "../../common/store/dataStateStoreActions";
 import { IssueService } from "../../../services/services"
 
 @Component({
@@ -66,7 +66,7 @@ export class IssuesList implements OnInit, OnDestroy {
         this.issueService.getAllByUser(currentUserId).then(
             models => {
                 models.forEach(issue => this.appStore.dispatch(IssueStoreActions.AddIssue(issue)));
-                this.appStore.dispatch(SessionStateActions.ChangeIssueLoadedState(true));
+                this.appStore.dispatch(DataStateActions.ChangeIssueLoadedState(true));
             },
             error => console.error("error", error));
     }

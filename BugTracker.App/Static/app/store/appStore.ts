@@ -3,7 +3,7 @@ import { default as createLogger } from 'redux-logger';
 import { Injectable } from "angular2/core";
 import { ReduxStore } from "angular2-redux-store";
 
-import { dataStateStoreReducer } from "../features/common/store/sessionStateStoreReducers";
+import { dataStateStoreReducer } from "../features/common/store/dataStateStoreReducers";
 import { userStoreReducer } from "../features/users/store/userStoreReducers";
 import { issueStoreReducer } from "../features/issues/store/issueStoreReducers";
 import { currentUserStoreReducer } from "../features/currentUser/store/currentUserStoreReducers";

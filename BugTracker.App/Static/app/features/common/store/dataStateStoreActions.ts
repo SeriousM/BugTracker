@@ -5,7 +5,7 @@ const actionPrefix = "DATASTATE.";
 export class DataStateActionTypes {
     public static CHANGE_ISSUES_LOADED_STATE = actionPrefix + "CHANGE_ISSUES_LOADED_STATE";
 }
-export class SessionStateActions {
+export class DataStateActions {
     public static ChangeIssueLoadedState = (issuesLoaded: boolean): IChangeIssuesLoadedStateAction => {
         return createAction<IChangeIssuesLoadedStateAction>(DataStateActionTypes.CHANGE_ISSUES_LOADED_STATE, { issuesLoaded: issuesLoaded });
     }

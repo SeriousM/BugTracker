@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>BugTracker</title>
+    
+    <!-- Load AppConfig -->
+    <script src="../app/configDev.js"></script>
+   
+    <!-- SystemJS stuff -->
+    <script src="../../node_modules/systemjs/dist/system.src.js"></script>
+    <script src="../../node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    
+    <!-- Bootstrap Styles -->
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Bundle which includes all js code -->
+    <script src="out/app.bundle.js"></script>    
+        
+    <!--  <script src="app/systemConfig.js"></script> -->
+    <script type="text/javascript">
+        System.config({
+            defaultJSExtensions: true,
+            bundles: {
+                "out/app.bundle.js": ['*']
+            }
+        });    
+        System
+            .import("appbuild/app/app.js")
+            .catch(console.log.bind(console));
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>BugTracker</h1>
+        <bug-tracker>...loading</bug-tracker>
+    </div>
+</body>
+
+</html>

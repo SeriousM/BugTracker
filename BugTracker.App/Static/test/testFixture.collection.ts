@@ -1,6 +1,6 @@
 import { TestRunnerBase } from "./tests.base";
 
-import { SessionStateStoreReducersTests } from "../app/features/common/store/sessionStateStoreReducers.tests";
+import { DataStateStoreReducersTests } from "../app/features/common/store/dataStateStoreReducers.tests";
 import { UserStoreReducersTests } from "../app/features/users/store/userStoreReducers.tests";
 import { IssueStoreReducersTests } from "../app/features/issues/store/issueStoreReducers.tests";
 import { CurrentUserStoreReducersTests } from "../app/features/currentUser/store/currentUserStoreReducers.tests";
@@ -12,6 +12,6 @@ export function getTestFixtures(): TestRunnerBase[] {
         new IssueStoreReducersTests(),
         new CurrentUserStoreReducersTests(),
         new ModelParserTests(),
-        new SessionStateStoreReducersTests()
+        new DataStateStoreReducersTests()
     ];
 }

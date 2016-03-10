@@ -1,6 +1,6 @@
 ﻿import { Component, provide } from "angular2/core";
 import { HTTP_PROVIDERS, RequestOptions  } from 'angular2/http';
-import { Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, APP_BASE_HREF } from "angular2/router";
+import { Router, RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from "angular2/router";
 import { bootstrap } from "angular2/platform/browser";
 
 import { DefaultRequestOptions } from "./utils/defaultRequestOptions";
@@ -27,7 +27,7 @@ import { DATA_ACCESS } from './dataAccess/dataAccess';
     directives: [AppHeaderComponent, ROUTER_DIRECTIVES],
     template: `
         <div>
-            <app-header></app-header>
+            <app-header></app-header>            
             
             <!-- Routed views go here -->
             <router-outlet></router-outlet>
@@ -53,7 +53,7 @@ bootstrap(App, [
     ROUTER_PROVIDERS,
     AUTH_SERVICES,
     DATA_ACCESS,
-    provide(APP_BASE_HREF, { useValue: '/static' }),
+    provide(LocationStrategy, {useClass: HashLocationStrategy}),
     provide(AppConfiguration, { useValue: appConfiguration }),
     provide(RequestOptions, { useClass: DefaultRequestOptions }),
     provide(AppStore, { useFactory: appStoreFactory })
