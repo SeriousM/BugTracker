@@ -1,13 +1,10 @@
 // nodejs file
-
 var Builder = require('systemjs-builder');
 
 // optional constructor options
 // sets the baseURL and loads the configuration file
 var builder = new Builder('..', '../app/systemConfig.js');
 builder.loadConfig('../test/systemConfig.test.js');
-// var builder = new Builder('./out', '../app/systemConfig.js');
-//builder.loadConfig('../app/systemConfig.js');
 
 var config = {
     defaultJSExtensions: true,
@@ -30,11 +27,6 @@ function error(err){
     console.log('Build error');
     console.log(err);
 }
-
-// // all in one build
-// console.log("Building bundle...");
-// builder.bundle('app.js', 'out/app.bundle.js', { minify: true, sourceMaps: true, config: config })
-//    .then(buildDone).catch(error);
 
 // all in one build
 console.log("Building bundle...");
