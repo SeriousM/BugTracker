@@ -1,5 +1,5 @@
 import { Component } from "angular2/core";
-import { Router } from "angular2/router";
+import { Navigator } from "../../../routing/navigator";
 
 import { AppStore } from "../../../store/appStore";
 import { IssuesList } from "./issuesListComponent";
@@ -18,10 +18,10 @@ import { IssuesList } from "./issuesListComponent";
 })
 
 export class IssuesContainer {
-    constructor(private appStore: AppStore, private router: Router) {
+    constructor(private appStore: AppStore, private navigator: Navigator) {
     }
-
+    
     private newIssue() {
-        this.router.navigate(['NewIssues']);
+        this.navigator.navigateToNewIssue();
     }
 }

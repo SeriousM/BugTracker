@@ -1,13 +1,14 @@
-import { Component, Input } from "angular2/core";
-import { Router, RouteParams } from 'angular2/router';
+import { Component, Input, OnDestroy, OnInit } from "angular2/core";
+import { RouteParams  } from "angular2/router";
 import { NgForm, Control, ControlGroup, FormBuilder, Validators } from 'angular2/common';
 
 import { AppStore } from "../../../store/appStore";
 import { IssueModel, IIssueModelUpdate } from "../../../models/models";
-import { CustomValidators } from "../../../validations/customValidators"
-import { IssueService } from "../../../services/services"
+import { CustomValidators } from "../../../validations/customValidators";
+import { IssueService } from "../../../services/services";
 import { IssueStoreActions } from "../store/issueStoreActions";
 import { IssueDataAccess } from "../../../dataAccess/issueDataAccess";
+import { Navigator } from "../../../routing/navigator";
 
 @Component(
     {
@@ -45,15 +46,14 @@ export class EditIssue {
     private issueFormModel: ControlGroup;
     private isNewItem: boolean;
 
-    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private router: Router, private routeParams: RouteParams, private issueDataAccess: IssueDataAccess) {
+    constructor(private appStore: AppStore, private formBuilder: FormBuilder, private issueService: IssueService, private issueDataAccess: IssueDataAccess, private routeParams: RouteParams, private navigator: Navigator) {
         this.setInputModel();
         this.setFormValidation();
     }
 
     private setInputModel() {
         this.editModel = new IssueModel().getUpdateModel();
-
-        var issueId = this.routeParams.get('id')
+        var issueId = this.routeParams.get("id");
         if (issueId != null) {
             this.issueDataAccess.getIssueById(issueId).then(
                 model => {
@@ -81,14 +81,14 @@ export class EditIssue {
 
         var newIssuesModel = new IssueModel(this.editModel);
 
-        if (this.isNewItem) {                       
+        if (this.isNewItem) {
             // create the issues 
             this.issueService.create(newIssuesModel).then(
                 model => {
                     console.log("Add Issue to Store");
                     // store dispatch
                     this.appStore.dispatch(IssueStoreActions.AddIssue(model));
-                    this.router.navigate(['Issues']);
+                    this.navigator.navigateToIssues();
                 },
                 error => {
                     console.error("Could not create new issue", error);
@@ -101,13 +101,13 @@ export class EditIssue {
                     console.log("Update Issue in Store");
                     // store dispatch
                     this.appStore.dispatch(IssueStoreActions.UpdateIssue(newIssuesModel));
-                    this.router.navigate(['Issues']);
+                    this.navigator.navigateToIssues();
                 },
                 error => {
                     console.error("Could not update the issue", error);
                 });
         }
-        
+
         // change route to issues list                
         console.log("Changed object: ", new IssueModel(this.editModel));
     }
