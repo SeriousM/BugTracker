@@ -1,5 +1,7 @@
 # BugTracker
 
+[![Join the chat at https://gitter.im/SeriousM/BugTracker](https://badges.gitter.im/SeriousM/BugTracker.svg)](https://gitter.im/SeriousM/BugTracker?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Getting started
 
 ### Visual Studio
